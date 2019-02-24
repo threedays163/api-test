@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.huatu.common:sql-builder:0.0.4-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/sql-builder/0.0.4-SNAPSHOT/sql-builder-0.0.4-20180830.165536-17.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/sql-builder/0.0.4-SNAPSHOT/sql-builder-0.0.4-20180830.165536-17-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/sql-builder/0.0.4-SNAPSHOT/sql-builder-0.0.4-20180830.165536-17-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

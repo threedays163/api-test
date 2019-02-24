@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.huatu.common.utils:common-utils:0.0.4-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
