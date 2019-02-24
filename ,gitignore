@@ -6,7 +6,7 @@
 **/rebel.xml
 
 # Intellij
-.idea/
+**/.idea/**
 *.iml
 *.iws
 **/out
@@ -28,3 +28,5 @@
 **/*.factorypath
 **/setting.json
 .vscode/
+
+**/logs/**
