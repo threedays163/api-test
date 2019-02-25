@@ -1,11 +1,39 @@
-.idea/**
 
 **/target/**
 
 logs/**
 
 **/logs/**
+# Eclipse
+.classpath
+.project
+.settings/
 
-**/log/**
+**/rebel.xml
 
+# Intellij
+**/.idea/**
+.idea/**
+*.iml
 **/*.iml
+*.iws
+**/out
+
+# Mac
+.DS_Store
+
+# Maven
+**/log/
+**/target
+**/*.log
+logs/**
+**/tmp
+**/.tmp
+**/bin/**
+
+# vscode
+**/*.factorypath
+**/setting.json
+.vscode/
+
+**/logs/**

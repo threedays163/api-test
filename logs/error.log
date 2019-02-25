@@ -465,7 +465,11 @@ Action:
 
 If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
 
+<<<<<<< HEAD
 2019-02-25 14:26:38.129		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+=======
+2019-02-25 15:52:53.566		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+>>>>>>> 695c304a3b07eb5c3dee568dd4d778c73459234e
 
 ***************************
 APPLICATION FAILED TO START
@@ -479,6 +483,7 @@ Action:
 
 If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
 
+<<<<<<< HEAD
 2019-02-25 14:32:22.196		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
 
 ***************************
@@ -521,3 +526,5 @@ Action:
 
 If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml" are currently active).
 
+=======
+>>>>>>> 695c304a3b07eb5c3dee568dd4d778c73459234e

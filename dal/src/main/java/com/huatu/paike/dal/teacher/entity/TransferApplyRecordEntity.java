@@ -1,9 +1,7 @@
 package com.huatu.paike.dal.teacher.entity;
-import java.io.Serializable;
-
 import lombok.Data;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
