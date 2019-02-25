@@ -465,3 +465,59 @@ Action:
 
 If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
 
+2019-02-25 14:26:38.129		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+
+2019-02-25 14:32:22.196		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+
+2019-02-25 14:36:42.229		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+
+2019-02-25 14:40:14.243		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml" are currently active).
+

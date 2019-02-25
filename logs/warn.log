@@ -797,3 +797,90 @@ Action:
 
 If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
 
+2019-02-25 14:26:38.090		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderStageSubjectMapper' defined in file [/Users/threedays/eclipse-workspace/api-test/dal/target/classes/com/huatu/paike/dal/goodsOrder/mapper/OrderStageSubjectMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.tomcat.jdbc.pool.DataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Cannot determine embedded database driver class for database type NONE. If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+2019-02-25 14:26:38.129		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+
+2019-02-25 14:32:22.146		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderStageSubjectMapper' defined in file [/Users/threedays/eclipse-workspace/api-test/dal/target/classes/com/huatu/paike/dal/goodsOrder/mapper/OrderStageSubjectMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.tomcat.jdbc.pool.DataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Cannot determine embedded database driver class for database type NONE. If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+2019-02-25 14:32:22.196		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+
+2019-02-25 14:36:42.185		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderStageSubjectMapper' defined in file [/Users/threedays/eclipse-workspace/api-test/dal/target/classes/com/huatu/paike/dal/goodsOrder/mapper/OrderStageSubjectMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.tomcat.jdbc.pool.DataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Cannot determine embedded database driver class for database type NONE. If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+2019-02-25 14:36:42.229		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,default" are currently active).
+
+2019-02-25 14:40:14.187		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderStageSubjectMapper' defined in file [/Users/threedays/eclipse-workspace/api-test/dal/target/classes/com/huatu/paike/dal/goodsOrder/mapper/OrderStageSubjectMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.tomcat.jdbc.pool.DataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Cannot determine embedded database driver class for database type NONE. If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml" are currently active).
+2019-02-25 14:40:14.243		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml" are currently active).
+
+2019-02-25 14:43:11.841		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.841		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Secondary finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Secondary finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Secondary finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:11.842		 WARN	Finalizer	AbstractConfig:97 -  [DUBBO] ReferenceConfig(null) is not DESTROYED when FINALIZE, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:13.137		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.order.service.paike.GoodsListService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:13.475		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.sku.service.GoodsService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:13.824		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.order.service.paike.OrderService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:14.165		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.order.service.paike.StudentService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:14.517		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.sku.service.CourseService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:14.864		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.common.service.StageService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:15.208		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.common.service.SubjectService, dubbo version: 2.6.2, current host: 192.168.192.103
+2019-02-25 14:43:15.578		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.ehr.service.EhrNodeService, dubbo version: 2.6.2, current host: 192.168.192.103

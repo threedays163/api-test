@@ -3,9 +3,8 @@ spring:
     restart:
       enabled: true
   profiles:
-    active: tomcat
+    active: tomcat,jdbc
     include: application-tomcat.yaml,application-jdbc.yaml
 
 mybatis:
   config-location: classpath:mybatis-configuration.xml
-#config-location: classpath:mybatis-configuration.xml
