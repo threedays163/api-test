@@ -1,6 +1,7 @@
 package com.huatu.paike.dal.goodsOrder.mapper;
 
 import com.huatu.paike.dal.annotations.MapF2F;
+import com.huatu.paike.dal.annotations.MapF2M;
 import com.huatu.paike.dal.goodsOrder.dto.QueryOrderStageSubjectDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubject;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubject;
@@ -200,6 +201,6 @@ public interface OrderStageSubjectMapper extends Mapper<OrderStageSubject> {
      */
     List<Long> queryEndOss(@Param("startTime")Date startTime,@Param("endTime") Date endTime);
 
-    @MapF2F
-    Map<Long,Long> queryClassId(@Param("ids")Collection<Long> ids);
+    @MapF2M
+    Map<Long,Map<Long,Integer>> queryClassId(@Param("ids")Collection<Long> ids);
 }

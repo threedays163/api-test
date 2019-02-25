@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.huatu.shizi-api:shizi-interface:2.1.0.RELEASE">
     <CLASSES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/shizi-api/shizi-interface/2.1.0.RELEASE/shizi-interface-2.1.0.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

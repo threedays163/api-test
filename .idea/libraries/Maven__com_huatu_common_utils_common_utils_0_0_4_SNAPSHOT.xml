@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.huatu.common.utils:common-utils:0.0.4-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-SNAPSHOT.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-SNAPSHOT-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/common/utils/common-utils/0.0.4-SNAPSHOT/common-utils-0.0.4-20181128.073621-19-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

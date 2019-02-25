@@ -605,3 +605,195 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: 1
 2019-02-14 16:09:56.292		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.common.service.StageService, dubbo version: 2.6.2, current host: 192.168.196.16
 2019-02-14 16:09:56.620		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.common.service.SubjectService, dubbo version: 2.6.2, current host: 192.168.196.16
 2019-02-14 16:09:56.944		 WARN	restartedMain	ApplicationModel:65 -  [DUBBO] Already register the same consumer:com.huatu.ehr.service.EhrNodeService, dubbo version: 2.6.2, current host: 192.168.196.16
+2019-02-25 11:46:50.708		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 11:46:50.969		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 11:48:46.091		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 11:48:46.300		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:05:22.892		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:05:23.099		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:13:56.539		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:13:56.705		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:18:29.636		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:18:29.870		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:20:31.620		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:20:31.795		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:23:51.653		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:23:51.887		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:29:29.105		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:29:29.311		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:38:59.386		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:38:59.774		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:41:52.615		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:41:52.840		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:53:02.441		 WARN	restartedMain	ClassPathMapperScanner:166 - No MyBatis mapper was found in '[com.huatu.paike.api_test]' package. Please check your configuration.
+2019-02-25 12:53:12.582		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2019-02-25 12:53:12.779		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:55:17.662		 WARN	restartedMain	AnnotationConfigEmbeddedWebApplicationContext:551 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'costOrderServiceImpl': Unsatisfied dependency expressed through field 'ossMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderStageSubjectMapper' defined in file [/Users/threedays/eclipse-workspace/api-test/dal/target/classes/com/huatu/paike/dal/goodsOrder/mapper/OrderStageSubjectMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Tomcat.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.tomcat.jdbc.pool.DataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Cannot determine embedded database driver class for database type NONE. If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+2019-02-25 12:55:17.706		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+

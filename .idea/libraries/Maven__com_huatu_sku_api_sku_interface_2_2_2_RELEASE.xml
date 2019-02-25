@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.huatu.sku-api:sku-interface:2.2.2.RELEASE">
     <CLASSES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/huatu/sku-api/sku-interface/2.2.2.RELEASE/sku-interface-2.2.2.RELEASE-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

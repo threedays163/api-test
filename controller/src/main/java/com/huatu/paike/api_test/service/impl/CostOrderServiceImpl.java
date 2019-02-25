@@ -7,6 +7,8 @@ import com.huatu.order.dto.OrderMoneyDto;
 import com.huatu.order.service.paike.OrderService;
 import com.huatu.paike.api_test.OrderInfoDto;
 import com.huatu.paike.api_test.dto.CostOrderStageBuilder;
+import com.huatu.paike.api_test.dto.CostSourceType;
+import com.huatu.paike.api_test.dto.CostType;
 import com.huatu.paike.dal.cost.entity.CostOrderStage;
 import com.huatu.paike.dal.cost.mapper.CostOrderStageMapper;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
@@ -19,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.common.base.insert.InsertSelectiveMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -66,13 +67,13 @@ public class CostOrderServiceImpl implements CostOrderService {
 
             Map<String, OrderInfo> orderInfos = orderInfoMapper.queryListByOrderNos(orderNos);
 
-            Map<Long, Long> ossId2ClassIdMap=ossMapper.queryClassId(subList);
+            Map<Long, Map<Long,Integer>> ossId2ClassIdMap=ossMapper.queryClassId(subList);
 
             Map<Long, OrderInfoDto> moneyMap = orderInfos.values().stream().collect(Collectors.toMap(a -> a.getOrderGoodsId(), a -> getOrderPriceInfo(a.getOrderGoodsId())));
             for (OrderStageSubject oss : orderStageSubjects) {
                 String orderNo = oss.getOrderNo();
                 OrderInfo orderInfo = orderInfos.get(orderNo);
-
+                Map<Long,Integer> classBatchMap=ossId2ClassIdMap.get(oss.getId());
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
                 // VIP订单不结转,协议类型为K,L,M,N为无限学,不结转
                 if (orderPriceInfo.getProductTypeCode().equals("VI") || orderInfo.getProtocolType().matches("K|L|M|N")) {
@@ -91,13 +92,21 @@ public class CostOrderServiceImpl implements CostOrderService {
                     return;
                 }
 
+                Map.Entry<Long,Integer> classItem =classBatchMap.entrySet().iterator().next();
+
+                ClassStageSubject css = new ClassStageSubject();
+                css.setBatchNum(classItem.getValue());
+                css.setClassId(classItem.getKey());
+                css.setStageId(oss.getStageId());
+                css.setSubjectId(oss.getSubjectId());
+
                 List<CostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
                 CostOrderStage tuition =
-                        CostOrderStageBuilder.builder(css, orderInfo, 2, subjectTuition, false, 0);
+                        CostOrderStageBuilder.builder(css, orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
                 costOrderStages.add(tuition);
                 CostOrderStage extra =
-                        CostOrderStageBuilder.builder(css, orderInfo, 1, subjectExtra, false, 0);
+                        CostOrderStageBuilder.builder(css, orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
                 costOrderStages.add(extra);
                 for (CostOrderStage costOrderStage : costOrderStages) {
                     costOrderStage.setSeqNum(0L);

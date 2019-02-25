@@ -286,3 +286,182 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: 1
 	at com.huatu.paike.api_test.WebApplication.run(WebApplication.java:83) ~[classes/:?]
 	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:732) ~[spring-boot-1.5.9.RELEASE.jar:1.5.9.RELEASE]
 	... 11 more
+2019-02-25 11:46:50.969		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 11:48:46.300		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:05:23.099		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:13:56.705		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:18:29.870		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:20:31.795		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:23:51.887		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:29:29.311		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:38:59.774		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:41:52.840		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:53:12.779		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field ossMapper in com.huatu.paike.api_test.service.impl.CostOrderServiceImpl required a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper' in your configuration.
+
+2019-02-25 12:55:17.706		ERROR	restartedMain	LoggingFailureAnalysisReporter:42 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Cannot determine embedded database driver class for database type NONE
+
+Action:
+
+If you want an embedded database please put a supported one on the classpath. If you have database settings to be loaded from a particular profile you may need to active it (the profiles "application-tomcat.yaml,application-jdbc.yaml,tomcat" are currently active).
+

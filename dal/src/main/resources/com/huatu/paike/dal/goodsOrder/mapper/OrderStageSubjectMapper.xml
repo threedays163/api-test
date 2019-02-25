@@ -539,7 +539,7 @@
     </select>
 
     <select id="queryClassId" resultType="map">
-        SELECT oss.ID,ocss.CLASS_ID FROM order_stage_subject oss JOIN order_class_stage_subject ocss ON oss.order_no=ocss.ORDER_NO AND oss.stage_id=ocss.STAGE_ID AND oss.subject_id=ocss.SUBJECT_ID WHERE oss.ID IN
+        SELECT oss.ID,ocss.CLASS_ID,ocss.BATCH_NUM FROM order_stage_subject oss JOIN order_class_stage_subject ocss ON oss.order_no=ocss.ORDER_NO AND oss.stage_id=ocss.STAGE_ID AND oss.subject_id=ocss.SUBJECT_ID WHERE oss.ID IN
         <foreach collection="ids" close=")" item="item" open="(" separator=",">
             #{item}
         </foreach>

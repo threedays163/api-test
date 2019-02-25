@@ -23,12 +23,11 @@ import com.huatu.sku.service.CourseService;
 import com.huatu.sku.service.GoodsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 
 import java.io.*;
@@ -39,7 +38,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
+@MapperScan("com.huatu.paike.**.mapper")
+//@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 @ImportResource({ "classpath:dubbo-consumer.xml" })
 public class WebApplication implements CommandLineRunner {
 
