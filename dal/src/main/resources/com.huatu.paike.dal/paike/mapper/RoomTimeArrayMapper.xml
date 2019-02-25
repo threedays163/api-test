@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.RoomTimeArrayMapper">
+	<resultMap id="BaseResultMap"
+		type="com.huatu.paike.dal.paike.entity.RoomTimeArray">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="room_id" jdbcType="BIGINT" property="roomId" />
+		<result column="is_double_teacher" jdbcType="TINYINT" property="isDoubleTeacher" />
+		<result column="lesson_table_id" jdbcType="BIGINT" property="lessonTableId" />
+		<result column="lesson_table_detail_id" jdbcType="BIGINT"
+			property="lessonTableDetailId" />
+		<result column="class_id" jdbcType="BIGINT" property="classId" />
+		<result column="lesson_id" jdbcType="BIGINT" property="lessonId" />
+		<result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<!-- WARNING - @mbg.generated -->
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		<!-- WARNING - @mbg.generated -->
+		ID, room_id, is_double_teacher, lesson_table_id,
+		lesson_table_detail_id,class_id, lesson_id,
+		start_time, end_time, CREATE_TIME, UPDATE_TIME
+	</sql>
+	<delete id="deleteByFilter"
+		parameterType="com.huatu.paike.dal.paike.entity.RoomTimeArrayCriteria">
+		<!-- WARNING - @mbg.generated -->
+		delete from room_time_array
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<select id="queryRoomTimeArray" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from room_time_array
+		<where>
+			<if test="null != roomIds and roomIds.size() &gt; 0">
+				and room_id in
+				<foreach close=")" collection="roomIds" item="roomId" open="("
+					separator=",">
+					#{roomId}
+				</foreach>
+			</if>
+			<if test="null !=startTime and null!=endTime">
+				and end_time >= #{startTime} and  #{endTime}>= start_time
+			</if>
+		</where>
+		order by start_time
+	</select>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO room_time_array (room_id, is_double_teacher,
+		lesson_table_id, lesson_table_detail_id,class_id, lesson_id,
+		start_time, end_time) values
+		<foreach collection="list" item="room" separator=",">
+			(#{room.roomId}, #{room.isDoubleTeacher}, #{room.lessonTableId},
+			#{room.lessonTableDetailId}, #{room.classId}, #{room.lessonId}, #{room.startTime},
+			#{room.endTime})
+		</foreach>
+	</insert>
+</mapper>

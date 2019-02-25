@@ -1,7 +1,0 @@
-server:
-  port: 8090
-  tomcat:
-    basedir: logs
-    accesslog:
-      enabled: true
-      pattern: '%v %h %{X-Forwarded-For}i %{user}r %t %m %U %s %b %{Referer}i %{User-Agent}i %q %T'

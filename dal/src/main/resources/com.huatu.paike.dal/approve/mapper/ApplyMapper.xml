@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.approve.mapper.ApplyMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.approve.entity.Apply">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PROCESS_ID" jdbcType="VARCHAR" property="processId" />
+    <result column="ORIGINATOR_ID" jdbcType="BIGINT" property="originatorId" />
+    <result column="APPROVE_TYPE_ID" jdbcType="TINYINT" property="approveTypeId" />
+    <result column="OBJECT_NO" jdbcType="VARCHAR" property="objectNo" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="IS_DEL" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, PROCESS_ID, ORIGINATOR_ID, APPROVE_TYPE_ID, OBJECT_NO, CONTENT, TITLE, `STATUS`, 
+    CREATE_TIME, UPDATE_TIME, CREATOR_ID, IS_DEL
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.approve.entity.ApplyCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <select id="getByProcId" resultMap="BaseResultMap">
+  	select * from apply where process_id = #{processId}
+  </select>
+  
+  <select id="queryLatestApply" resultMap="BaseResultMap">
+  	select * from apply where object_no=#{feedbackNo} order by create_time DESC limit 0,1
+  </select>
+  
+  
+  <select id="batchQueryLatestApply" resultMap="BaseResultMap">
+  	SELECT
+		* 
+	FROM
+		apply 
+	WHERE
+		ID IN 
+		(
+			SELECT max(ID) 
+			FROM apply 
+			WHERE object_no in
+			<foreach collection="feedbackNos" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+			GROUP BY object_no
+		) 
+  </select>
+  
+  <select id="queryNeedFixApply" resultMap="BaseResultMap">
+  	SELECT a.* FROM apply a WHERE NOT EXISTS(SELECT 1 FROM apply_detail ad WHERE ad.APPLY_ID=a.ID) order by a.CREATE_TIME ASC limit #{start},#{limit}
+  </select>
+  
+  <select id="queryNeedFixCount" resultType="int">
+  	SELECT COUNT(1) FROM apply a WHERE NOT EXISTS(SELECT 1 FROM apply_detail ad WHERE ad.APPLY_ID=a.ID)
+  </select>
+</mapper>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.place.mapper.PlaceMapper">
+    <resultMap id="BaseResultMap" type="com.huatu.paike.dal.place.entity.Place">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="NODE_ID" jdbcType="BIGINT" property="nodeId"/>
+        <result column="AREA_ID" jdbcType="BIGINT" property="areaId"/>
+        <result column="TYPE" jdbcType="TINYINT" property="type"/>
+        <result column="HOTEL_NAME" jdbcType="VARCHAR" property="hotelName"/>
+        <result column="FLOOR" jdbcType="VARCHAR" property="floor"/>
+        <result column="CLASS_ROOM_NAME" jdbcType="VARCHAR" property="classRoomName"/>
+        <result column="HOTEL_ROOM_TYPE" jdbcType="TINYINT" property="hotelRoomType"/>
+        <result column="CONTENT" jdbcType="INTEGER" property="content"/>
+        <result column="MOBILE" jdbcType="VARCHAR" property="mobile"/>
+        <result column="SIGN_DATE" jdbcType="TIMESTAMP" property="signDate"/>
+        <result column="EXPIRE_DATE" jdbcType="TIMESTAMP" property="expireDate"/>
+        <result column="MEETING_ROOM_AMOUNT" jdbcType="BIGINT" property="meetingRoomAmount"/>
+        <result column="HOTEL_ROOM_RAW_AMOUNT" jdbcType="BIGINT" property="hotelRoomRawAmount"/>
+        <result column="HOTEL_ROOM_BREKKER_AMOUNT" jdbcType="BIGINT" property="hotelRoomBrekkerAmount"/>
+        <result column="IS_COVER_DINNER" jdbcType="TINYINT" property="isCoverDinner"/>
+        <result column="IS_EFFECTIVE" jdbcType="TINYINT" property="isEffective"/>
+        <result column="LONGITUDE" jdbcType="DECIMAL" property="longitude"/>
+        <result column="LATITUDE" jdbcType="DECIMAL" property="latitude"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="HOTEL_ROOM_NAME" jdbcType="VARCHAR" property="hotelRoomName"/>
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address"/>
+        <result column="UNIT_NAME" jdbcType="VARCHAR" property="unitName"/>
+        <result column="DEVICE_ID" jdbcType="BIGINT" property="deviceId"/>
+        <result column="DEVICE_UNIQUE" jdbcType="VARCHAR" property="deviceUnique"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        ID, NODE_ID, AREA_ID, `TYPE`, HOTEL_NAME, `FLOOR`, CLASS_ROOM_NAME, HOTEL_ROOM_TYPE,
+        CONTENT, MOBILE, SIGN_DATE, EXPIRE_DATE, MEETING_ROOM_AMOUNT, HOTEL_ROOM_RAW_AMOUNT,
+        HOTEL_ROOM_BREKKER_AMOUNT, IS_COVER_DINNER, IS_EFFECTIVE, LONGITUDE, LATITUDE, CREATE_TIME,
+        UPDATE_TIME, CREATOR_ID, REMARK, HOTEL_ROOM_NAME, ADDRESS, UNIT_NAME, DEVICE_ID,
+        DEVICE_UNIQUE
+    </sql>
+    <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.place.entity.PlaceCriteria">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        delete from place
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+
+    <sql id="List_Where_Condition">
+        <where>
+            <if test="nodeIds != null and nodeIds.size() > 0">
+                and node_id in
+                <foreach collection="nodeIds" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="areaId != null">
+                and area_id = #{areaId}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="classRoomName != null and !classRoomName.trim().equals('')">
+                and class_room_name like concat('%',#{classRoomName},'%')
+            </if>
+            <if test="minSeating != null">
+                and content <![CDATA[ >= ]]>
+                #{minSeating}
+            </if>
+            <if test="maxSeating != null">
+                and content <![CDATA[ <= ]]>
+                #{maxSeating}
+            </if>
+            <if test="hotelName != null and !hotelName.trim().equals('')">
+                and hotel_name like concat('%',#{hotelName},'%')
+            </if>
+            <if test="hotelRoomType != null">
+                and hotel_room_type = #{hotelRoomType}
+            </if>
+            <if test="isEffective != null">
+                and is_effective = #{isEffective}
+            </if>
+            <if
+                    test="multipleEffectiveStatus != null and multipleEffectiveStatus.size() > 0">
+                and is_effective in
+                <foreach collection="multipleEffectiveStatus" item="item"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="deviceId != null">
+                and device_id = #{deviceId}
+            </if>
+            <if test="query != null and !query.trim().equals('')">
+                and (class_room_name like concat('%',#{query},'%') or address like concat('%',#{query},'%'))
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryList" parameterType="com.huatu.paike.dal.place.dto.PlaceQueryParam"
+            resultMap="BaseResultMap">
+        select * from PLACE
+        <include refid="List_Where_Condition"/>
+        order by is_effective desc, create_time desc
+        <if test="pageDto != null">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </select>
+    <select id="countQuery" parameterType="com.huatu.paike.dal.place.dto.PlaceQueryParam"
+            resultType="int">
+        select count(*) from PLACE
+        <include refid="List_Where_Condition"/>
+    </select>
+
+    <insert id="saveAll" parameterType="java.util.List"
+            useGeneratedKeys="true" keyProperty="id">
+        <if test="list != null and list.size() > 0">
+            insert into PLACE(
+            NODE_ID, AREA_ID, `TYPE`, HOTEL_NAME, `FLOOR`, CLASS_ROOM_NAME,
+            HOTEL_ROOM_TYPE,
+            CONTENT, MOBILE, SIGN_DATE, EXPIRE_DATE,
+            MEETING_ROOM_AMOUNT,
+            HOTEL_ROOM_RAW_AMOUNT,
+            HOTEL_ROOM_BREKKER_AMOUNT,
+            IS_COVER_DINNER, IS_EFFECTIVE, LONGITUDE, LATITUDE, CREATOR_ID, REMARK, HOTEL_ROOM_NAME, ADDRESS, UNIT_NAME,
+            DEVICE_ID, DEVICE_UNIQUE
+            ) values
+            <foreach collection="list" item="place" separator=",">
+                (
+                #{place.nodeId},#{place.areaId},#{place.type},#{place.hotelName},#{place.floor},#{place.classRoomName},#{place.hotelRoomType},
+                #{place.content},#{place.mobile},#{place.signDate},#{place.expireDate},#{place.meetingRoomAmount},#{place.hotelRoomRawAmount},
+                #{place.hotelRoomBrekkerAmount},#{place.isCoverDinner},#{place.isEffective},#{place.longitude},#{place.latitude},#{place.creatorId},#{place.remark},#{place.hotelRoomName},#{place.address},#{place.unitName},
+                #{place.deviceId},#{place.deviceUnique}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+    <select id="getById" parameterType="long" resultMap="BaseResultMap">
+		select *
+		from PLACE where id = #{id}
+	</select>
+
+    <update id="update" parameterType="com.huatu.paike.dal.place.entity.Place">
+        update PLACE
+        <trim prefix="set" suffixOverrides=",">
+            address = #{address}, remark = #{remark},
+            <if test="classRoomName != null and !classRoomName.trim().equals('')">
+                class_room_name = #{classRoomName},
+            </if>
+            <if test="hotelRoomName != null and !hotelRoomName.trim().equals('')">
+                hotel_room_name = #{hotelRoomName},
+            </if>
+            <if test="floor != null and !floor.trim().equals('')">
+                floor = #{floor},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="meetingRoomAmount != null">
+                meeting_room_amount = #{meetingRoomAmount},
+            </if>
+            <if test="isCoverDinner != null">
+                is_cover_dinner = #{isCoverDinner},
+            </if>
+            <if test="hotelRoomType != null">
+                hotel_room_type = #{hotelRoomType},
+            </if>
+            <if test="hotelRoomBrekkerAmount != null">
+                hotel_room_brekker_amount = #{hotelRoomBrekkerAmount},
+            </if>
+            <if test="hotelRoomRawAmount != null">
+                hotel_room_raw_amount = #{hotelRoomRawAmount},
+            </if>
+            <if test="nodeId != null">
+                node_id = #{nodeId},
+            </if>
+            <if test="isEffective != null">
+                is_effective = #{isEffective},
+            </if>
+            <!--<if test="type != null">-->
+            <!--type = #{type},-->
+            <!--</if>-->
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="delById" parameterType="long">
+		update PLACE set is_effective
+		= 0 where id = #{id}
+	</update>
+
+    <update id="changeEffStatus" parameterType="com.huatu.paike.dal.place.dto.UpdateParams">
+        update PLACE
+        <set>
+            <if test="isEffective != null">
+                is_effective = #{isEffective}
+            </if>
+        </set>
+        where id in
+        <if test="placeIds != null and placeIds.size()>0">
+            <foreach collection="placeIds" item="id" open="(" separator=","
+                     close=")">
+                #{id}
+            </foreach>
+        </if>
+    </update>
+
+    <select id="queryExistsPlace" parameterType="com.huatu.paike.dal.place.dto.UniqueCheckParam"
+            resultType="long">
+        select count(*) from PLACE
+        <where>
+            <if test="addressEqualsTo != null and !addressEqualsTo.trim().equals('')">
+                and address = #{addressEqualsTo}
+            </if>
+            <if test="classRoomNameEqualsTo != null and !classRoomNameEqualsTo.trim().equals('')">
+                and class_room_name = #{classRoomNameEqualsTo}
+            </if>
+            <if test="floorEqualsTo != null and !floorEqualsTo.trim().equals('')">
+                and floor = #{floorEqualsTo}
+            </if>
+            <if test="unitNameEqualsTo != null and !unitNameEqualsTo.trim().equals('')">
+                and unit_name = #{unitNameEqualsTo}
+            </if>
+            <if test="hotelRoomNameEqualsTo != null and !hotelRoomNameEqualsTo.trim().equals('')">
+                and hotel_room_name = #{hotelRoomNameEqualsTo}
+            </if>
+            <if test="isEffective != null">
+                and is_effective = #{isEffective}
+            </if>
+            <if
+                    test="multipleEffectiveStatus !=null and multipleEffectiveStatus.size()>0">
+                and is_effective in
+                <foreach collection="multipleEffectiveStatus" item="isEffective"
+                         open="(" close=")" separator=",">
+                    #{isEffective}
+                </foreach>
+            </if>
+            <if test="selfId != null">
+                and id <![CDATA[ <> ]]>
+                #{selfId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByIds" resultMap="BaseResultMap">
+        select * from place
+        <where>
+            <if test="ids != null and ids.size() > 0">
+                and id in
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

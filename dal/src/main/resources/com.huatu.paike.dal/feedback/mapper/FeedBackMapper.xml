@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.feedback.mapper.FeedBackMapper">
+	<resultMap id="BaseResultMap" type="com.huatu.paike.dal.feedback.entity.FeedBack">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="FEEDBACK_NO" jdbcType="VARCHAR" property="feedbackNo" />
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="STATUS" jdbcType="TINYINT" property="status" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="STUDENT_SUGGESTION" jdbcType="VARCHAR"
+			property="studentSuggestion" />
+		<result column="QUIT_REASON" jdbcType="VARCHAR" property="quitReason" />
+		<result column="EFFCT_DESC" jdbcType="VARCHAR" property="effctDesc" />
+		<result column="SUBSCHOOL_SUGGEST" jdbcType="VARCHAR" property="subschoolSuggest" />
+		<result column="TEACH_AGAIN_SUGGESTION" jdbcType="VARCHAR"
+			property="teachAgainSuggestion" />
+		<result column="TITLE" jdbcType="VARCHAR" property="title" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="FEEDBACK_TIME" jdbcType="TIMESTAMP" property="feedbackTime" />
+		<result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+	</resultMap>
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+		type="com.huatu.paike.dal.feedback.entity.FeedBack">
+		<!-- WARNING - @mbg.generated -->
+		<result column="SNAPSHOT" jdbcType="LONGVARCHAR" property="snapshot" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<!-- WARNING - @mbg.generated -->
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		<!-- WARNING - @mbg.generated -->
+		ID, FEEDBACK_NO, CLASS_ID, `STATUS`,  REMARK,
+		STUDENT_SUGGESTION, QUIT_REASON,
+		EFFCT_DESC, SUBSCHOOL_SUGGEST, TEACH_AGAIN_SUGGESTION, TITLE, CREATE_TIME,
+		UPDATE_TIME,
+		FEEDBACK_TIME, CREATOR_ID
+	</sql>
+	<sql id="Blob_Column_List">
+		<!-- WARNING - @mbg.generated -->
+		SNAPSHOT
+	</sql>
+	<delete id="deleteByFilter"
+		parameterType="com.huatu.paike.dal.feedback.entity.FeedBackCriteria">
+		<!-- WARNING - @mbg.generated -->
+		delete from feed_back
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<select id="queryClassStageStatus" resultType="Integer">
+		select fb.status from feed_back fb,feed_back_stage fbs where
+		fb.id=fbs.feed_back_id and fbs.stage_id=#{stageID} and
+		fb.class_id=#{classID}
+	</select>
+
+	<!-- 查询班级里已经反馈的阶段的状态 -->
+	<select id="queryEveryClassStageStatus" resultType="map">
+		select fbs.stage_id,fb.status from feed_back fb,feed_back_stage fbs where
+		fb.id=fbs.feed_back_id and fb.class_id=#{classID}
+	</select>
+
+	<!-- 查询班级阶段里已经填写了的学员建议但未反馈或反馈失败的,逻辑上只能有一个 -->
+	<select id="queryFeedbackByclassAndNotFeedback" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"></include> from feed_back fb where fb.status in(5,6) and
+		fb.class_id=#{classID}
+	</select>
+
+	<!-- 更新学员意见和建议 -->
+	<update id="updateComment">
+		update feed_back
+		<trim prefix="set" suffixOverrides=",">
+			<if test="feedback.getStatus()!=null and feedback.getStatus()&gt;0">
+				status=#{feedback.status},
+			</if>
+			<if test="feedback.getRemark()!=null">
+				remark=#{feedback.remark},
+			</if>
+			<if test="feedback.getStudentSuggestion()!=null">
+				STUDENT_SUGGESTION=#{feedback.studentSuggestion},
+			</if>
+			<if test="feedback.getQuitReason()!=null">
+				QUIT_REASON=#{feedback.quitReason},
+			</if>
+			<if test="feedback.getEffctDesc()!=null">
+				EFFCT_DESC=#{feedback.effctDesc},
+			</if>
+			<if test="feedback.getSubschoolSuggest()!=null">
+				SUBSCHOOL_SUGGEST=#{feedback.subschoolSuggest},
+			</if>
+			<if test="feedback.getTeachAgainSuggestion()!=null">
+				TEACH_AGAIN_SUGGESTION=#{feedback.teachAgainSuggestion},
+			</if>
+			<if test="feedback.getUpdateTime()!=null">
+				UPDATE_TIME=#{feedback.updateTime},
+			</if>
+			<if test="feedback.getTitle()!=null">
+				TITLE=#{feedback.title},
+			</if>
+			<if test="feedback.getSnapshot()!=null">
+				SNAPSHOT=#{feedback.snapshot},
+			</if>
+			<if test="feedback.getFeedbackTime()!=null">
+				FEEDBACK_TIME=#{feedback.feedbackTime},
+			</if>
+			<if test="feedback.getCreatorId()!=null">
+				CREATOR_ID=#{feedback.creatorId}
+			</if>
+		</trim>
+		<trim prefix="where" suffixOverrides="and">
+			<if test="feedback.getId()!=null and feedback.getId()&gt;0">
+				ID=#{feedback.id} and
+			</if>
+			<if test="feedback.getFeedbackNo()!=null">
+				feedback_no=#{feedback.feedbackNo} and
+			</if>
+		</trim>
+
+
+	</update>
+
+	<!-- 用feedbackNo查询ID -->
+	<select id="queryFeedbackIdByFeedbackNo" resultType="Long">
+		select id from feed_back where feedback_no=#{feedbackNo}
+	</select>
+
+	<!-- 通过ID批量查询反馈结果 -->
+	<select id="queryByBatchID" resultMap="BaseResultMap">
+		select * from feed_back where id in
+		<foreach close=")" collection="ids" item="item" open="("
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<resultMap id="feedbackHistoryDto" type="FeedbackHistoryItemDto">
+		<id column="feedbackID" jdbcType="BIGINT" property="feedbackID" />
+		<result column="className" jdbcType="VARCHAR" property="className" />
+		<result column="feedbackNo" jdbcType="VARCHAR" property="feedbackNo" />
+		<result column="feedbackTime" jdbcType="TIMESTAMP" property="feedbackTime" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="creatorId" jdbcType="BIGINT" property="creatorId"/>
+	</resultMap>
+
+	<!-- 反馈历史查询 -->
+	<select id="queryByFeedbackTimeClassNameTeacherNo" resultMap="feedbackHistoryDto">
+		SELECT
+		distinct fb.FEEDBACK_NO 'feedbackNo',
+		fb.ID 'feedbackID',
+		ci.CLASS_NAME 'className',
+		fb.FEEDBACK_TIME 'feedbackTime',
+		fb.`STATUS` 'status',
+		fb.CREATOR_ID 'creatorId'
+		FROM
+		feed_back fb,
+		feed_back_stage fbs,
+		class_info ci
+		WHERE
+		fb.CLASS_ID = ci.ID
+		AND fbs.FEED_BACK_ID=fb.ID
+		AND fb.`STATUS` >=5
+		AND fb.FEEDBACK_TIME>0
+		<if test="startTime !=null">
+			AND fb.FEEDBACK_TIME >=#{startTime}
+		</if>
+		<if test="endTime !=null">
+			AND #{endTime} >fb.FEEDBACK_TIME
+		</if>
+		<if test="classQuery!=null and classQuery.length>0">
+			AND
+			(
+				ci.CLASS_NAME like concat("%", #{classQuery}, "%")
+				OR
+				ci.CLASS_NO LIKE  concat("%", #{classQuery}, "%")
+			)
+		</if>
+		<if test="businessUnitId!=null">
+			AND ci.BU_ID=#{businessUnitId}
+		</if>
+		<if test="teacherNos!=null and !teacherNos.isEmpty()">
+		AND exists (select 1 from class_stage_subject_teacher csst where csst.class_id = fb.class_id and csst.stage_id = fbs.stage_id and csst.batch_num = fbs.batch_num
+            and (case  when fbs.subject_id &gt; -1  then fbs.subject_id = csst.subject_id  else 1=1 end) and csst.teacher_staff_no in
+			<foreach close=")" collection="teacherNos" item="item" open="("
+				separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+		<if test="nodeIds!=null and nodeIds.size>0">
+			AND ci.SUBSECTORS_ID IN
+			<foreach collection="nodeIds" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY fb.FEEDBACK_TIME DESC
+		<if test="pageDto!=null">
+			limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+	
+	<!-- 反馈历史统计 -->
+	<select id="countByFeedbackTimeClassNameTeacherNo" resultType="integer">
+		SELECT count(distinct fb.feedback_no)
+		FROM
+		feed_back fb,
+		feed_back_stage fbs,
+		class_info ci
+		WHERE
+		fb.CLASS_ID = ci.ID
+		AND fbs.FEED_BACK_ID=fb.ID
+		AND fb.`STATUS` >=5
+		AND fb.FEEDBACK_TIME>0
+		<if test="startTime !=null">
+			AND fb.FEEDBACK_TIME >=#{startTime}
+		</if>
+		<if test="endTime !=null">
+			AND #{endTime} >fb.FEEDBACK_TIME
+		</if>
+		<if test="classQuery!=null and classQuery.length>0">
+			AND
+			(
+			ci.CLASS_NAME like concat("%", #{classQuery}, "%")
+			OR
+			ci.CLASS_NO LIKE  concat("%", #{classQuery}, "%")
+			)
+		</if>
+		<if test="businessUnitId!=null">
+			AND ci.BU_ID=#{businessUnitId}
+		</if>
+		<if test="teacherNos!=null and !teacherNos.isEmpty()">
+			AND exists(select 1 from class_stage_subject_teacher csst where csst.class_id = fb.class_id and csst.stage_id = fbs.stage_id and csst.batch_num = fbs.batch_num
+            and (case  when fbs.subject_id &gt; -1  then fbs.subject_id = csst.subject_id  else 1=1 end) and csst.teacher_staff_no in
+			<foreach close=")" collection="teacherNos" item="item" open="("
+				separator=",">
+				#{item}
+			</foreach>
+			)
+		</if>
+		<if test="nodeIds!=null and nodeIds.size>0">
+			AND ci.SUBSECTORS_ID IN
+			<foreach collection="nodeIds" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY fb.FEEDBACK_TIME DESC
+	</select>
+	<!-- 根据反馈ID与审批结果更新反馈状态 -->
+	<update id="updateFeedbackStatus">
+		update feed_back set status = #{latestStatus} where id = #{feedbackId}
+	</update>
+	
+	<select id="queryInFeedbackClassById" resultType="Integer">
+		select count(1) from feed_back where status = 6 and class_id = #{classId}
+	</select>
+	
+	<select id="queryHeadTeacherByFeedbackNo" resultType="map">
+		SELECT fb.FEEDBACK_NO,ci.HEAD_MASTER_STAFF_ID FROM feed_back fb,class_info ci WHERE fb.CLASS_ID=ci.ID AND fb.FEEDBACK_NO IN
+		<foreach collection="feedbackNos" close=")" item="item" open="(" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<resultMap type="com.huatu.paike.dal.feedback.dto.TeacherNotFeedbackInfoDto" id="teacherNotFeedbackInfoDto">
+		<result column="teacherNo" jdbcType="VARCHAR" property="teacherNo" />
+		<result column="classNo" jdbcType="VARCHAR" property="classNo" />
+		<result column="className" jdbcType="VARCHAR" property="className" />
+		<result column="classId" jdbcType="BIGINT" property="classId" />
+		<result column="stageId" jdbcType="BIGINT" property="stageId" />
+		<result column="subjectId" jdbcType="BIGINT" property="subjectId" />
+		<result column="batchNum" jdbcType="INTEGER" property="batchNum" />
+		<result column="departmentId" jdbcType="BIGINT" property="departmentId"/>
+		<result column="time" jdbcType="TIMESTAMP" property="time"/>
+		<result column="csstId" jdbcType="BIGINT" property="csstId"/>
+	</resultMap>
+	
+	<resultMap type="com.huatu.paike.dal.feedback.dto.FeedBackCsstInfoDto" id="feedbackCsstInfoDto">
+		<result column="feedback_no" jdbcType="VARCHAR" property="feedBackNo" />
+		<result column="class_id" jdbcType="BIGINT" property="classId" />
+		<result column="class_no" jdbcType="VARCHAR" property="classNo" />
+		<result column="class_name" jdbcType="VARCHAR" property="className" />
+		<result column="csst_id" jdbcType="BIGINT" property="csstId" />
+		<result column="accident_status" jdbcType="INTEGER" property="accidentStatus" />
+		<result column="stage_id" jdbcType="BIGINT" property="stageId" />
+		<result column="subject_id" jdbcType="BIGINT" property="subjectId"/>
+		<result column="teacher_staff_no" jdbcType="VARCHAR" property="teacherStaffNo"/>
+		<result column="teacher_type" jdbcType="INTEGER" property="teacherType" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="survey_num" jdbcType="INTEGER" property="surveyNum" />
+		<result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+		<result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+		<result column="duration" jdbcType="INTEGER" property="duration" />
+		<result column="real_num" jdbcType="INTEGER" property="realNum" />
+		<result column="batch_num" jdbcType="INTEGER" property="batchNum" />
+	</resultMap>
+	
+	<select id="queryTeacherNotFeedbackInfo" resultMap="teacherNotFeedbackInfoDto">
+		SELECT
+		  	csst.TEACHER_STAFF_NO as 'teacherNo',
+			ci.CLASS_NO as 'classNo',
+			ci.CLASS_NAME as 'className',
+			ci.ID as 'classId',
+			ci.SUBSECTORS_ID as 'departmentId',
+			csst.STAGE_ID as 'stageId',
+			csst.SUBJECT_ID as 'subjectId',
+			csst.BATCH_NUM as 'batchNum',
+			csst.START_DATE as 'time',
+			csst.ID as 'csstId'
+		FROM
+			class_info ci,
+			class_stage_subject_teacher csst ,
+			class_stage cs
+		WHERE
+			ci.ID = csst.CLASS_ID 
+			AND cs.CLASS_ID=csst.CLASS_ID
+			AND cs.STAGE_ID=csst.STAGE_ID
+			AND ci.HEAD_MASTER_STAFF_ID = #{headTeacherId}
+			AND csst.TEACHER_STAFF_NO IN 
+			<foreach collection="teacherNos" close=")" open="(" item="item" separator=",">
+				#{item}
+			</foreach>
+			AND cs.`STATUS`=5
+			AND NOT EXISTS (
+				SELECT
+					1 
+				FROM
+					feed_back fb,
+					feed_back_stage fbs 
+				WHERE
+					fb.ID = fbs.FEED_BACK_ID 
+					AND fbs.CLASS_ID = csst.CLASS_ID 
+					AND fbs.STAGE_ID = csst.STAGE_ID 
+					AND fbs.BATCH_NUM = csst.BATCH_NUM 
+					AND fb.`STATUS` IN ( 6, 7 ) 
+			)
+		ORDER BY csst.START_DATE ASC
+	</select>
+
+	<select id="querybyFeedbackIds" resultMap="BaseResultMap">
+		SELECT *
+		FROM
+			feed_back
+		WHERE
+			ID IN
+			<foreach collection="ids" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+	</select>
+
+	<resultMap id="snapshotData" type="com.huatu.paike.dal.feedback.dto.SnapshotData">
+		<result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo"/>
+		<result column="ID" jdbcType="BIGINT" property="Id"/>
+		<result column="SNAPSHOT" jdbcType="LONGVARCHAR" property="snapshot"/>
+	</resultMap>
+
+	<select id="queryErrorData" resultMap="snapshotData">
+		SELECT ci.GOODS_NO,fb.ID,fb.`SNAPSHOT` from class_info ci , feed_back fb WHERE ci.ID=fb.CLASS_ID and ci.GOODS_NO REGEXP '^[A-Z0-9]{13}(GK|JZ|TY)[A-Z]'
+	</select>
+	
+	<select id="queryFeedBackCsstInfo" resultMap="feedbackCsstInfoDto">
+		SELECT fb.feedback_no,ci.id class_id,ci.class_no,ci.class_name,csst.id csst_id,csst.accident_status,csst.stage_id,csst.subject_id,csst.teacher_staff_no,csst.teacher_type,csst.score,csst.SURVEY_NUM
+	,csst.start_date,csst.end_date,csst.duration,csst.SURVEY_NUM,css.real_num,csst.batch_num
+		FROM
+		feed_back fb,
+		feed_back_stage fbs,
+		class_info ci,
+		class_stage_subject_teacher csst,
+		class_stage_subject css
+		WHERE
+		fb.CLASS_ID = ci.ID
+		AND fbs.FEED_BACK_ID=fb.ID
+		AND fb.`STATUS` >=5
+		AND fb.FEEDBACK_TIME>0
+		and csst.class_id = ci.ID
+		and csst.stage_id = fbs.stage_id
+		and csst.batch_num = fbs.batch_num
+		and css.class_id = ci.id
+		and css.stage_id = csst.stage_id
+		and css.subject_id = csst.subject_id
+		and css.batch_num = csst.batch_num
+		and csst.teacher_staff_no &gt; ''
+		and (case  when fbs.subject_id &gt; -1  then fbs.subject_id = csst.subject_id  else 1=1 end)
+		<if test="startTime !=null">
+			AND fb.FEEDBACK_TIME >=#{startTime}
+		</if>
+		<if test="endTime !=null">
+			AND #{endTime} >fb.FEEDBACK_TIME
+		</if>
+		<if test="classQuery!=null and classQuery.length>0">
+			AND
+			(
+			ci.CLASS_NAME like concat("%", #{classQuery}, "%")
+			OR
+			ci.CLASS_NO LIKE  concat("%", #{classQuery}, "%")
+			)
+		</if>
+		<if test="businessUnitId!=null">
+			AND ci.BU_ID=#{businessUnitId}
+		</if>
+		<if test="teacherNos!=null and !teacherNos.isEmpty()">
+			and csst.teacher_staff_no in
+			<foreach close=")" collection="teacherNos" item="item" open="("
+				separator=",">
+				#{item}
+			</foreach>
+		</if>
+		<if test="nodeIds!=null and nodeIds.size>0">
+			AND ci.SUBSECTORS_ID IN
+			<foreach collection="nodeIds" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY fb.FEEDBACK_TIME DESC
+	</select>
+</mapper>

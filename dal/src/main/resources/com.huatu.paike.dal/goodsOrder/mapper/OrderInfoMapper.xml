@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.huatu.paike.dal.goodsOrder.entity.OrderInfo">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+		<result column="OLD_ORDER_NO" jdbcType="VARCHAR" property="oldOrderNo" />
+		<result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+		<result column="ORDER_GOODS_ID" jdbcType="BIGINT" property="orderGoodsId" />
+		<result column="LICENCE_ID" jdbcType="VARCHAR" property="licenceId" />
+		<result column="ENTRY_NODE_ID" jdbcType="BIGINT" property="entryNodeId" />
+		<result column="DEPARTMENT_ID" jdbcType="BIGINT" property="departmentId" />
+		<result column="STUDENT_ID" jdbcType="BIGINT" property="studentId" />
+		<result column="STUDENT_NAME" jdbcType="VARCHAR" property="studentName" />
+		<result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+		<result column="IS_MEAL" jdbcType="BIT" property="isMeal" />
+		<result column="IS_BED" jdbcType="BIT" property="isBed" />
+		<result column="DURATION_TIME" jdbcType="INTEGER" property="durationTime" />
+		<result column="ORDER_STATE" jdbcType="TINYINT" property="orderState" />
+		<result column="POSITION_ID" jdbcType="BIGINT" property="positionId" />
+		<result column="BUY_TIME" jdbcType="TIMESTAMP" property="buyTime" />
+		<result column="START_DATE" jdbcType="DATE" property="startDate" />
+		<result column="END_DATE" jdbcType="DATE" property="endDate" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="ARRANGED_DURATION" jdbcType="INTEGER" property="arrangedDuration" />
+		<result column="ENDED_DURATION" jdbcType="INTEGER" property="endedDuration" />
+		<result column="COST" jdbcType="BIGINT" property="cost" />
+		<result column="AVAILABLE" jdbcType="INTEGER" property="available" />
+		<result column="PROTOCOL_TYPE" jdbcType="CHAR" property="protocolType" />
+		<result column="SCORE_HAVE_PASS" jdbcType="BIT" property="scoreHavePass" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<!-- WARNING - @mbg.generated -->
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		<!-- WARNING - @mbg.generated -->
+		ID, ORDER_NO, OLD_ORDER_NO, GOODS_NO, ORDER_GOODS_ID, LICENCE_ID,
+		ENTRY_NODE_ID,
+		DEPARTMENT_ID, STUDENT_ID, STUDENT_NAME, MOBILE,
+		IS_MEAL, IS_BED, DURATION_TIME,
+		ORDER_STATE, POSITION_ID, BUY_TIME,
+		START_DATE, END_DATE, CREATE_TIME,
+		UPDATE_TIME,
+		ARRANGED_DURATION,
+		ENDED_DURATION, COST, AVAILABLE, PROTOCOL_TYPE, SCORE_HAVE_PASS
+	</sql>
+	<delete id="deleteByFilter"
+		parameterType="com.huatu.paike.dal.goodsOrder.entity.OrderInfoCriteria">
+		<!-- WARNING - @mbg.generated -->
+		delete from order_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<sql id="pageTool">
+		<if test="pageDto != null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</sql>
+
+	<!-- 根据商品编号,学员姓名和订单状态查询对应订单 -->
+	<select id="queryOrderInfoList" resultMap="BaseResultMap">
+		select * from ORDER_INFO
+		<where>
+			AVAILABLE=1
+			<if test="goodsNos != null and goodsNos.size&gt;0">
+				AND GOODS_NO in
+				<foreach close=")" collection="goodsNos" item="item" open="("
+					separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="orderState != null">
+				and ORDER_STATE = #{orderState}
+			</if>
+			<if
+				test="query != null and query.trim() !=&quot;&quot; and !query.contains(&quot;_&quot;)">
+				and (STUDENT_NAME like concat('%',trim(#{query}),'%') or MOBILE
+				like
+				concat('%',trim(#{query}),'%') or ORDER_NO like
+				concat('%',trim(#{query}),'%'))
+			</if>
+			<if
+				test="query != null and query.trim()!= &quot;&quot; and query.contains(&quot;_&quot;)">
+				and ORDER_NO like
+				concat('%',trim(replace(#{query},'_','\_')),'%')
+			</if>
+		</where>
+		order by BUY_TIME ASC
+		<if test="pageDto != null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+	<!-- 查询总数 -->
+	<select id="queryCount" resultType="java.lang.Integer">
+		select count(1) from ORDER_INFO
+		<where>
+			AVAILABLE=1
+			<if test="goodsNos != null and goodsNos.size&gt;0">
+				AND GOODS_NO in
+				<foreach close=")" collection="goodsNos" item="item" open="("
+					separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="orderState != null">
+				and ORDER_STATE = #{orderState}
+			</if>
+			<if
+				test="query != null and query.trim() !=&quot;&quot; and !query.contains(&quot;_&quot;)">
+				and (STUDENT_NAME like concat('%',trim(#{query}),'%') or MOBILE
+				like
+				concat('%',trim(#{query}),'%') or ORDER_NO like
+				concat('%',trim(#{query}),'%'))
+			</if>
+			<if
+				test="query != null and query.trim()!= &quot;&quot; and query.contains(&quot;_&quot;)">
+				and ORDER_NO like
+				concat('%',trim(replace(#{query},'_','\_')),'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="queryOrderCount" resultType="Integer">
+		SELECT count(1) FROM
+		ORDER_INFO a WHERE a.AVAILABLE=1 AND
+		a.GOODS_NO=#{goodsNo} AND
+		a.ORDER_STATE=#{status}
+	</select>
+
+	<!-- 根据订单编号列表查询学员ID -->
+	<select id="queryStuIDByOrderNo" parameterType="list" resultMap="BaseResultMap">
+		select o.ORDER_NO,o.* from ORDER_INFO o where o.ORDER_NO in
+		<foreach close=")" collection="list" index="index" item="item"
+			open="(" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 批量更新订单状态 -->
+	<update id="updateOrderStatusInBatch">
+		update ORDER_INFO set ORDER_STATE=#{status} where 5>ORDER_STATE AND
+		ORDER_NO in
+		<foreach close=")" collection="orderNos" item="item" open="("
+			separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+	<select id="queryOrdersByClassNo" resultMap="BaseResultMap">
+		select oi.* from ORDER_INFO oi,CLASS_STUDENT cs,CLASS_INFO ci where
+		oi.ORDER_NO=cs.ORDER_NO and cs.CLASS_ID=ci.ID and oi.AVAILABLE=1 AND
+		ci.CLASS_NO=#{classNo}
+		order by oi.BUY_TIME ASC
+		<if test="pageDto!=null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+
+	<!-- 查询学员的订单总数 -->
+	<select id="queryStudentOrderNum" resultType="map">
+		select STUDENT_ID,count(ORDER_NO) from ORDER_INFO where STUDENT_ID in
+		<foreach close=")" collection="studentIds" item="studentId"
+			open="(" separator=",">
+			#{studentId}
+		</foreach>
+		<if test="nodeIds != null and nodeIds.size() &gt; 0">
+			and ( ENTRY_NODE_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			or DEPARTMENT_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			)
+		</if>
+		group by STUDENT_ID
+	</select>
+
+
+	<!-- 查询学员的已关闭订单数 -->
+	<select id="queryStudentClosedOrderNum" resultType="map">
+		select STUDENT_ID,count(ORDER_NO) from ORDER_INFO
+		where AVAILABLE=0 or
+		ORDER_STATE in (5,7)
+		AND STUDENT_ID in
+		<foreach close=")" collection="studentIds" item="studentId"
+			open="(" separator=",">
+			#{studentId}
+		</foreach>
+		<if test="nodeIds != null and nodeIds.size() &gt; 0">
+			and ( ENTRY_NODE_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			or DEPARTMENT_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			)
+		</if>
+		group by STUDENT_ID
+	</select>
+
+	<!-- 查询学员的所有订单信息 -->
+	<select id="queryStudentOrderListById" resultType="com.huatu.paike.dal.goodsOrder.dto.StudentOrder">
+		select GOODS_NO goodsNo,ORDER_NO orderNo,OLD_ORDER_NO
+		oldOrderNo,ORDER_GOODS_ID orderGoodsId,
+		DURATION_TIME
+		buyDuration,ENDED_DURATION endedDuration,IS_BED isBed,IS_MEAL
+		isMeal,ORDER_STATE orderState,START_DATE startDate
+		from ORDER_INFO
+		where STUDENT_ID = #{studentId}
+		<if test="nodeIds != null and nodeIds.size() &gt; 0">
+			and ( ENTRY_NODE_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			or DEPARTMENT_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			)
+		</if>
+		<if test="pageDto!=null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+	<select id="queryStudentOrderCount" resultType="java.lang.Integer">
+		select count(*) from ORDER_INFO where STUDENT_ID = #{studentId}
+		<if test="nodeIds != null and nodeIds.size() &gt; 0">
+			and ( ENTRY_NODE_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			or DEPARTMENT_ID in
+			<foreach close=")" collection="nodeIds" item="nodeId" open="("
+				separator=",">
+				#{nodeId}
+			</foreach>
+			)
+		</if>
+	</select>
+
+	<select id="queryListByOrderNos" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ORDER_INFO
+		<where>
+			and ORDER_NO in
+			<foreach close=")" collection="orderNos" item="orderNo" open="("
+				separator=",">
+				#{orderNo}
+			</foreach>
+		</where>
+	</select>
+	<select id="queryOrderInfoByOrderNo" resultMap="BaseResultMap">
+		select * from
+		ORDER_INFO where ORDER_NO=#{orderNo}
+	</select>
+
+	<update id="deleteOrderInfo">
+		UPDATE ORDER_INFO set AVAILABLE=0 WHERE
+		ORDER_NO=#{orderNo}
+	</update>
+
+	<select id="queryByOldOrderNoAndGoodsNo" resultMap="BaseResultMap">
+		select * from
+		ORDER_INFO where old_order_no=#{oldOrderNo} and
+		goods_no=#{goodsNo}
+	</select>
+
+	<select id="queryOrderCountByGoodsNos" resultType="map">
+		select goods_no, count(id) from order_info
+		<where>
+			<if test="goodsNos !=null and goodsNos.size()&gt;0">
+				and goods_no in
+				<foreach close=")" collection="goodsNos" item="goodsNo"
+					open="(" separator=",">
+					#{goodsNo}
+				</foreach>
+			</if>
+			<if test="orderState != null">
+				and ORDER_STATE = #{orderState}
+			</if>
+		</where>
+		group by goods_no
+	</select>
+
+	<select id="queryStudentListByQuery" resultType="com.huatu.paike.dal.goodsOrder.dto.StudentListResp">
+		select distinct STUDENT_ID studentId,STUDENT_NAME studentName,MOBILE
+		mobile from ORDER_INFO
+		<where>
+			<if test="nodeIds != null and nodeIds.size() &gt; 0">
+				(ENTRY_NODE_ID in
+				<foreach close=")" collection="nodeIds" item="nodeId" open="("
+					separator=",">
+					#{nodeId}
+				</foreach>
+				or DEPARTMENT_ID in
+				<foreach close=")" collection="nodeIds" item="nodeId" open="("
+					separator=",">
+					#{nodeId}
+				</foreach>
+				)
+			</if>
+			<if test="query != null and query.trim() !=&quot;&quot;">
+				and (STUDENT_NAME like concat('%',trim(#{query}),'%') or
+				MOBILE like
+				concat('%',trim(#{query}),'%'))
+			</if>
+			<if test="orderNo != null and orderNo.trim() !=&quot;&quot;">
+				and ORDER_NO like
+				concat('%',trim(replace(#{orderNo},'_','\_')),'%')
+			</if>
+		</where>
+		<if test="pageDto!=null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+
+	<select id="queryStudentCountByQuery" resultType="Integer">
+		select count(distinct STUDENT_ID,STUDENT_NAME,MOBILE) from ORDER_INFO
+		<where>
+			<if test="nodeIds != null and nodeIds.size() &gt; 0">
+				(ENTRY_NODE_ID in
+				<foreach close=")" collection="nodeIds" item="nodeId" open="("
+					separator=",">
+					#{nodeId}
+				</foreach>
+				or DEPARTMENT_ID in
+				<foreach close=")" collection="nodeIds" item="nodeId" open="("
+					separator=",">
+					#{nodeId}
+				</foreach>
+				)
+			</if>
+			<if test="query != null and query.trim() !=&quot;&quot;">
+				and (STUDENT_NAME like concat('%',trim(#{query}),'%') or
+				MOBILE like
+				concat('%',trim(#{query}),'%'))
+			</if>
+			<if test="orderNo != null and orderNo.trim() !=&quot;&quot;">
+				and ORDER_NO like
+				concat('%',trim(replace(#{orderNo},'_','\_')),'%')
+			</if>
+		</where>
+	</select>
+
+	<update id="updateOrderStatus2WaitIncome">
+		UPDATE order_info a
+		SET a.order_state = 1
+		WHERE
+		a.ORDER_STATE &gt; 1 AND
+		5&gt;a.ORDER_STATE AND a.ORDER_NO IN
+		<foreach close=")" collection="list" item="item" open="("
+			separator=",">
+			#{item}
+		</foreach>
+		AND NOT EXISTS ( SELECT order_no FROM class_student WHERE order_no =
+		a.order_no)
+	</update>
+
+	<update id="updateOrderStatus2WaitAssign">
+		UPDATE order_info a
+		SET a.order_state = 2
+		WHERE
+		a.ORDER_STATE = 1 AND
+		a.ORDER_NO IN
+		<foreach close=")" collection="list" item="item" open="("
+			separator=",">
+			#{item}
+		</foreach>
+		AND EXISTS ( SELECT order_no FROM class_student WHERE order_no =
+		a.order_no )
+	</update>
+
+	<select id="selectOrderStatusNotInClass" resultMap="BaseResultMap">
+		SELECT
+		a.*
+		FROM
+		order_info a
+		join lesson_student b on a.order_no =
+		b.order_no
+		join class_lesson c on b.lesson_id = c.id
+		<where>
+			#{date} &gt; c.start_time and a.order_state = 3
+		</where>
+	</select>
+
+	<update id="updateOrderStatusToInClass">
+		update order_info a join lesson_student b on
+		a.order_no = b.order_no
+		join class_lesson c on b.lesson_id = c.id
+		set
+		a.order_state = 4
+		where #{date} &gt; c.start_time and a.order_state = 3
+	</update>
+
+	<!-- 根据班级,(学员姓名,订单编号,手机号模糊查询)查询班级订单 -->
+	<select id="queryOrderByClassNoAndOrderQuery" resultMap="BaseResultMap">
+		select oi.* from ORDER_INFO oi, class_student cs,class_info ci
+		<where>
+			oi.ORDER_NO=cs.ORDER_NO AND cs.CLASS_ID=ci.ID AND
+			ci.CLASS_NO=#{classNo}
+			<if
+				test="orderQueryStr != null and orderQueryStr.trim() !=&quot;&quot; and !orderQueryStr.contains(&quot;_&quot;)">
+				and (oi.STUDENT_NAME like
+				concat('%',trim(#{orderQueryStr}),'%') or
+				oi.MOBILE like
+				concat('%',trim(#{orderQueryStr}),'%') or oi.ORDER_NO
+				like
+				concat('%',trim(#{orderQueryStr}),'%'))
+			</if>
+			<if
+				test="orderQueryStr != null and orderQueryStr.trim()!= &quot;&quot; and orderQueryStr.contains(&quot;_&quot;)">
+				and oi.ORDER_NO like
+				concat('%',trim(replace(#{orderQueryStr},'_','\_')),'%')
+			</if>
+		</where>
+		order by oi.buy_time ASC
+		<include refid="pageTool" />
+	</select>
+
+	<select id="queryOrderCountByClassNoAndOrderQuery" resultType="int">
+		select COUNT(1) from ORDER_INFO oi, class_student cs,class_info ci
+		<where>
+			oi.ORDER_NO=cs.ORDER_NO AND cs.CLASS_ID=ci.ID AND
+			ci.CLASS_NO=#{classNo}
+			<if
+				test="orderQueryStr != null and orderQueryStr.trim() !=&quot;&quot; and !orderQueryStr.contains(&quot;_&quot;)">
+				and (oi.STUDENT_NAME like
+				concat('%',trim(#{orderQueryStr}),'%') or
+				oi.MOBILE like
+				concat('%',trim(#{orderQueryStr}),'%') or oi.ORDER_NO
+				like
+				concat('%',trim(#{orderQueryStr}),'%'))
+			</if>
+			<if
+				test="orderQueryStr != null and orderQueryStr.trim()!= &quot;&quot; and orderQueryStr.contains(&quot;_&quot;)">
+				and oi.ORDER_NO like
+				concat('%',trim(replace(#{orderQueryStr},'_','\_')),'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="queryNeedFixCount" resultType="int">
+		select count(1) from
+		order_info where buy_time='0000-00-00 00:00:00'
+	</select>
+
+	<select id="queryNeedFixOrderInfo" resultMap="BaseResultMap">
+		select * from order_info
+		<where>
+			buy_time=0 order by CREATE_TIME ASC limit #{start},#{limit}
+		</where>
+	</select>
+
+	<select id="queryDepartmentEq0" resultMap="BaseResultMap">
+		select * from order_info
+		<where>
+			DEPARTMENT_ID=0 order by CREATE_TIME ASC limit
+			#{start},#{limit}
+		</where>
+	</select>
+
+	<select id="queryAllByBatch" resultMap="BaseResultMap">
+		select * from order_info
+		ORDER BY ID ASC limit #{start},#{limit}
+	</select>
+
+	<update id="updateOrderInfoBuyTimeAndPositionId">
+		update order_info set
+		buy_time=#{buyTime},position_id=#{positionId} where
+		id=#{Id}
+	</update>
+
+	<update id="update">
+		update order_info
+		<trim prefix="set" suffixOverrides="," prefixOverrides=",">
+			<if test="studentId!=null">
+				,STUDENT_ID=#{studentId}
+			</if>
+			<if test="mobile!=null">
+				,MOBILE=#{mobile}
+			</if>
+			<if test="studentName!=null">
+				,STUDENT_NAME=#{studentName}
+			</if>
+		</trim>
+		<where>
+			id=#{Id}
+		</where>
+	</update>
+
+	<!--<update id="updateOrderStatusAndDuration"> update order_info <set> ARRANGED_DURATION 
+		= ARRANGED_DURATION - #{duration}, ORDER_STATE = #{status} <if test="finishedDuration!=null"> 
+		,ENDED_DURATION=ENDED_DURATION-#{finishedDuration} </if> </set> where order_no 
+		= #{orderNo} </update> -->
+
+	<update id="updatePaikeDuration">
+		update order_info set ARRANGED_DURATION =
+		ARRANGED_DURATION + #{duration}
+		where order_no = #{orderNo}
+	</update>
+
+	<update id="updateOrderStatusAndDuration"
+		parameterType="com.huatu.paike.dal.goodsOrder.entity.UpdateOrderStatusAndDurationParam">
+		update order_info
+		<set>
+			ARRANGED_DURATION=ARRANGED_DURATION-#{duration,jdbcType=INTEGER}
+			<if test="status != null">
+				, ORDER_STATE=#{status,jdbcType=INTEGER}
+			</if>
+			<if test="finishedDuration!=null">
+				,ENDED_DURATION=ENDED_DURATION-#{finishedDuration,jdbcType=INTEGER}
+			</if>
+		</set>
+		where order_no=#{orderNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateFinishDuration">
+		update order_info set ENDED_DURATION =
+		ENDED_DURATION
+		+ #{duration}
+		where order_no = #{orderNo}
+	</update>
+
+	<update id="updateStudentInfo">
+		update order_info set
+		<if test="newName !=null">student_name = #{newName},</if>
+		mobile=#{newMobile} where mobile=#{oldMobile}
+	</update>
+</mapper>

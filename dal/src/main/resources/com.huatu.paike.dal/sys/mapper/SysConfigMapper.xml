@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.sys.mapper.SysConfigMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.sys.entity.SysConfigEntity">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CONF_NAME" jdbcType="VARCHAR" property="confName" />
+    <result column="CONF_VALUE" jdbcType="VARCHAR" property="confValue" />
+    <result column="CONF_VALUE2" jdbcType="VARCHAR" property="confValue2" />
+    <result column="CONF_VALUE3" jdbcType="VARCHAR" property="confValue3" />
+    <result column="CONF_TYPE" jdbcType="VARCHAR" property="confType" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    ID,CREATE_TIME,CONF_NAME,CONF_VALUE,CONF_VALUE2,CONF_VALUE3,CONF_TYPE,REMARK
+  </sql>
+
+  <!-- 单个插入 -->
+  <insert id="insertSingle" parameterType="com.huatu.paike.dal.sys.entity.SysConfigEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into sys_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="confName != null">
+        CONF_NAME,
+      </if>
+      <if test="confValue != null">
+        CONF_VALUE,
+      </if>
+      <if test="confValue2 != null">
+        CONF_VALUE2,
+      </if>
+      <if test="confValue3 != null">
+        CONF_VALUE3,
+      </if>
+      <if test="confType != null">
+        CONF_TYPE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confName != null">
+        #{confName,jdbcType=VARCHAR},
+      </if>
+      <if test="confValue != null">
+        #{confValue,jdbcType=VARCHAR},
+      </if>
+      <if test="confValue2 != null">
+        #{confValue2,jdbcType=VARCHAR},
+      </if>
+      <if test="confValue3 != null">
+        #{confValue3,jdbcType=VARCHAR},
+      </if>
+      <if test="confType != null">
+        #{confType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 查询所有 -->
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.sys.entity.QuerySysConfigParam">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM sys_config
+    <where>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="confName != null">
+      AND CONF_NAME=#{confName,jdbcType=VARCHAR}
+    </if>
+    <if test="confValue != null">
+      AND CONF_VALUE=#{confValue,jdbcType=VARCHAR}
+    </if>
+    <if test="confValue2 != null">
+      AND CONF_VALUE2=#{confValue2,jdbcType=VARCHAR}
+    </if>
+    <if test="confValue3 != null">
+      AND CONF_VALUE3=#{confValue3,jdbcType=VARCHAR}
+    </if>
+    <if test="confType != null">
+      AND CONF_TYPE=#{confType,jdbcType=VARCHAR}
+    </if>
+    <if test="remark != null">
+      AND REMARK=#{remark,jdbcType=VARCHAR}
+    </if>
+    <if test="confNameLike != null">
+      <bind name="pattern1" value="confNameLike + '%'" />
+      AND CONF_NAME LIKE #{pattern1}
+    </if>
+    </where>
+    order by CREATE_TIME desc
+    <if test="pageDto != null">
+      limit ${(pageDto.pageNum-1)*pageDto.pageSize}, ${pageDto.pageSize}
+    </if>
+  </select>
+
+
+  <!-- 分页查询 -->
+  <select id="countQuery" resultType="int" parameterType="com.huatu.paike.dal.sys.entity.QuerySysConfigParam">
+    SELECT
+      count(1)
+    FROM sys_config
+    <where>
+      <if test="createTime != null">
+        AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="confName != null">
+        AND CONF_NAME=#{confName,jdbcType=VARCHAR}
+      </if>
+      <if test="confValue != null">
+        AND CONF_VALUE=#{confValue,jdbcType=VARCHAR}
+      </if>
+      <if test="confValue2 != null">
+        AND CONF_VALUE2=#{confValue2,jdbcType=VARCHAR}
+      </if>
+      <if test="confValue3 != null">
+        AND CONF_VALUE3=#{confValue3,jdbcType=VARCHAR}
+      </if>
+      <if test="confType != null">
+        AND CONF_TYPE=#{confType,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null">
+        AND REMARK=#{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="confNameLike != null">
+        <bind name="pattern1" value="confNameLike + '%'" />
+        AND CONF_NAME LIKE #{pattern1}
+      </if>
+    </where>
+  </select>
+
+  <!-- 单个查询 -->
+  <select id="get" parameterType="com.huatu.paike.dal.sys.entity.SysConfigEntity" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM sys_config 
+    <where>
+    <if test="id != null">
+      AND id = #{id, jdbcType=BIGINT}
+    </if>
+    </where>
+  </select>
+
+  <!--  物理删除 -->
+  <update id="deleteSingle" parameterType="com.huatu.paike.dal.sys.entity.SysConfigEntity" >
+        DELETE FROM sys_config
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

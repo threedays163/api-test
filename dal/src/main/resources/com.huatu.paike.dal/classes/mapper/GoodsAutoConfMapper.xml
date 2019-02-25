@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.classes.mapper.GoodsAutoConfMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.classes.entity.GoodsAutoConf">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="IS_CONTINUE_CREATE" jdbcType="TINYINT" property="isContinueCreate" />
+    <result column="IS_AUTO_BUILD" jdbcType="TINYINT" property="isAutoBuild" />
+    <result column="ACTIVE" jdbcType="TINYINT" property="active" />
+    <result column="MAX_NUM" jdbcType="INTEGER" property="maxNum" />
+    <result column="MIN_NUM" jdbcType="INTEGER" property="minNum" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, GOODS_NO, IS_CONTINUE_CREATE, IS_AUTO_BUILD, ACTIVE, MAX_NUM, MIN_NUM, CREATE_TIME, 
+    UPDATE_TIME, CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.classes.entity.GoodsAutoConfCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from GOODS_AUTO_CONF
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <!-- 
+  <insert id="insertConf" parameterType="com.huatu.paike.dal.classes.entity.GoodsAutoConf">
+  	insert into GOODS_AUTO_CONF(`GOODS_NO`,`IS_CONTINUE_CREATE`,`IS_AUTO_BUILD`,`MAX_NUM`,`MIN_NUM`,`CREATE_TIME`,`UPDATE_TIME`,`CREATOR_ID`) values(#{goodsNo},#{isContinueCreate},#{isAutoBuild},#{maxNum},#{minNum},#{createTime},#{updateTime},#{creatorId})
+  </insert>
+   -->
+  <select id="queryByGoodsNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from GOODS_AUTO_CONF where GOODS_NO=#{goodsNo}
+  </select>
+  
+  <select id="queryByActiveAndAutoBuild" resultMap="BaseResultMap" >
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from GOODS_AUTO_CONF where ACTIVE=#{isActive} and IS_AUTO_BUILD=#{autoBuild}
+  </select>
+  
+</mapper>

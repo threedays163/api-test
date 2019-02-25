@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.ClassStageSubjectKnowledgePointMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.huatu.paike.dal.paike.entity.ClassStageSubjectKnowledgePoint">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="KNOWLEDGE_POINT_ID" jdbcType="BIGINT" property="knowledgePointId" />
+		<result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="IS_DELETE" jdbcType="VARCHAR" property="isDelete" />
+	</resultMap>
+	
+	<!-- 批量插入 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into class_stage_subject_knowledge_point (CLASS_ID, STAGE_ID, SUBJECT_ID, KNOWLEDGE_POINT_ID, CREATOR_ID) values
+		<foreach collection="list" item="it" separator=",">
+			(#{it.classId},#{it.stageId},#{it.subjectId},#{it.knowledgePointId}, #{it.creatorId})
+		</foreach>
+	</insert>
+</mapper>

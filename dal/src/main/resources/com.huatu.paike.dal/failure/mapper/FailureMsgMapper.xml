@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.failure.mapper.FailureMsgMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.failure.entity.FailureMsgEntity">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="BIGINT" property="updatorId" />
+    <result column="IS_DEL" jdbcType="INTEGER" property="isDel" />
+    <result column="ERROR_TYPE" jdbcType="INTEGER" property="errorType" />
+    <result column="PARAM" jdbcType="VARCHAR" property="param" />
+    <result column="ERROR_MSG" jdbcType="VARCHAR" property="errorMsg" />
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    ID,CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,ERROR_TYPE,PARAM,ERROR_MSG
+  </sql>
+  
+  <!-- 单个插入 -->
+  <insert id="insertSingle" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into failure_msg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="isDel != null">
+        IS_DEL,
+      </if>
+      <if test="errorType != null">
+        ERROR_TYPE,
+      </if>
+      <if test="param != null">
+        PARAM,
+      </if>
+      <if test="errorMsg != null">
+        ERROR_MSG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="errorType != null">
+        #{errorType,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null">
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 批量新增 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+    INSERT INTO failure_msg
+    (CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,ERROR_TYPE,PARAM,ERROR_MSG)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.creatorId,jdbcType=BIGINT},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP},#{item.updatorId,jdbcType=BIGINT},#{item.isDel,jdbcType=INTEGER},#{item.errorType,jdbcType=INTEGER},#{item.param,jdbcType=VARCHAR},#{item.errorMsg,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  
+  <!-- 单个更新 -->
+  <update id="updateSingle" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity">
+    update failure_msg
+    <set>
+      <if test="creatorId != null">
+        CREATOR_ID=#{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID=#{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        IS_DEL=#{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="errorType != null">
+        ERROR_TYPE=#{errorType,jdbcType=INTEGER},
+      </if>
+      <if test="param != null">
+        PARAM=#{param,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null">
+        ERROR_MSG=#{errorMsg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量更新 -->
+  <update id="updateBatch" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        UPDATE failure_msg
+        <set>
+        <if test="item.creatorId != null">
+          CREATOR_ID=#{item.creatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.createTime != null">
+          CREATE_TIME=#{item.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateTime != null">
+          UPDATE_TIME=#{item.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updatorId != null">
+          UPDATOR_ID=#{item.updatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.isDel != null">
+          IS_DEL=#{item.isDel,jdbcType=INTEGER},
+        </if>
+        <if test="item.errorType != null">
+          ERROR_TYPE=#{item.errorType,jdbcType=INTEGER},
+        </if>
+        <if test="item.param != null">
+          PARAM=#{item.param,jdbcType=VARCHAR},
+        </if>
+        <if test="item.errorMsg != null">
+          ERROR_MSG=#{item.errorMsg,jdbcType=VARCHAR},
+        </if>
+        </set>
+        WHERE ID = #{item.id,jdbcType=BIGINT}
+    </foreach> 
+  </update>
+  
+  <!--  逻辑删除 -->
+  <update id="removeSingle" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity" >
+    update failure_msg set UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 逻辑批量删除 -->
+  <update id="removeBatch" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        update failure_msg
+        set UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{item.updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+        where ID = #{item.id,jdbcType=BIGINT}
+    </foreach> 
+  </update>
+
+    <!--  物理删除 -->
+    <update id="deleteSingle" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity" >
+        DELETE FROM failure_msg
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 物理批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            DELETE FROM failure_msg
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+  
+  <!-- 查询所有 -->
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM failure_msg
+    <where>
+      IS_DEL = 0
+      <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="errorType != null">
+      AND ERROR_TYPE=#{errorType,jdbcType=INTEGER}
+    </if>
+    <if test="param != null">
+      AND PARAM=#{param,jdbcType=VARCHAR}
+    </if>
+    <if test="errorMsg != null">
+      AND ERROR_MSG=#{errorMsg,jdbcType=VARCHAR}
+    </if>
+    </where>
+      <if test="pageDto != null">
+          limit
+      ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+      </if>
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="countQuery" resultType="int" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity">
+    SELECT
+    count(1)
+    FROM failure_msg
+      <where>
+        IS_DEL = 0
+        <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="errorType != null">
+      AND ERROR_TYPE=#{errorType,jdbcType=INTEGER}
+    </if>
+    <if test="param != null">
+      AND PARAM=#{param,jdbcType=VARCHAR}
+    </if>
+    <if test="errorMsg != null">
+      AND ERROR_MSG=#{errorMsg,jdbcType=VARCHAR}
+    </if>
+      </where>
+  </select>
+  
+  <!-- 单个查询 -->
+  <select id="get" parameterType="com.huatu.paike.dal.failure.entity.FailureMsgEntity" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM failure_msg 
+    <where>
+      IS_DEL = 0
+    <if test="id != null">
+      AND id = #{id, jdbcType=BIGINT}
+    </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.AccidentLessonTeacherMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.paike.entity.AccidentLessonTeacher">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ACCIDENT_ID" jdbcType="BIGINT" property="accidentId" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+    <result column="CSST_ID" jdbcType="BIGINT" property="csstId" />
+    <result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+    <result column="TEACHER_TYPE" jdbcType="TINYINT" property="teacherType" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="IF_FEEDBACK" jdbcType="TINYINT" property="ifFeedback" />
+    <result column="IF_PUSH_REWARD" jdbcType="TINYINT" property="ifPushReward" />
+    <result column="IS_LOCAL" jdbcType="BIT" property="isLocal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, ACCIDENT_ID, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, LESSON_ID, NODE_ID, CSST_ID, 
+    TEACHER_STAFF_NO, TEACHER_TYPE, CREATE_TIME, UPDATE_TIME, CREATOR_ID, IF_FEEDBACK, 
+    IF_PUSH_REWARD, IS_LOCAL
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.paike.entity.AccidentLessonTeacherCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from accident_lesson_teacher
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <select id="queryByLessonIds" resultMap="BaseResultMap">
+  	select * 
+  	from accident_lesson_teacher
+  	where lesson_id in
+  	<foreach close=")" collection="collection" item="item" open="(" separator=",">
+  		#{item}
+  	</foreach>
+  </select>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    INSERT INTO ACCIDENT_LESSON_TEACHER(ACCIDENT_ID, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, LESSON_ID,
+    NODE_ID, CSST_ID, TEACHER_STAFF_NO, TEACHER_TYPE, CREATE_TIME, UPDATE_TIME, CREATOR_ID, IF_FEEDBACK,
+    IF_PUSH_REWARD,IS_LOCAL) values
+    <foreach collection="list" item="accident" separator=",">
+      (#{accident.accidentId}, #{accident.classId}, #{accident.stageId}, #{accident.subjectId}, #{accident.batchNum},
+      #{accident.lessonId}, #{accident.nodeId}, #{accident.csstId}, #{accident.teacherStaffNo}, #{accident.teacherType},
+      #{accident.createTime}, #{accident.updateTime}, #{accident.creatorId}, #{accident.ifFeedback}, #{accident.ifPushReward}, #{accident.isLocal})
+    </foreach>
+  </insert>
+  
+  	<select id="queryCsstAssitant" resultType="map">
+		select distinct b.csst_id, a.csst_id 
+		from accident_lesson_teacher a join
+			accident_class_lesson b on a.lesson_id = b.id
+		where b.csst_id in
+		<foreach close=")" collection="csstIds" item="csstId" open="(" separator=",">
+			#{csstId}
+		</foreach>
+		and TEACHER_TYPE = 2
+	</select>
+</mapper>

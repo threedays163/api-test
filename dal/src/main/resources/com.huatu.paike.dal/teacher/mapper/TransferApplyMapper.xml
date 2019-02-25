@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.teacher.mapper.TransferApplyMapper">
+	
+	<resultMap id="BaseResultMap" type="com.huatu.paike.dal.teacher.entity.TransferApply">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="APPLY_ID" jdbcType="VARCHAR" property="applyId" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="STAFF_NO" jdbcType="VARCHAR" property="staffNo" />
+		<result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+		<result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+		<result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+		<result column="PLACE_ID" jdbcType="BIGINT" property="placeId" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="TEACHER_UNIT_ID" jdbcType="BIGINT" property="teacherUnitId" />
+		<result column="OPERATOR_STAFF_NO" jdbcType="VARCHAR" property="operatorStaffNo" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+		<result column="TEACH_WAY" jdbcType="INTEGER" property="teachWay" />
+		<result column="IS_MAIN" jdbcType="INTEGER" property="isMain" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="IS_DEL" jdbcType="BIT" property="isDel" />
+	</resultMap>
+	
+	<!-- 查询符合条件的申请表 -->
+	<select id="queryList" resultMap="BaseResultMap"
+		parameterType="com.huatu.paike.dal.teacher.dto.TransferApplyQueryParam">
+		select * from TRANSFER_APPLY
+		<where>
+			IS_DEL = 0
+			<if test="status != null">
+				and STATUS = #{status}
+			</if>
+			<if test="nodeIds != null and nodeIds.size > 0">
+				and TEACHER_UNIT_ID in
+				<foreach collection="nodeIds" item="nodeId" open="(" separator="," close=")">
+					#{nodeId}
+				</foreach>
+			</if>
+			<if test="startDate != null">
+				and CREATE_TIME &gt;= #{startDate}
+			</if>
+			<if test="endDate != null">
+				and CREATE_TIME &lt;= #{endDate}
+			</if>
+			<if test="lessonDate != null">
+				AND START_DATE <![CDATA[ <= ]]> #{lessonDate}
+				AND END_DATE  <![CDATA[ >= ]]> #{lessonDate}
+			</if>
+			<if test="lessonStartDateBegin != null and lessonStartDateEnd != null">
+				AND START_DATE  &lt;= #{lessonStartDateEnd}
+				AND START_DATE  >= #{lessonStartDateBegin}
+			</if>
+			<if test="lessonDateStart != null">
+				AND START_DATE <![CDATA[ <= ]]> #{lessonDateStart}
+			</if>
+			<if test="lessonDateEnd != null">
+				AND END_DATE <![CDATA[ >= ]]> #{lessonDateEnd}
+			</if>
+			<if test="staffNos != null and staffNos.size>0">
+				AND STAFF_NO IN 
+				<foreach collection="staffNos" close=")" separator="," open="(" item="item" >
+					#{item}
+				</foreach>
+			</if>
+			<if test="teachWay != null">
+				and TEACH_WAY = #{teachWay}
+			</if>
+			<if test="isMain != null">
+				and IS_MAIN = #{isMain}
+			</if>
+		</where>
+		order by CREATE_TIME desc
+		<if test="pageDto != null">
+			limit ${(pageDto.pageNum-1)*pageDto.pageSize}, ${pageDto.pageSize}
+		</if>
+	</select>
+	
+	<!-- 查询符合条件的记录数量 -->
+	<select id="countByParams" resultType="java.lang.Integer">
+		select count(ID) from TRANSFER_APPLY
+		<where>
+			IS_DEL = 0
+			<if test="status != null">
+				and STATUS = #{status}
+			</if>
+			<if test="nodeIds != null and nodeIds.size > 0">
+				and TEACHER_UNIT_ID in
+				<foreach collection="nodeIds" item="nodeId" open="(" separator="," close=")">
+					#{nodeId}
+				</foreach>
+			</if>
+			<if test="startDate != null">
+				and CREATE_TIME &gt;= #{startDate}
+			</if>
+			<if test="endDate != null">
+				and CREATE_TIME &lt;= #{endDate}
+			</if>
+			<if test="lessonDate != null">
+				AND START_DATE <![CDATA[ <= ]]> #{lessonDate}
+				AND END_DATE  <![CDATA[ >= ]]> #{lessonDate}
+			</if>
+			<if test="lessonStartDateBegin != null and lessonStartDateEnd != null">
+				AND START_DATE  &lt;= #{lessonStartDateEnd}
+				AND START_DATE  >= #{lessonStartDateBegin}
+			</if>
+			<if test="staffNos != null and staffNos.size>0">
+				AND STAFF_NO IN
+				<foreach collection="staffNos" close=")" separator="," open="(" item="item" >
+					#{item}
+				</foreach>
+			</if>
+			<if test="teachWay != null">
+				and TEACH_WAY = #{teachWay}
+			</if>
+			<if test="isMain != null">
+				and IS_MAIN = #{isMain}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据审批单号，查询老师借调申请 -->
+	<select id="getByApplyId" resultMap="BaseResultMap">
+		select * from TRANSFER_APPLY where APPLY_ID = #{applyId} limit 1
+	</select>
+
+	<!-- 根据审批单号，查询老师借调申请 -->
+	<select id="getById" resultMap="BaseResultMap">
+		select * from TRANSFER_APPLY where id = #{id}
+	</select>
+	
+	<!-- 更新老师借调申请的状态 -->
+	<update id="updateStatus">
+		update TRANSFER_APPLY set STATUS = #{status} where APPLY_ID = #{applyId}
+	</update>
+
+
+	<!-- 单个更新 -->
+	<update id="updateSingle" parameterType="com.huatu.paike.dal.teacher.entity.TransferApply">
+		update transfer_apply
+		<set>
+			<if test="applyId != null">
+				APPLY_ID=#{applyId,jdbcType=VARCHAR},
+			</if>
+			<if test="subjectId != null">
+				SUBJECT_ID=#{subjectId,jdbcType=BIGINT},
+			</if>
+			<if test="staffNo != null">
+				STAFF_NO=#{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="startDate != null">
+				START_DATE=#{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endDate != null">
+				END_DATE=#{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="teacherUnitId != null">
+				TEACHER_UNIT_ID=#{teacherUnitId,jdbcType=BIGINT},
+			</if>
+			<if test="operatorStaffNo != null">
+				OPERATOR_STAFF_NO=#{operatorStaffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS=#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				IS_DEL=#{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				REMARK=#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="classNo != null">
+				CLASS_NO=#{classNo,jdbcType=VARCHAR},
+			</if>
+			<if test="placeId != null">
+				PLACE_ID=#{placeId,jdbcType=BIGINT},
+			</if>
+			<if test="isMain != null">
+				IS_MAIN=#{isMain,jdbcType=INTEGER},
+			</if>
+			<if test="teachWay != null">
+				TEACH_WAY=#{teachWay,jdbcType=INTEGER},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateByApplyId" parameterType="com.huatu.paike.dal.teacher.entity.TransferApply">
+		update transfer_apply
+		<set>
+			<if test="applyId != null">
+				APPLY_ID=#{applyId,jdbcType=VARCHAR},
+			</if>
+			<if test="subjectId != null">
+				SUBJECT_ID=#{subjectId,jdbcType=BIGINT},
+			</if>
+			<if test="staffNo != null">
+				STAFF_NO=#{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="startDate != null">
+				START_DATE=#{startDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endDate != null">
+				END_DATE=#{endDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="teacherUnitId != null">
+				TEACHER_UNIT_ID=#{teacherUnitId,jdbcType=BIGINT},
+			</if>
+			<if test="operatorStaffNo != null">
+				OPERATOR_STAFF_NO=#{operatorStaffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS=#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDel != null">
+				IS_DEL=#{isDel,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				REMARK=#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="classNo != null">
+				CLASS_NO=#{classNo,jdbcType=VARCHAR},
+			</if>
+			<if test="placeId != null">
+				PLACE_ID=#{placeId,jdbcType=BIGINT},
+			</if>
+			<if test="isMain != null">
+				IS_MAIN=#{isMain,jdbcType=INTEGER},
+			</if>
+			<if test="teachWay != null">
+				TEACH_WAY=#{teachWay,jdbcType=INTEGER},
+			</if>
+		</set>
+		where APPLY_ID=#{applyId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

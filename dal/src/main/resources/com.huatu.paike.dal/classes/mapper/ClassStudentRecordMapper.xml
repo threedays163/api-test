@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.classes.mapper.ClassStudentRecordMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.classes.entity.ClassStudentRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="STUDENT_ID" jdbcType="BIGINT" property="studentId" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="OPERATE_TYPE" jdbcType="TINYINT" property="operateType" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, GOODS_NO, STUDENT_ID, ORDER_NO, OPERATE_TYPE, CREATE_TIME, UPDATE_TIME, 
+    CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.classes.entity.ClassStudentRecordCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from class_student_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <!-- 查询订单的出入班记录 -->
+  <select id="queryStudentRecord" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from CLASS_STUDENT_RECORD where ORDER_NO in
+    <foreach close=")" collection="list" item="orderNo" open="(" separator=",">
+      #{orderNo}
+    </foreach>
+    order by CREATE_TIME
+  </select>
+  
+  <!-- 根据班级,操作类型,创建时间段查询学员人数 -->
+  <select id="queryStuCountByOutClass" resultType="map">
+	SELECT
+	    	CONCAT(CSS.STAGE_ID, '_', CSS.SUBJECT_ID, '_', CSS.BATCH_NUM)  AS  `KEY`
+	,   	CSR.ORDER_NO
+	,		CSR.OPERATE_TYPE
+	FROM
+	    CLASS_STUDENT_RECORD    CSR
+	,   ORDER_CLASS_STAGE_SUBJECT          OCSS
+	,		class_stage_subject	 css
+	WHERE
+	    OCSS.ORDER_NO         =   CSR.ORDER_NO
+	AND CSR.OPERATE_TYPE    IN  (2,3)
+	AND CSS.CLASS_ID         =   #{classId}
+	AND OCSS.CLASS_ID					=CSS.CLASS_ID
+	AND OCSS.STAGE_ID					=CSS.STAGE_ID
+	and OCSS.SUBJECT_ID				=CSS.SUBJECT_ID
+	AND OCSS.BATCH_NUM				=CSS.BATCH_NUM
+	AND CSR.CREATE_TIME BETWEEN css.START_DATE   AND css.END_DATE
+  </select>
+
+  <insert id="batchInsert">
+  	insert into CLASS_STUDENT_RECORD (CLASS_ID, STUDENT_ID, ORDER_NO, OPERATE_TYPE,GOODS_NO, CREATOR_ID) values 
+  	<foreach collection="list" item="c" separator=",">
+  		(#{c.classId},#{c.studentId},#{c.orderNo},#{c.operateType},#{c.goodsNo},#{c.creatorId})
+  	</foreach>
+  </insert>
+  
+  <select id="queryInAndOutTime" resultType="map">
+  	SELECT
+		ORDER_NO,
+		MAX( IF ( OPERATE_TYPE = 0, CREATE_TIME, 0 ) ) AS `in_time`,
+		MAX( IF ( OPERATE_TYPE = 1 OR OPERATE_TYPE=2, CREATE_TIME, 0 ) ) AS `out_time` 
+	FROM
+		class_student_record 
+	WHERE
+		CLASS_ID = #{classId} AND
+		ORDER_NO in
+		<foreach collection="orderNos" close=")" item="item" open="(" separator=",">
+			#{item}
+		</foreach>
+	GROUP BY
+		ORDER_NO
+  </select>
+    
+    <select id="queryOrderValidateTime" resultMap="BaseResultMap">
+        SELECT *
+        FROM class_student_record
+        WHERE class_id=#{classId} AND order_no IN
+        <foreach collection="orderNos" close=")" item="item" open="(" separator=",">
+          #{item}
+        </foreach>
+        ORDER BY order_no,CREATE_TIME ASC
+    </select>
+</mapper>

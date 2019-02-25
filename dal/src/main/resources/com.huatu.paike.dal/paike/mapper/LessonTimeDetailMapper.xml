@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.LessonTimeDetailMapper">
+	<resultMap id="BaseResultMap"
+		type="com.huatu.paike.dal.paike.entity.LessonTimeDetail">
+		<!-- WARNING - @mbg.generated -->
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+		<result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="DURATION" jdbcType="INTEGER" property="duration" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<!-- WARNING - @mbg.generated -->
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		<!-- WARNING - @mbg.generated -->
+		ID,CLASS_ID, LESSON_ID, LESSON_DATE, START_TIME, END_TIME, DURATION,
+		CREATE_TIME, UPDATE_TIME,
+		CREATOR_ID
+	</sql>
+	<sql id="Base_Column_List_Alias">
+		a.ID,a.CLASS_ID, a.LESSON_ID, a.LESSON_DATE, a.START_TIME, a.END_TIME,
+		a.DURATION,
+		a.CREATE_TIME, a.UPDATE_TIME,
+		a.CREATOR_ID
+	</sql>
+	<delete id="deleteByFilter"
+		parameterType="com.huatu.paike.dal.paike.entity.LessonTimeDetailCriteria">
+		<!-- WARNING - @mbg.generated -->
+		delete from LESSON_TIME_DETAIL
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<select id="queryByLessonIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from LESSON_TIME_DETAIL
+		<where>
+			<foreach collection="lessonIdLists" item="lessonIds" open="("
+				separator="or" close=")">
+				LESSON_ID in
+				<foreach collection="lessonIds" item="lessonId" open="("
+					separator="," close=")">
+					#{lessonId}
+				</foreach>
+			</foreach>
+		</where>
+	</select>
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO LESSON_TIME_DETAIL (CLASS_ID,LESSON_ID, LESSON_DATE, START_TIME,
+		END_TIME, DURATION,CREATOR_ID) values
+		<foreach collection="list" item="detail" separator=",">
+			(#{detail.classId},#{detail.lessonId},
+			#{detail.lessonDate},#{detail.startTime},#{detail.endTime},#{detail.duration},#{detail.creatorId})
+		</foreach>
+	</insert>
+	<select id="earliestTime" resultType="Date">
+		select
+		min(START_TIME)
+		from LESSON_TIME_DETAIL
+		<where>
+			and LESSON_ID = ${lessonId}
+		</where>
+	</select>
+	<select id="queryByCsstId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_Alias" />
+		from LESSON_TIME_DETAIL a join CLASS_LESSON b on a.lesson_id = b.id
+		<where>
+			and b.csst_id = ${csstId}
+		</where>
+	</select>
+	<select id="queryByClassId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_Alias" />
+		from LESSON_TIME_DETAIL a join CLASS_LESSON b on a.lesson_id = b.id
+		<where>
+			and b.class_id = ${classId}
+		</where>
+	</select>
+	
+	<!-- 查询班级各个阶段状态,1:未上课;2:上课中;3已结课 -->
+	<select id="queryClassSubjectStatus" resultType="map">
+		SELECT
+			CONCAT( css.BATCH_NUM, '_', css.STAGE_ID, '_', css.SUBJECT_ID ) AS 'key',
+			IF
+				(
+					css.`STATUS` > 4,
+					3,
+					IF
+						(
+							css.`STATUS` = 4,
+							2,
+							IF
+								(
+									ltd.START_TIME IS NULL 
+									OR MIN( ltd.START_TIME ) > #{now},
+									1,
+									IF
+										( 
+											#{now} > MAX( ltd.END_TIME ), 
+											3, 
+											2 
+										) 
+								) 
+						)
+				)	AS 'status' 
+		FROM
+			class_stage_subject css
+			LEFT JOIN class_lesson cl ON css.BATCH_NUM = cl.BATCH_NUM 
+			AND css.CLASS_ID = cl.CLASS_ID 
+			AND css.STAGE_ID = cl.STAGE_ID 
+			AND css.SUBJECT_ID = cl.SUBJECT_ID
+			LEFT JOIN lesson_time_detail ltd ON cl.ID = ltd.LESSON_ID 
+		WHERE
+			css.CLASS_ID = #{classId} 
+		GROUP BY
+			css.BATCH_NUM,
+			css.STAGE_ID,
+			css.SUBJECT_ID
+	</select>
+
+	<select id="queryByCsstIds" resultMap="csstMap">
+		select b.CSST_ID, a.LESSON_DATE, a.START_TIME, a.END_TIME, a.DURATION, a.LESSON_ID, b.STATUS, b.ROOM_ID
+		from CLASS_LESSON b join LESSON_TIME_DETAIL a on a.lesson_id = b.id
+		join LESSON_TEACHER c on b.id = c.LESSON_ID
+		<where>
+			c.TEACHER_STAFF_NO = #{staffNo}
+			and b.csst_id in
+			<foreach collection="csstIds" separator="," open="(" item="csstId" close=")">
+				#{csstId}
+			</foreach>
+		</where>
+		order by b.LESSON_DATE desc
+	</select>
+	<resultMap id="csstMap" type="com.huatu.paike.dal.paike.dto.CsstLessonDetailDto">
+		<result property="csstId" jdbcType="BIGINT" column="CSST_ID"/>
+		<result column="STATUS" jdbcType="TINYINT" property="status"/>
+		<result column="ROOM_ID" jdbcType="BIGINT" property="roomId"/>
+		<result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate" />
+		<result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="DURATION" jdbcType="INTEGER" property="duration" />
+	</resultMap>
+</mapper>

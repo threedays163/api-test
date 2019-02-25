@@ -1,6 +1,9 @@
 
 package com.huatu.paike.api_test;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.huatu.common.dto.resp.Node;
 import com.huatu.common.service.StageService;
 import com.huatu.common.service.SubjectService;
@@ -18,11 +21,7 @@ import com.huatu.paike.api_test.dto.OrderDurationWaste;
 import com.huatu.sku.entity.GoodsDetail;
 import com.huatu.sku.service.CourseService;
 import com.huatu.sku.service.GoodsService;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,8 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
@@ -298,8 +295,6 @@ public class WebApplication implements CommandLineRunner {
         return item;
     }
 
-}
-
     public void readFile_1(String path, String outPath) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path), 1024 * 1024 * 4);
         List<OrderDurationWaste> list = Lists.newArrayList();
@@ -338,7 +333,6 @@ public class WebApplication implements CommandLineRunner {
             OrderDurationWaste a = list.get(i);
             StringBuffer sb1 = new StringBuffer();
             append(sb1, a.getOrderNo(), false);
-            append(sb1, a., false);
             append(sb1, "商品编号", false);
             append(sb1, "购买时间", false);
             append(sb1, "是否已上完", false);

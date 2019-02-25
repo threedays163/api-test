@@ -142,5 +142,6 @@
     </build>
     <modules>
     	<module>controller</module>
+        <module>dal</module>
     </modules>
 </project>

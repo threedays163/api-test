@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.LessonTeacherMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.paike.entity.LessonTeacher">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+    <result column="CSST_ID" jdbcType="BIGINT" property="csstId" />
+    <result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+    <result column="TEACHER_TYPE" jdbcType="TINYINT" property="teacherType" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="IF_FEEDBACK" jdbcType="TINYINT" property="ifFeedback" />
+    <result column="IF_PUSH_REWARD" jdbcType="TINYINT" property="ifPushReward" />
+    <result column="IS_LOCAL" jdbcType="BIT" property="isLocal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, LESSON_ID, NODE_ID, CSST_ID, TEACHER_STAFF_NO, 
+    TEACHER_TYPE, CREATE_TIME, UPDATE_TIME, CREATOR_ID, IF_FEEDBACK, IF_PUSH_REWARD, 
+    IS_LOCAL
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.paike.entity.LessonTeacherCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from lesson_teacher
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO LESSON_TEACHER (CLASS_ID, STAGE_ID, BATCH_NUM, SUBJECT_ID,CSST_ID,
+		LESSON_ID,NODE_ID,
+		TEACHER_STAFF_NO, TEACHER_TYPE, CREATOR_ID,IS_LOCAL) values
+		<foreach collection="list" item="teacher" separator=",">
+			(#{teacher.classId}, #{teacher.stageId},#{teacher.batchNum}, #{teacher.subjectId},
+			#{teacher.csstId},
+			#{teacher.lessonId},#{teacher.nodeId},
+			#{teacher.teacherStaffNo},
+			#{teacher.teacherType},
+			#{teacher.creatorId},
+			#{teacher.isLocal})
+		</foreach>
+	</insert>
+
+
+	<select id="queryListByLessonId" resultType="com.huatu.paike.dal.paike.dto.DateTeacher">
+		select cl.LESSON_DATE lessonDate,lt.TEACHER_STAFF_NO teacherNo from
+		LESSON_TEACHER lt join CLASS_LESSON cl
+		on lt.LESSON_ID = cl.ID and
+		lt.LESSON_ID in
+		<foreach close=")" collection="list" item="item" open="(" separator=",">
+			#{item}
+		</foreach>
+		and TEACHER_TYPE = 2
+	</select>
+
+	<select id="queryLessonTacher" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from LESSON_TEACHER
+		<where>
+			<if test="null !=teacherType">
+				and TEACHER_TYPE = #{teacherType}
+			</if>
+			<foreach close="" collection="lessonIdLists" item="lessonIds" open="and" separator="or">
+				LESSON_ID in
+				<foreach close=")" collection="lessonIds" item="lessonId" open="(" separator=",">
+					#{lessonId}
+				</foreach>
+			</foreach>
+		</where>
+	</select>
+
+	<select id="queryTeacherFeedbackInfo" resultType="com.huatu.paike.dal.paike.dto.TeacherFeedbackInfoDto">
+		SELECT lt.ID AS id, lt.STAGE_ID AS stageId,lt.BATCH_NUM AS batchNum, lt.SUBJECT_ID AS subjectId, lt.CSST_ID AS csstId, lt.LESSON_ID AS lessonId
+			, lt.TEACHER_STAFF_NO AS teacherStaffNO, lt.TEACHER_TYPE AS teacherType, ltd.LESSON_DATE AS lessonDate, ltd.START_TIME AS startTime, ltd.END_TIME AS endTime
+			, ltd.DURATION AS duration
+		FROM lesson_teacher lt, lesson_time_detail ltd
+		WHERE lt.LESSON_ID = ltd.LESSON_ID
+			AND lt.if_feedback = 0
+			AND lt.LESSON_ID IN
+			<foreach close=")" collection="lessonIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+
+	</select>
+
+	<select id="queryCsstAssitant" resultType="map">
+		select distinct b.csst_id, a.csst_id from lesson_teacher a join
+		class_lesson b on a.lesson_id = b.id
+		where b.csst_id in
+		<foreach close=")" collection="csstIds" item="csstId" open="(" separator=",">
+			#{csstId}
+		</foreach>
+		and TEACHER_TYPE = 2
+	</select>
+
+	<select id="selectNeedUpdateLessonTeacher" resultMap="BaseResultMap">
+		SELECT
+			a.ID, a.CLASS_ID, a.STAGE_ID, a.SUBJECT_ID, a.BATCH_NUM, a.LESSON_ID, a.NODE_ID, b.ID AS CSST_ID, a.TEACHER_STAFF_NO,
+		a.TEACHER_TYPE, a.CREATE_TIME, a.UPDATE_TIME, a.CREATOR_ID, a.IF_FEEDBACK, a.IF_PUSH_REWARD, a.IS_LOCAL
+		FROM
+			lesson_teacher a
+			JOIN class_stage_subject_teacher b
+			ON a.CLASS_ID = b.CLASS_ID
+			AND a.STAGE_ID = b.STAGE_ID
+			AND a.SUBJECT_ID = b.SUBJECT_ID
+			AND a.BATCH_NUM = b.BATCH_NUM
+			AND a.TEACHER_STAFF_NO = b.TEACHER_STAFF_NO
+			AND a.TEACHER_TYPE = b.TEACHER_TYPE
+			AND b.ACCIDENT_STATUS= 0
+		<where>
+			a.class_id = #{classId}
+			AND a.stage_id = #{stageId}
+			AND a.subject_id = #{subjectId}
+			AND a.BATCH_NUM = #{batchNum}
+		</where>
+	</select>
+
+	<update id="updateLessonTeacherCsstId">
+		UPDATE lesson_teacher a
+			JOIN class_stage_subject_teacher b
+			ON a.CLASS_ID = b.CLASS_ID
+				AND a.STAGE_ID = b.STAGE_ID
+				AND a.SUBJECT_ID = b.SUBJECT_ID
+				AND a.BATCH_NUM = b.BATCH_NUM
+				AND a.TEACHER_STAFF_NO = b.TEACHER_STAFF_NO
+				AND a.TEACHER_TYPE = b.TEACHER_TYPE
+				AND b.ACCIDENT_STATUS= 0
+		SET a.CSST_ID = b.id
+		WHERE a.class_id = #{classId}
+			AND a.stage_id = #{stageId}
+			AND a.subject_id = #{subjectId}
+			AND a.BATCH_NUM = #{batchNum}
+	</update>
+	
+	<update id="updateLessonTeacherCsstId_accident">
+		UPDATE accident_lesson_teacher a
+			JOIN class_stage_subject_teacher b
+			ON a.CLASS_ID = b.CLASS_ID
+				AND a.STAGE_ID = b.STAGE_ID
+				AND a.SUBJECT_ID = b.SUBJECT_ID
+				AND a.BATCH_NUM = b.BATCH_NUM
+				AND a.TEACHER_STAFF_NO = b.TEACHER_STAFF_NO
+				AND a.TEACHER_TYPE = b.TEACHER_TYPE
+		SET a.CSST_ID = b.id
+		WHERE a.class_id = #{classId}
+			AND a.stage_id = #{stageId}
+			AND a.subject_id = #{subjectId}
+			AND a.BATCH_NUM = #{batchNum}
+	</update>
+
+	<select id="queryListByLessonIds" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from lesson_teacher
+		where lesson_id in
+		<foreach close=")" collection="lessonIds" item="lessonId" open="(" separator=",">
+			#{lessonId}
+		</foreach>
+	</select>
+
+	<select id="queryAssitantsByClassIds" resultType="java.util.Map">
+		select class_id, teacher_staff_no from lesson_teacher
+		<where>
+			<if test="classIds != null and classIds.size() > 0">
+				and class_id in
+				<foreach collection="classIds" item="classId" open="(" separator="," close=")">
+					#{classId}
+				</foreach>
+			</if>
+			<if test="teacherType != null">
+				and teacher_type = #{teacherType}
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

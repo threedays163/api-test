@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.ClassStageSubjectMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.paike.entity.ClassStageSubject">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="DAY_DURATION" jdbcType="REAL" property="dayDuration" />
+    <result column="NIGHT_DURATION" jdbcType="INTEGER" property="nightDuration" />
+    <result column="REAL_NUM" jdbcType="INTEGER" property="realNum" />
+    <result column="TOTAL_DURATION" jdbcType="INTEGER" property="totalDuration" />
+    <result column="PAIKE_DURATION" jdbcType="INTEGER" property="paikeDuration" />
+    <result column="FINISH_DURATION" jdbcType="INTEGER" property="finishDuration" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="ENABLE" jdbcType="BIT" property="enable" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="LESSON_TABLE_ID" jdbcType="BIGINT" property="lessonTableId" />
+    <result column="HAS_COST" jdbcType="BIT" property="hasCost" />
+  </resultMap>
+
+	<resultMap id="BaseResultMapForOrder" type="com.huatu.paike.dal.paike.entity.ClassStageSubjectOrder">
+		<!--
+          WARNING - @mbg.generated
+        -->
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+		<result column="DAY_DURATION" jdbcType="REAL" property="dayDuration" />
+		<result column="NIGHT_DURATION" jdbcType="INTEGER" property="nightDuration" />
+		<result column="REAL_NUM" jdbcType="INTEGER" property="realNum" />
+		<result column="TOTAL_DURATION" jdbcType="INTEGER" property="totalDuration" />
+		<result column="PAIKE_DURATION" jdbcType="INTEGER" property="paikeDuration" />
+		<result column="FINISH_DURATION" jdbcType="INTEGER" property="finishDuration" />
+		<result column="STATUS" jdbcType="TINYINT" property="status" />
+		<result column="ENABLE" jdbcType="BIT" property="enable" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+		<result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+		<result column="LESSON_TABLE_ID" jdbcType="BIGINT" property="lessonTableId" />
+		<result column="HAS_COST" jdbcType="BIT" property="hasCost" />
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+	</resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, DAY_DURATION, NIGHT_DURATION, REAL_NUM,
+    TOTAL_DURATION, PAIKE_DURATION, FINISH_DURATION, `STATUS`, `ENABLE`, CREATE_TIME,
+    UPDATE_TIME, START_DATE, END_DATE ,LESSON_TABLE_ID, HAS_COST
+  </sql>
+	<sql id="pageTool">
+		<if test="pageDto != null">
+			limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</sql>
+
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.paike.entity.ClassStageSubjectCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from class_stage_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+	<!-- 查询班级阶段所有可操作的科目 -->
+	<select id="queryFinishedByClassStage" resultMap="BaseResultMap">
+		select css.* from class_stage_subject css where
+		css.class_id=#{classID} and css.status&gt;=5
+		<if test="stageBatchs!=null and stageBatchs.size&gt;0">
+			and (css.stage_id,css.subject_id,css.batch_num) in
+			<foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+				(#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+		</if>
+		order by css.stage_id,css.subject_id ASC
+	</select>
+
+	<select id="queryCssByClassStage" resultMap="BaseResultMap">
+		select css.* from class_stage_subject css where
+		css.class_id=#{classID}
+		<if test="stageBatchs!=null and stageBatchs.size&gt;0">
+			and (css.stage_id,css.subject_id,css.batch_num) in
+			<foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+				(#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+		</if>
+		order by css.stage_id,css.subject_id ASC
+	</select>
+
+	<!-- 查询科目中有科目结束的科目 -->
+	<select id="queryFinishedByClass" resultMap="BaseResultMap">
+		select css.* from class_stage_subject css where css.class_id=#{classID} and
+		css.status&gt;=5 order by css.batch_num,css.stage_id,css.subject_id ASC
+	</select>
+
+	<select id="queryByClassStageSubject" resultMap="BaseResultMap">
+		select * from class_stage_subject where class_id=#{classID} and
+		stage_id=#{stageID} and subject_id=#{subjectID} and batch_num=#{batchNum}
+	</select>
+
+	<select id="queryByClassStageBatchSubjects" resultMap="BaseResultMap">
+		select * from class_stage_subject where (class_id,stage_id,subject_id,batch_num) in
+		<foreach close=")" collection="csses" item="item" open="(" separator=",">
+			(#{item.classId},#{item.stageId},#{item.subjectId},#{item.batchNum})
+		</foreach>
+	</select>
+
+	<select id="queryByStageBatchs" resultMap="BaseResultMap">
+		select * from class_stage_subject where class_id=#{classId} AND (stage_id,subject_id,batch_num) in
+		<foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+			(#{item.stageId},#{item.subjectId},#{item.batchNum})
+		</foreach>
+	</select>
+
+	<select id="queryCanNotRollStageSubject" resultMap="BaseResultMap">
+		SELECT * FROM class_stage_subject WHERE CLASS_ID=#{classId} AND ((`STATUS`=3 AND START_DATE&gt;NOW()) OR (2&gt;=`STATUS` AND START_DATE IS NULL))
+	</select>
+
+	<select id="queryByClassStageSubjects" resultMap="BaseResultMap">
+		select * from class_stage_subject where (class_id,stage_id,subject_id) in
+		<foreach close=")" collection="csses" item="item" open="(" separator=",">
+			(#{item.classId},#{item.stageId},#{item.subjectId})
+		</foreach>
+	</select>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into class_stage_subject (CLASS_ID, STAGE_ID, SUBJECT_ID,BATCH_NUM,
+		DAY_DURATION, NIGHT_DURATION, TOTAL_DURATION,ENABLE,LESSON_TABLE_ID) values
+		<foreach collection="list" item="subject" separator=",">
+			(#{subject.classId},#{subject.stageId},#{subject.subjectId},#{subject.batchNum},#{subject.dayDuration},#{subject.nightDuration},#{subject.totalDuration},#{subject.enable},#{subject.lessonTableId})
+		</foreach>
+	</insert>
+	<update id="updateRealNum">
+		update class_stage_subject set real_num =#{realNum}
+		where class_id =#{classId} and stage_id =#{stageId} and subject_id
+		=#{subjectId} and batch_num=#{batchNum}
+	</update>
+
+
+	<select id="queryByClassIDStageIds" resultMap="BaseResultMap">
+		select css.* from class_stage_subject css where
+		css.class_id=#{classID} and css.stage_id in
+		<foreach close=")" collection="stageIDs" item="item" open="(" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<update id="disableFinishedSubject">
+		update class_stage_subject set
+		enable=0,update_time=#{updateTime} where class_id=#{classId} and
+		TOTAL_DURATION=FINISH_DURATION and TOTAL_DURATION&gt;0 and enable=1
+	</update>
+
+	<update id="enableNotArrangeSubject">
+		update class_stage_subject set
+		enable=1,update_time=#{updateTime} where class_id=#{classId} and
+		FINISH_DURATION=0 and enable=0
+	</update>
+
+	<select id="queryStartedSubject" resultMap="BaseResultMap">
+		SELECT
+			distinct stage_id,subject_id
+		FROM
+			class_stage_subject 
+		WHERE
+			CLASS_ID = #{classId}
+			AND ( `STATUS` &gt;= 4 OR ( #{now}&gt;START_DATE OR FINISH_DURATION &gt; 0 ) )
+	</select>
+
+	<select id="countStartedSubject" resultType="int">
+		SELECT
+			count(1) 
+		FROM
+			class_stage_subject 
+		WHERE
+			CLASS_ID = #{classId}
+			AND ( `STATUS` &gt;= 4 OR ( #{now}&gt;START_DATE OR FINISH_DURATION &gt; 0 ) )
+	</select>
+
+	<select id="queryClassStageSubjectByLessonIds" resultType="map">
+		SELECT
+			cl.ID, css.ID
+		FROM
+			class_stage_subject css,
+			class_lesson cl
+		WHERE
+			cl.CLASS_ID = css.CLASS_ID
+			AND cl.STAGE_ID = css.STAGE_ID
+			AND cl.SUBJECT_ID = css.SUBJECT_ID
+			<if test="lessonIds!=null and lessonIds.size&gt;0">
+				AND cl.ID IN
+				<foreach close=")" collection="lessonIds" item="item" open="(" separator=",">
+					#{item}
+				</foreach>
+			</if>
+	</select>
+
+	<select id="queryCssByLessonIds" resultMap="BaseResultMap">
+		SELECT DISTINCT css.*
+		FROM class_lesson cl,
+		     class_stage_subject css
+		WHERE cl.`class_id`=css.`class_id`
+		  AND cl.`stage_id`=css.`stage_id`
+		  AND cl.`subject_id`=css.`subject_id`
+		  AND cl.`batch_num`=css.`batch_num`
+		  AND cl.id IN
+		  <foreach collection="lessonIds" close=")" item="item" open="(" separator=",">
+		  	#{item}
+		  </foreach>
+	</select>
+
+	<!-- 查询班级未开始的阶段科目 -->
+	<select id="queryNotStartStageSubjectByClassId" resultMap="BaseResultMap">
+		SELECT * FROM class_stage_subject where class_id=#{classId} AND 4&gt;`STATUS` AND ( start_date&gt;#{now} or start_date is NULL) 
+	</select>
+
+
+	<select id="queryWaitOrStartedSubjects" resultMap="BaseResultMap">
+		SELECT * FROM class_stage_subject
+		where
+			class_id=#{classId}
+			AND
+				(
+					(2&gt;=`STATUS` AND START_DATE IS NULL)
+					OR
+					(3&gt;=`STATUS` AND START_DATE&gt;NOW() )
+					OR
+					(4&gt;=`STATUS` AND NOW()&gt;START_DATE AND END_DATE&gt;NOW())
+				)
+			AND (STAGE_ID,SUBJECT_ID) IN
+		 <foreach close=")" collection="dtos" item="item" open="(" separator=",">
+		 	(#{item.stageId},#{item.subjectId})
+		 </foreach>
+	</select>
+
+	<!-- 根据条件查询List -->
+	<select id="queryList" parameterType="com.huatu.paike.dal.paike.dto.QueryClassStageSubjectDto" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" /> FROM CLASS_STAGE_SUBJECT
+		<where>
+			<if test="classId != null">
+				AND CLASS_ID=#{classId,jdbcType=BIGINT}
+			</if>
+			<if test="stageId != null">
+				AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+			</if>
+			<if test="subjectId != null">
+				AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+			</if>
+			<if test="batchNum != null">
+				AND BATCH_NUM=#{batchNum,jdbcType=INTEGER}
+			</if>
+			<if test="dayDuration != null">
+				AND DAY_DURATION=#{dayDuration,jdbcType=null}
+			</if>
+			<if test="nightDuration != null">
+				AND NIGHT_DURATION=#{nightDuration,jdbcType=INTEGER}
+			</if>
+			<if test="realNum != null">
+				AND REAL_NUM=#{realNum,jdbcType=INTEGER}
+			</if>
+			<if test="totalDuration != null">
+				AND TOTAL_DURATION=#{totalDuration,jdbcType=INTEGER}
+			</if>
+			<if test="paikeDuration != null">
+				AND PAIKE_DURATION=#{paikeDuration,jdbcType=INTEGER}
+			</if>
+			<if test="finishDuration != null">
+				AND FINISH_DURATION=#{finishDuration,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+				AND STATUS=#{status,jdbcType=null}
+			</if>
+			<if test="enable != null">
+				AND ENABLE=#{enable,jdbcType=null}
+			</if>
+			<if test="createTime != null">
+				AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startDate != null">
+				AND START_DATE=#{startDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endDate != null">
+				AND END_DATE=#{endDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="notInStatusList != null and notInStatusList.size() &gt; 0">
+				AND STATUS NOT IN
+				<foreach close=")" collection="notInStatusList" index="index" item="status" open="(" separator=",">
+					#{status}
+				</foreach>
+			</if>
+			<if test="inStatusList != null and inStatusList.size() &gt; 0">
+				AND STATUS IN
+				<foreach close=")" collection="inStatusList" index="index" item="status" open="(" separator=",">
+					#{status}
+				</foreach>
+			</if>
+			<if test="gtPaikeDuration != null">
+				AND PAIKE_DURATION &gt; #{gtPaikeDuration}
+			</if>
+		</where>
+			<if test="isOrderByCreateTime != null ">
+				ORDER BY CREATE_TIME
+			</if>
+			<if test="isDesc != null">
+				DESC
+			</if>
+
+	</select>
+
+	<select id="queryFinishedOrdersInFinishedCss" resultType="string">
+		SELECT 
+			DISTINCT ocss.order_no
+		FROM 
+			class_stage_subject css,
+			order_stage_subject oss,
+			order_class_stage_subject ocss
+		WHERE
+			css.CLASS_ID = ocss.CLASS_ID
+			AND css.STAGE_ID = ocss.STAGE_ID
+			AND css.SUBJECT_ID = ocss.SUBJECT_ID
+			AND css.BATCH_NUM = ocss.BATCH_NUM
+			AND ocss.ORDER_NO = oss.ORDER_NO
+			AND ocss.STAGE_ID = oss.stage_id
+			AND ocss.SUBJECT_ID = oss.subject_id
+			AND css.`STATUS` &gt;= 5 
+			AND oss.`status` =5
+			AND css.CLASS_ID= #{css.classId}
+			AND css.SUBJECT_ID=#{css.subjectId}
+			AND css.BATCH_NUM=#{css.batchNum}
+			AND css.STAGE_ID=#{css.stageId}
+	</select>
+
+	<select id="queryOrdersCssFinished" resultMap="BaseResultMap">
+		SELECT
+			css.* 
+		FROM
+			class_stage_subject css,
+			order_class_stage_subject ocss
+		WHERE
+			css.CLASS_ID = ocss.CLASS_ID 
+			AND css.STAGE_ID = ocss.STAGE_ID 
+			AND css.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND css.BATCH_NUM = ocss.BATCH_NUM 
+			AND css.`STATUS` &gt;= 5 
+			AND ocss.ORDER_NO =#{orderNo}
+	</select>
+
+	<select id="queryOrderCssStarted" resultMap="BaseResultMap">
+		SELECT
+			css.* 
+		FROM
+			class_stage_subject css,
+			order_class_stage_subject ocss
+		WHERE
+			css.CLASS_ID = ocss.CLASS_ID 
+			AND css.STAGE_ID = ocss.STAGE_ID 
+			AND css.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND css.BATCH_NUM = ocss.BATCH_NUM 
+			AND css.`STATUS` >= 4 
+			AND ocss.ORDER_NO =#{orderNo}
+	</select>
+
+	<select id="queryOrdersCss" resultMap="BaseResultMap">
+		SELECT
+			css.* 
+		FROM
+			class_stage_subject css,
+			order_class_stage_subject ocss
+		WHERE
+			css.CLASS_ID = ocss.CLASS_ID 
+			AND css.STAGE_ID = ocss.STAGE_ID 
+			AND css.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND css.BATCH_NUM = ocss.BATCH_NUM 
+			AND ocss.ORDER_NO =#{orderNo}
+	</select>
+
+	<select id="queryFinishedButNotHaveCost" resultMap="BaseResultMap">
+		SELECT
+			css.*
+		FROM
+			class_stage_subject css
+		<where>
+			css.`STATUS` &gt;= 5
+			AND css.HAS_COST=0
+		</where>
+		limit 0,#{limit}
+	</select>
+
+	<select id="queryFinishedAndNeverFeedback" resultMap="BaseResultMap">
+		SELECT
+			css.*
+		FROM
+			class_stage_subject css
+		<where>
+			css.CLASS_ID=#{classId} AND css.status=5 AND NOT EXISTS(
+				SELECT 1
+				FROM
+					feed_back fb JOIN
+					feed_back_stage fbs ON fb.ID=fbs.feed_back_id
+				WHERE
+					fb.class_id=css.class_id AND fb.status IN (6,7) AND fbs.stage_id=css.stage_id AND fbs.batch_num=css.batch_num
+					AND
+					(
+						fbs.subject_id=-1
+						OR
+						fbs.subject_id=css.subject_id
+					)
+			)
+		</where>
+		<include refid="pageTool"/>
+	</select>
+
+	<select id="countFinishedAndNeverFeedback">
+        SELECT
+          count(1)
+        FROM
+		class_stage_subject css
+		<where>
+			css.CLASS_ID=#{classId} AND css.status=5 AND NOT EXISTS(
+			SELECT 1
+			FROM
+				feed_back fb JOIN
+				feed_back_stage fbs ON fb.ID=fbs.feed_back_id
+			WHERE
+				fb.class_id=css.class_id AND fb.status IN (6,7) AND fbs.stage_id=css.stage_id AND fbs.batch_num=css.batch_num
+				AND
+				(
+					fbs.subject_id=-1
+					OR
+					fbs.subject_id=css.subject_id
+				)
+			)
+		</where>
+	</select>
+	<!-- 查询公共科目 -->
+	<select id="queryCommonSubjects" resultMap="BaseResultMapForOrder">
+		SELECT
+		css.*,
+		oss.order_no
+		FROM
+		class_stage_subject css
+		LEFT JOIN order_stage_subject oss ON oss.stage_id = css.stage_id
+		AND oss.subject_id = css.subject_id
+		AND oss.total_duration = css.TOTAL_DURATION
+		WHERE
+		css.CLASS_ID = #{classId}
+		<if test="orderNos != null and orderNos.size() > 0">
+			AND oss.order_no IN
+			<foreach collection="orderNos" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="sumFinishedDuration" resultType="integer" parameterType="com.huatu.paike.dal.goodsOrder.entity.DelOrderSubjectParam">
+		SELECT
+			sum(FINISH_DURATION)
+		FROM
+			class_stage_subject
+		<where>
+			class_id=#{classId,jdbcType=BIGINT} AND (stage_id,subject_id,batch_num) IN
+			<foreach collection="stageSubjectList" close=")" separator="," open="(" item="item">
+				(#{item.stageId,jdbcType=BIGINT},#{item.subjectId,jdbcType=BIGINT},#{item.batchNum,jdbcType=INTEGER})
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="querySubjectBatchStatus" resultType="map">
+		select CONCAT(stage_id,subject_id,batch_num),status from class_stage_subject where class_id=#{classId}
+		<if test="stageBatchs!=null and stageBatchs.size>0" >
+			and (stage_id,subject_id,batch_num) in
+			<foreach collection="stageBatchs" close=")" item="item" open="(" separator=",">
+				(#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+		</if>
+	</select>
+	<update id="updateStatus" >
+		UPDATE class_stage_subject set status=#{status} where class_id=#{classId} and (stage_id,subject_id,batch_num) in
+		<foreach collection="stageBatchs" close=")" item="item" open="(" separator=",">
+			(#{item.stageId},#{item.subjectId},#{item.batchNum})
+		</foreach>
+	</update>
+
+	<select id="queryClassCanFeedback" resultType="map">
+		SELECT
+			css.class_id,count(1)
+		FROM
+			class_stage_subject css
+		<where>
+			css.CLASS_ID IN
+			<foreach collection="classIdList" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			AND css.status=5 AND NOT EXISTS(
+				SELECT 1
+				FROM
+					feed_back fb JOIN
+					feed_back_stage fbs ON fb.ID=fbs.feed_back_id
+				WHERE
+					fb.class_id=css.class_id AND fb.status IN (6,7) AND fbs.stage_id=css.stage_id AND fbs.batch_num=css.batch_num
+					AND
+					(
+						fbs.subject_id=-1
+						OR
+						fbs.subject_id=css.subject_id
+					)
+				)
+		</where>
+		GROUP BY css.class_id
+	</select>
+	<select id="queryClassHaveFeedbackSubjects" resultType="map">
+		SELECT
+			css.class_id,count(1)
+		FROM
+			class_stage_subject css
+			JOIN feed_back fb ON css.class_id=fb.class_id AND fb.`status` IN (6,7)
+			JOIN feed_back_stage fbs ON fb.ID=fbs.feed_back_id AND css.stage_id=fbs.stage_id AND css.batch_num=fbs.batch_num
+			AND
+				(
+					fbs.subject_id=-1
+					OR
+					css.subject_id=fbs.subject_id
+				)
+		<where>
+			css.status>=5 AND css.class_id IN
+			<foreach collection="list" close=")" separator="," open="(" item="item">
+				#{item}
+			</foreach>
+		</where>
+		GROUP BY css.class_id
+	</select>
+
+	<select id="queryFeedbackOrInFeedbackCss" resultMap="BaseResultMap">
+		SELECT
+			css.*
+		FROM
+			class_stage_subject css
+		<where>
+			css.CLASS_ID=#{classId}
+			AND (css.stage_id,css.subject_id,css.batch_num) IN
+			<foreach collection="stageBatchs" item="item" open="(" separator="," close=")">
+				(#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+			AND EXISTS(
+				SELECT 1
+				FROM
+					feed_back fb JOIN
+					feed_back_stage fbs ON fb.ID=fbs.feed_back_id
+				WHERE
+					fb.class_id=css.class_id AND fb.status IN (6,7) AND fbs.stage_id=css.stage_id AND fbs.batch_num=css.batch_num
+				AND
+				(
+					fbs.subject_id=-1
+					OR
+					fbs.subject_id=css.subject_id
+				)
+			)
+		</where>
+	</select>
+
+	<update id="updatePaikeDuration">
+		update class_stage_subject set PAIKE_DURATION = PAIKE_DURATION + #{duration} 
+		where class_id = #{classId} and stage_id = #{stageId} and subject_id =#{subjectId} and batch_num = #{batchNum}
+	</update>
+	
+	<update id="updateFinishDuration">
+		update class_stage_subject set FINISH_DURATION = FINISH_DURATION + #{duration} 
+		where class_id = #{classId} and stage_id = #{stageId} and subject_id =#{subjectId} and batch_num = #{batchNum}
+	</update>
+
+	<update id="update" parameterType="com.huatu.paike.dal.paike.entity.ClassStageSubject">
+		UPDATE class_stage_subject
+		SET
+			start_date=#{startDate},end_date=#{endDate},status=#{status},update_time=#{updateTime}
+		<where>
+			id=#{id}
+		</where>
+	</update>
+</mapper>
