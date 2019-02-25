@@ -1,16 +1,13 @@
 package com.huatu.paike.dal.paike.entity;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import lombok.Data;
 import lombok.ToString;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @ToString
+@Data
 @Table(name = "class_stage_subject")
 public class ClassStageSubject {
     /**

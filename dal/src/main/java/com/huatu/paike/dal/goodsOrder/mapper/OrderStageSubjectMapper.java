@@ -2,20 +2,24 @@ package com.huatu.paike.dal.goodsOrder.mapper;
 
 import com.huatu.paike.dal.annotations.MapF2F;
 import com.huatu.paike.dal.annotations.MapF2M;
+import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
 import com.huatu.paike.dal.goodsOrder.dto.QueryOrderStageSubjectDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubject;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubject;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubjectCriteria;
 import com.huatu.paike.dal.goodsOrder.entity.UpdateOrderStageSubjectParam;
+
 import org.apache.ibatis.annotations.Param;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public interface OrderStageSubjectMapper extends Mapper<OrderStageSubject> {
+import tk.mybatis.mapper.common.IdsMapper;
+import tk.mybatis.mapper.common.Mapper;
+
+public interface OrderStageSubjectMapper extends IdsMapper<OrderStageSubject>, Mapper<OrderStageSubject> {
     int deleteByFilter(OrderStageSubjectCriteria filter);
 
     /**
@@ -191,8 +195,6 @@ public interface OrderStageSubjectMapper extends Mapper<OrderStageSubject> {
 
     int update(OrderStageSubject oss);
 
-    int countEndOss(@Param("startTime")Date startTime,@Param("endTime") Date endTime);
-
     /**
      * 查询给定时间内开始的oss
      * @param startTime
@@ -203,4 +205,6 @@ public interface OrderStageSubjectMapper extends Mapper<OrderStageSubject> {
 
     @MapF2M
     Map<Long,Map<Long,Integer>> queryClassId(@Param("ids")Collection<Long> ids);
+
+    List<OssId2CssDto> queryCss(@Param("ids")Collection<Long> ids);
 }

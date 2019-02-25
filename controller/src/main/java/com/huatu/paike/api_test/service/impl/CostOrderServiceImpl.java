@@ -1,7 +1,5 @@
 package com.huatu.paike.api_test.service.impl;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.huatu.common.utils.DateUtil;
 import com.huatu.order.dto.OrderMoneyDto;
 import com.huatu.order.service.paike.OrderService;
@@ -10,23 +8,30 @@ import com.huatu.paike.api_test.dto.CostOrderStageBuilder;
 import com.huatu.paike.api_test.dto.CostSourceType;
 import com.huatu.paike.api_test.dto.CostType;
 import com.huatu.paike.dal.cost.entity.CostOrderStage;
+import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
 import com.huatu.paike.dal.cost.mapper.CostOrderStageMapper;
+import com.huatu.paike.dal.cost.mapper.NewCostOrderStageMapper;
+import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubject;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubjectCriteria;
 import com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper;
 import com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper;
 import com.huatu.paike.dal.paike.entity.ClassStageSubject;
-import lombok.extern.slf4j.Slf4j;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -36,19 +41,21 @@ public class CostOrderServiceImpl implements CostOrderService {
     OrderStageSubjectMapper ossMapper;
 
     @Autowired
-    private OrderService orderService;
+    OrderService orderService;
 
     @Autowired
     OrderInfoMapper orderInfoMapper;
 
     @Autowired
-    CostOrderStageMapper costOrderStageMapper;
+    NewCostOrderStageMapper newCostOrderStageMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void buildCostOrder() {
-        log.info("扫描所有订单在二月份结课的科目，或者在二月份成绩通过，或者在二月份提报（退款）的订单");
-        Date startTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-02-01");
-        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-02-23");
+        log.info("扫描所有在12月份后产生的订单，生成12,1,2月结转数据");
+
+        Date startTime = DateUtil.getStrToDate("yyyy-MM-dd", "2018-12-01");
+        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-03-01");
         List<Long> ossIds = ossMapper.queryEndOss(startTime, endTime);
         if (CollectionUtils.isEmpty(ossIds)) {
             log.info("oss is empty");
@@ -59,27 +66,33 @@ public class CostOrderServiceImpl implements CostOrderService {
         while (idx < ossIds.size()) {
             int lastIndex = Math.min(idx + batchSize, ossIds.size());
             List<Long> subList = ossIds.subList(idx, lastIndex);
-            OrderStageSubjectCriteria criteria = new OrderStageSubjectCriteria();
-            criteria.createCriteria().andIdIn(subList);
-            List<OrderStageSubject> orderStageSubjects = ossMapper.selectByExample(criteria);
+            if(CollectionUtils.isEmpty(subList)){
+                break;
+            }
+            //ossMapper.selectByIds(StringUtils.join(subList,","));
+/*            OrderStageSubjectCriteria criteria = new OrderStageSubjectCriteria();
+            criteria.createCriteria().andIdIn(new ArrayList<>(subList));*/
+            List<OrderStageSubject> orderStageSubjects = ossMapper.selectByIds(StringUtils.join(subList,","));//ossMapper.selectByExample(criteria);
 
             Set<String> orderNos = orderStageSubjects.stream().map(a -> a.getOrderNo()).collect(Collectors.toSet());
 
             Map<String, OrderInfo> orderInfos = orderInfoMapper.queryListByOrderNos(orderNos);
 
-            Map<Long, Map<Long,Integer>> ossId2ClassIdMap=ossMapper.queryClassId(subList);
+            List<OssId2CssDto> ossId2CssDtos=ossMapper.queryCss(subList);
+
+            Map<Long,ClassStageSubject> ossId2CssMap=ossId2CssDtos.stream().collect(Collectors.toMap(a->a.getOssId(), a->a.getCss()));
 
             Map<Long, OrderInfoDto> moneyMap = orderInfos.values().stream().collect(Collectors.toMap(a -> a.getOrderGoodsId(), a -> getOrderPriceInfo(a.getOrderGoodsId())));
             for (OrderStageSubject oss : orderStageSubjects) {
                 String orderNo = oss.getOrderNo();
                 OrderInfo orderInfo = orderInfos.get(orderNo);
-                Map<Long,Integer> classBatchMap=ossId2ClassIdMap.get(oss.getId());
+                ClassStageSubject css=ossId2CssMap.get(oss.getId());
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
                 // VIP订单不结转,协议类型为K,L,M,N为无限学,不结转
                 if (orderPriceInfo.getProductTypeCode().equals("VI") || orderInfo.getProtocolType().matches("K|L|M|N")) {
                     log.info("exit,orderNo={},orderGoodsId={},协议类型为{},无限学,不结转退出", orderNo, orderInfo.getOrderGoodsId(),
                             orderInfo.getProtocolType());
-                    return;
+                    continue;
                 }
 
                 long subjectTuition = orderPriceInfo.getSubjectTuitionMap().getOrDefault(oss.getStageId(), Maps.newHashMap())
@@ -89,33 +102,26 @@ public class CostOrderServiceImpl implements CostOrderService {
 
                 if (subjectTuition == 0 && subjectExtra == 0) {
                     log.info("exit,orderNo={},orderGoodsId={},学费和杂费都为0,退出", orderNo, orderInfo.getOrderGoodsId());
-                    return;
+                    continue;
                 }
 
-                Map.Entry<Long,Integer> classItem =classBatchMap.entrySet().iterator().next();
-
-                ClassStageSubject css = new ClassStageSubject();
-                css.setBatchNum(classItem.getValue());
-                css.setClassId(classItem.getKey());
-                css.setStageId(oss.getStageId());
-                css.setSubjectId(oss.getSubjectId());
-
-                List<CostOrderStage> costOrderStages = Lists.newArrayList();
+                List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
-                CostOrderStage tuition =
-                        CostOrderStageBuilder.builder(css, orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
-                costOrderStages.add(tuition);
-                CostOrderStage extra =
-                        CostOrderStageBuilder.builder(css, orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
+                NewCostOrderStage tuition =
+                        CostOrderStageBuilder.builder(css,oss.getTotalDuration().intValue(), orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
+                if(orderInfo.getScoreHavePass()){
+                    costOrderStages.add(tuition);
+                }
+                NewCostOrderStage extra =
+                        CostOrderStageBuilder.builder(css,oss.getTotalDuration().intValue(),orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
                 costOrderStages.add(extra);
-                for (CostOrderStage costOrderStage : costOrderStages) {
-                    costOrderStage.setSeqNum(0L);
-                    costOrderStageMapper.insertSelective(costOrderStage);
+                for (NewCostOrderStage costOrderStage : costOrderStages) {
+                    newCostOrderStageMapper.insertSelective(costOrderStage);
                 }
             }
-
             idx += lastIndex;
         }
+        log.info("生成完毕");
     }
 
     private OrderInfoDto getOrderPriceInfo(Long orderGoodId) {

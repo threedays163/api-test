@@ -1,9 +1,6 @@
 
 package com.huatu.paike.api_test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.huatu.common.dto.resp.Node;
 import com.huatu.common.service.StageService;
 import com.huatu.common.service.SubjectService;
@@ -18,10 +15,18 @@ import com.huatu.order.service.paike.StudentService;
 import com.huatu.paike.api_test.dto.NewOrderCostItem;
 import com.huatu.paike.api_test.dto.OrderCostItem;
 import com.huatu.paike.api_test.dto.OrderDurationWaste;
+import com.huatu.paike.api_test.service.impl.CostOrderService;
+import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
+import com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper;
+import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 import com.huatu.sku.entity.GoodsDetail;
 import com.huatu.sku.service.CourseService;
 import com.huatu.sku.service.GoodsService;
-import lombok.extern.slf4j.Slf4j;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
@@ -67,12 +74,18 @@ public class WebApplication implements CommandLineRunner {
     @Autowired
     EhrNodeService nodeService;
 
+    @Autowired
+    CostOrderService costOrderService;
+
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
 
     @Override
     public void run(String...args) throws Exception {
+
+        costOrderService.buildCostOrder();
+
         // queryTeacherHistory();
         // queryLessonDetail();
         // queryCsstConpensate();
@@ -80,6 +93,14 @@ public class WebApplication implements CommandLineRunner {
         // readFile("C:\\Users\\w\\Desktop\\201812排课系统推送数据.csv", "C:\\Users\\w\\Desktop\\12_out.csv");
         //readFile("C:\\Users\\w\\Desktop\\201901排课系统推送数据.csv", "C:\\Users\\w\\Desktop\\1_out.csv");
         //System.exit(0);
+/*        List<Long> subList=Lists.newArrayList(606974L,
+                606975L,
+                606976L);
+        List<OssId2CssDto> ossId2CssDtos=ossMapper.queryCss(subList);
+
+        Map<Long,ClassStageSubject> ossId2CssMap=ossId2CssDtos.stream().collect(Collectors.toMap(a->a.getOssId(), a->a.getCss()));
+        System.out.println(ossId2CssMap);
+        System.exit(0);*/
     }
 
     /*

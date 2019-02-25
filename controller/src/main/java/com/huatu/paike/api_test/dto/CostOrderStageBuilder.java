@@ -2,6 +2,7 @@
 package com.huatu.paike.api_test.dto;
 
 import com.huatu.paike.dal.cost.entity.CostOrderStage;
+import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 
@@ -9,18 +10,17 @@ import java.util.Date;
 
 public class CostOrderStageBuilder {
 
-    public static CostOrderStage builder(ClassStageSubject css, OrderInfo orderInfo, CostType costType, Long tuition,
+    public static NewCostOrderStage builder(ClassStageSubject css,Integer totalDuration, OrderInfo orderInfo, CostType costType, Long cost,
                                          boolean isReport, CostSourceType sourceType) {
-        CostOrderStage costOrderStage = new CostOrderStage();
+        NewCostOrderStage costOrderStage = new NewCostOrderStage();
         costOrderStage.setBatchNum(css.getBatchNum());
         costOrderStage.setClassId(css.getClassId());
-        costOrderStage.setCost(tuition);
+        costOrderStage.setCost(cost);
         costOrderStage.setCostType((byte) costType.getValue());
-        costOrderStage.setDuration(css.getTotalDuration());
-        Date now = new Date();
-        costOrderStage.setFinishedDate(now);
+        costOrderStage.setDuration(totalDuration);
+        costOrderStage.setFinishedDate(css.getEndDate());
         // 下游需要字段,误删
-        costOrderStage.setFinishDate(now);
+        costOrderStage.setFinishDate(css.getEndDate());
         costOrderStage.setGoodsNo(orderInfo.getGoodsNo());
         costOrderStage.setHasCost((byte) 0);
         costOrderStage.setOrderGoodsId(orderInfo.getOrderGoodsId());

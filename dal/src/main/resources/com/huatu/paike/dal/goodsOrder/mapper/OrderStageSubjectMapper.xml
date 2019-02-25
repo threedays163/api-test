@@ -530,12 +530,13 @@
         </where>
     </update>
 
-    <select id="countEndOss" resultType="int">
-        SELECT COUNT(1) FROM order_stage_subject oss WHERE START_DATE BETWEEN #{startTime} AND #{endTime}
-    </select>
-
     <select id="queryEndOss" resultMap="BaseResultMap">
-        SELECT oss.ID FROM order_stage_subject oss WHERE oss.START_DATE BETWEEN #{startTime} AND #{endTime}
+        SELECT
+            oss.ID
+        FROM
+            order_stage_subject oss JOIN order_info oi ON oss.order_no=oi.order_no AND oi.ORDER_STATE!=7 AND oi.BUY_TIME BETWEEN #{startTime} AND #{endTime}
+        WHERE
+            oss.START_DATE IS NOT NULL AND oss.START_DATE BETWEEN #{startTime} AND #{endTime}
     </select>
 
     <select id="queryClassId" resultType="map">
@@ -544,4 +545,28 @@
             #{item}
         </foreach>
      </select>
+
+    <resultMap id="ossId2CssResultMap" type="com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto">
+        <id jdbcType="BIGINT" property="ossId" column="ossId"/>
+        <association property="css" javaType="com.huatu.paike.dal.paike.entity.ClassStageSubject" resultMap="com.huatu.paike.dal.paike.mapper.ClassStageSubjectMapper.BaseResultMap"/>
+    </resultMap>
+    
+    <select id="queryCss" resultMap="ossId2CssResultMap">
+        SELECT
+            oss.id AS `ossId`,css.*
+        FROM
+            order_stage_subject oss
+        JOIN order_class_stage_subject
+            ocss ON oss.order_no = ocss.order_no
+        AND oss.stage_id = ocss.stage_id
+        AND oss.subject_id = ocss.subject_id
+        JOIN class_stage_subject css ON ocss.class_id = css.class_id
+        AND ocss.stage_id = css.stage_id
+        AND ocss.subject_id = css.subject_id
+        AND ocss.batch_num = css.batch_num
+        WHERE oss.ID IN 
+        <foreach collection="ids" close=")" separator="," open="(" item="item">
+            #{item}
+        </foreach>
+    </select>
 </mapper>
