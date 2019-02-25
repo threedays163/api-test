@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.huatu.common:common-validation:0.0.4-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/common-validation/0.0.4-SNAPSHOT/common-validation-0.0.4-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/common-validation/0.0.4-SNAPSHOT/common-validation-0.0.4-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/common/common-validation/0.0.4-SNAPSHOT/common-validation-0.0.4-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

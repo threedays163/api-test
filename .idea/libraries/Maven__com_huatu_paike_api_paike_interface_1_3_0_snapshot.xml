@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.huatu.paike-api:paike-interface:1.3.0.snapshot">
+    <CLASSES>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/paike-api/paike-interface/1.3.0.snapshot/paike-interface-1.3.0.snapshot.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/paike-api/paike-interface/1.3.0.snapshot/paike-interface-1.3.0.snapshot-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/D:/dev_tools/maven3.2.2/.m2/repository/com/huatu/paike-api/paike-interface/1.3.0.snapshot/paike-interface-1.3.0.snapshot-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
