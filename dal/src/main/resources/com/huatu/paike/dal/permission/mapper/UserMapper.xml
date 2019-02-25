@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.permission.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.permission.entity.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="STAFF_ID" jdbcType="BIGINT" property="staffId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, STAFF_ID, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.permission.entity.UserCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="queryList" parameterType="com.huatu.paike.dal.permission.dto.UserQueryParams"
+		resultMap="BaseResultMap">
+		SELECT DISTINCT a.STAFF_ID, a.CREATE_TIME, a.UPDATE_TIME FROM user a,user_role b
+		<where>
+			a.STAFF_ID = b.STAFF_ID
+			<if test="null != staffId">
+				and a.STAFF_ID = #{staffId}
+			</if>
+			<if test="null != roleId">
+				and b.ROLE_ID = #{roleId}
+			</if>
+			<if test="null != nodeId">
+				and b.NODE_ID = #{nodeId}
+			</if>
+			<if test="nodeIds !=null and nodeIds.size>0">
+				and b.NODE_ID in
+				<foreach collection="nodeIds" item="item" open="(" separator=","
+					close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		<if test="pageDto != null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+	<select id="queryCount" parameterType="com.huatu.paike.dal.permission.dto.UserQueryParams"
+		resultType="Integer">
+		SELECT COUNT(DISTINCT a.STAFF_ID) FROM user a,user_role b
+		<where>
+			a.STAFF_ID = b.STAFF_ID
+			<if test="null != staffId">
+				and a.STAFF_ID = #{staffId}
+			</if>
+			<if test="null != roleId">
+				and b.ROLE_ID = #{roleId}
+			</if>
+			<if test="null != nodeId">
+				and b.NODE_ID = #{nodeId}
+			</if>
+			<if test="nodeIds !=null and nodeIds.size>0">
+				and b.NODE_ID in
+				<foreach collection="nodeIds" item="item" open="(" separator=","
+					close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+</mapper>

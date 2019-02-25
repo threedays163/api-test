@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.LessonStudentMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.paike.entity.LessonStudent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+    <result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="STUDENT_ID" jdbcType="BIGINT" property="studentId" />
+    <result column="PRICE" jdbcType="BIGINT" property="price" />
+    <result column="COST" jdbcType="BIGINT" property="cost" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+	<result column="IS_RECOMPLETE" jdbcType="INTEGER" property="isRecomplete" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, NODE_ID, LESSON_ID, ORDER_NO, STUDENT_ID,
+    PRICE, COST, CREATE_TIME, UPDATE_TIME, CREATOR_ID, GOODS_NO,IS_RECOMPLETE
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.paike.entity.LessonStudentCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from lesson_student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+	<!-- 根据csstId和studentId关联删除课节学员表中的记录 -->
+	<delete id="deleteByCsstIdAndStudentId" parameterType="com.huatu.paike.dal.paike.dto.StudentLessonDelsReqParam">
+		delete ls from LESSON_STUDENT ls join CLASS_LESSON cl on ls.LESSON_ID
+		= cl.ID and ls.STUDENT_ID = #{studentId} and cl.CSST_ID in
+		<foreach close=")" collection="csstIds" item="item" open="(" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 根据csstId,studentId和lessonDate关联删除学员课表明细中的记录 -->
+	<delete id="deleteByIdAndLessonDate" parameterType="java.util.ArrayList">
+		delete ls from LESSON_STUDENT ls join CLASS_LESSON cl on ls.LESSON_ID
+		= cl.ID
+		and
+		(cl.CSST_ID,date_format(cl.LESSON_DATE,'yyyy-MM-dd'),ls.STUDENT_ID)
+		in
+		<foreach close=")" collection="list" item="item" open="(" separator=",">
+			<if test="item.studentId != null and item.csstId != null and item.lessonDate != null">
+				(#{item.csstId},date_format(#{item.lessonDate},'yyyy-MM-dd'),#{item.studentId})
+			</if>
+		</foreach>
+	</delete>
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO LESSON_STUDENT (CLASS_ID, STAGE_ID, SUBJECT_ID,BATCH_NUM,NODE_ID,
+		LESSON_ID,
+		ORDER_NO,GOODS_NO, STUDENT_ID,CREATOR_ID,IS_RECOMPLETE,PRICE,CREATE_TIME,UPDATE_TIME) values
+		<foreach collection="list" item="stu" separator=",">
+			(#{stu.classId}, #{stu.stageId}, #{stu.subjectId},#{stu.batchNum},#{stu.nodeId},
+			#{stu.lessonId},
+			#{stu.orderNo},#{stu.goodsNo}, #{stu.studentId}, #{stu.creatorId},#{stu.isRecomplete},#{stu.price},#{stu.createTime,jdbcType=TIMESTAMP},#{stu.updateTime,jdbcType=TIMESTAMP})
+		</foreach>
+	</insert>
+
+	<!-- 根据orderNo和classNo以及当前时间点删除还没上的课表 -->
+	<delete id="deleteByOrderNoAndClassNoAndNotStart">
+		DELETE ls FROM CLASS_LESSON cl,LESSON_STUDENT ls,CLASS_INFO ci,LESSON_TIME_DETAIL ltd WHERE
+		cl.ID=ls.LESSON_ID AND cl.CLASS_ID=ci.ID AND ltd.LESSON_ID=cl.ID AND ci.CLASS_NO=#{classNo}
+		AND ls.ORDER_NO=#{orderNo} AND ltd.START_TIME&gt;#{nowTime}
+	</delete>
+
+	<delete id="deleteStageSubject" parameterType="com.huatu.paike.dal.goodsOrder.entity.DelOrderSubjectParam">
+		DELETE LS FROM LESSON_STUDENT LS WHERE LS.CLASS_ID = #{classId} AND
+		LS.ORDER_NO = #{orderNo} AND
+		(LS.STAGE_ID, LS.SUBJECT_ID, LS.BATCH_NUM) IN
+		<foreach collection="stageSubjectList" open="(" close=")" separator="," item="item" >
+			(#{item.stageId}, #{item.subjectId}, #{item.batchNum})
+		</foreach>
+
+	</delete>
+
+	<select id="queryStuCountByClassIds" resultType="map">
+		SELECT
+			concat(css.class_id, '_', css.stage_id, '_', css.subject_id ,'_', css.batch_num ),
+			count( DISTINCT ( le.order_no ) )
+		FROM
+			LESSON_STUDENT le
+			RIGHT JOIN class_stage_subject css ON le.CLASS_ID = css.CLASS_ID
+			AND le.SUBJECT_ID = css.SUBJECT_ID
+			AND le.STAGE_ID = css.STAGE_ID
+			AND le.BATCH_NUM=css.BATCH_NUM
+		<where>
+			<foreach close="" collection="classIdsList" item="classIds" open="and" separator="or">
+				css.class_id in
+				<foreach close=")" collection="classIds" item="classId" open="(" separator=",">
+					#{classId}
+				</foreach>
+			</foreach>
+		</where>
+		GROUP BY
+			css.class_id,css.stage_id,css.subject_id,css.batch_num
+	</select>
+	
+	<select id="queryStuCountByClassStageSubject" resultType="map">
+		SELECT
+			concat( css.stage_id, '_', css.subject_id ,'_', css.batch_num ),
+			count( DISTINCT ( le.order_no ) )
+		FROM
+			LESSON_STUDENT le
+			RIGHT JOIN class_stage_subject css ON le.CLASS_ID = css.CLASS_ID
+			AND le.SUBJECT_ID = css.SUBJECT_ID
+			AND le.STAGE_ID = css.STAGE_ID
+			AND le.BATCH_NUM=css.BATCH_NUM
+		WHERE
+		  css.class_id = #{classID}
+			AND ( css.stage_id, css.subject_id,css.batch_num ) IN
+			<foreach close=")" collection="cssList" item="item" open="(" separator=",">
+				(#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+		GROUP BY
+			css.stage_id,css.subject_id,css.batch_num
+	</select>
+	
+	<!-- 查询学员订单在每个班级下的已上课课时 -->
+	<select id="queryStudentDuration" resultType="com.huatu.paike.dal.paike.dto.OrderNoDuration">
+		select a.ORDER_NO orderNo,a.CLASS_ID classId,b.START_TIME startTime,b.STATUS status,b.END_TIME endTime,b.LESSON_DURATION lessonDuration
+		from LESSON_STUDENT a join CLASS_LESSON b on a.LESSON_ID = b.ID
+		<where>
+			(a.ORDER_NO,a.CLASS_ID) in
+			<foreach close=")" collection="list" item="orderDuration" open="(" separator=",">
+				(#{orderDuration.orderNo},#{orderDuration.classId})
+			</foreach>
+		</where>
+	</select>
+	<!-- 查询一个班级阶段科目里学生来源的商品及人数 -->
+	<select id="queryGoodsSutCountInSubject" resultType="map">
+		SELECT oi.GOODS_NO,COUNT(DISTINCT ls.ORDER_NO)  FROM order_info oi, lesson_student ls,class_lesson cl WHERE cl.ID=ls.LESSON_ID AND oi.ORDER_NO=ls.ORDER_NO AND ls.CLASS_ID=#{classId} AND ls.STAGE_ID=#{stageId} AND ls.SUBJECT_ID=#{subjectId} AND ls.BATCH_NUM=#{batchNum} AND cl.LESSON_DATE BETWEEN #{startTime} AND #{endTime}
+		GROUP BY oi.GOODS_NO
+		<if test="pageDto!=null">
+			limit
+			${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+
+	<!-- 查询一个班级阶段科目里学生来源的商品 总数 -->
+	<select id="queryGoodsCountInSubject" resultType="int">
+		SELECT count(oi.GOODS_NO) FROM order_info oi, lesson_student ls,class_lesson cl WHERE cl.ID=ls.LESSON_ID AND oi.ORDER_NO=ls.ORDER_NO AND ls.CLASS_ID=#{classId} AND ls.STAGE_ID=#{stageId} AND ls.SUBJECT_ID=#{subjectId} AND ls.BATCH_NUM=#{batchNum} AND cl.LESSON_DATE BETWEEN #{startTime} AND #{endTime}
+		GROUP BY oi.GOODS_NO
+	</select>
+
+	<select id="queryOrderUsedMinutesMap" resultType="map">
+		select a.ORDER_NO,sum(b.LESSON_DURATION)
+		from lesson_student a join class_lesson b on a.LESSON_ID = b.ID
+		join class_info c on c.ID = a.CLASS_ID
+		<where>
+			<if test="now != null">
+				#{now} &gt; b.END_TIME
+			</if>
+			<if test="classNo != null">
+				AND c.CLASS_NO = #{classNo}
+			</if>
+			<if test="orderNos != null and orderNos.size()&gt;0">
+				AND a.ORDER_NO in
+				<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+					#{orderNo}
+				</foreach>
+			</if>
+		</where>
+		group by a.ORDER_NO
+	</select>
+	<!-- 获取课节订单 -->
+	<select id="queryLessonOrderNos" resultType="String">
+		select 
+			distinct ls.order_no 
+		from 
+			lesson_student ls
+		where 
+			ls.lesson_id=#{lessonId} 
+	</select>
+	<!-- 获取课节订单 -->
+	<select id="queryLessonOrderNosByCsstId" resultType="map">
+		select 
+			a.lesson_id,a.order_no 
+		from 
+			lesson_student a join class_lesson b on a.lesson_id = b.id 
+		where 
+			b.csst_id =#{csstId}
+	</select>
+
+	<!-- 查询课节里的订单编号 -->
+	<select id="queryLessonOrderNosByLessonIds" resultType="map">
+		select
+			lesson_id,order_no
+		from
+			lesson_student
+		<where>
+			and lesson_id in
+			<foreach collection="lessonIds" item="item" close=")" open="(" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+
+	<!-- 获取订单课节 -->
+	<select id="queryOrderLessonMap" resultType="map">
+	select a.order_no,a.lesson_id from lesson_student a join class_lesson b on a.lesson_id = b.id
+	where b.class_id =#{classId}
+	<if test="orderNos != null and orderNos.size()&gt;0">
+		AND a.ORDER_NO in
+				<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+					#{orderNo}
+				</foreach>
+	</if>
+	</select>
+
+	<!-- 课节内学员人数 -->
+	<select id="queryLessonStuCount" resultType="int">
+		select count(1) from lesson_student where lesson_id =#{lessonId}
+	</select>
+
+	<resultMap id="timeMap" type="com.huatu.paike.dal.paike.dto.MaxMinTimeDto">
+		<result column="min" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="max" jdbcType="TIMESTAMP" property="endTime" />
+	</resultMap>
+
+	<select id="queryMaxMinTimeInSubject" resultMap="timeMap">
+		SELECT
+			MIN( cl.START_TIME ) `min`,
+			MAX( cl.END_TIME ) `max`
+		FROM
+			lesson_student ls,
+			class_lesson cl 
+		WHERE
+			ls.LESSON_ID = cl.ID 
+			AND cl.IS_DISCARD=0
+			AND cl.STAGE_ID = #{stageId}
+			AND cl.SUBJECT_ID = #{subjectId}
+			AND ls.ORDER_NO= #{orderNo}
+	</select>
+
+    <select id="countByClassIds" resultType="java.util.Map">
+		select class_id, count(distinct student_id) from lesson_student
+		<where>
+			<if test="classIds != null and classIds.size() > 0">
+				and class_id in
+				<foreach collection="classIds" item="classId" open="(" separator="," close=")">
+					#{classId}
+				</foreach>
+			</if>
+		</where>
+		group by class_id
+	</select>
+	
+	<select id="queryNotStartSubjectLessonByOrder" resultMap="BaseResultMap">
+		SELECT
+			distinct
+			ls.*
+		FROM
+			order_class_stage_subject ocss,
+			class_stage_subject css,
+			lesson_student ls 
+		WHERE
+			ocss.CLASS_ID = css.CLASS_ID 
+			AND ocss.STAGE_ID = css.STAGE_ID 
+			AND ocss.SUBJECT_ID = css.SUBJECT_ID 
+			AND ocss.BATCH_NUM = css.BATCH_NUM 
+			AND 
+				( 
+						( css.START_DATE IS NOT NULL AND css.START_DATE > #{now} and 4 > css.`STATUS`) 
+					OR
+						css.START_DATE IS NULL
+				)
+			AND css.CLASS_ID=ls.CLASS_ID 
+			AND css.STAGE_ID=ls.STAGE_ID 
+			AND css.SUBJECT_ID=ls.SUBJECT_ID 
+			AND css.BATCH_NUM=ls.BATCH_NUM
+			AND ls.ORDER_NO = ocss.ORDER_NO
+			AND ls.ORDER_NO IN
+			<foreach collection="orderNos" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+	</select>
+</mapper>

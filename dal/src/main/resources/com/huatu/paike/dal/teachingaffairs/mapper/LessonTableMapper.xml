@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.teachingaffairs.mapper.LessonTableMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="BIGINT" property="updatorId" />
+    <result column="IS_DEL" jdbcType="INTEGER" property="isDel" />
+    <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="LESSON_TABLE_NO" jdbcType="VARCHAR" property="lessonTableNo" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="DAY_DURATION" jdbcType="DECIMAL" property="dayDuration" />
+    <result column="NIGHT_DURATION" jdbcType="DECIMAL" property="nightDuration" />
+    <result column="TEMPLATE_ID" jdbcType="BIGINT" property="templateId" />
+    <result column="RELATE_STATUS" jdbcType="INTEGER" property="relateStatus" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="IS_INCLUDE_DAY" jdbcType="INTEGER" property="isIncludeDay" />
+    <result column="IS_INCLUDE_WEEKEND" jdbcType="INTEGER" property="isIncludeWeekend" />
+    <result column="TEACHER_NO" jdbcType="VARCHAR" property="teacherNo" />
+    <result column="TEACHER_DEVICE_ID" jdbcType="BIGINT" property="teacherDeviceId" />
+    <result column="DURATION" jdbcType="INTEGER" property="duration" />
+    <result column="CLOUD_ROOM_ID" jdbcType="VARCHAR" property="cloudRoomId" />
+    <result column="TEACHER_NAME" jdbcType="VARCHAR" property="teacherName" />
+    <result column="TEACHER_JOIN_CODE" jdbcType="VARCHAR" property="teacherJoinCode" />
+    <result column="STUDENT_JOIN_CODE" jdbcType="VARCHAR" property="studentJoinCode" />
+    <result column="ASSISTANT_JOIN_CODE" jdbcType="VARCHAR" property="assistantJoinCode" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+  </resultMap>
+
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    ID,CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,PRODUCT_ID,STAGE_ID,LESSON_TABLE_NO,SUBJECT_ID,DAY_DURATION,NIGHT_DURATION,TEMPLATE_ID,RELATE_STATUS,START_TIME,END_TIME,IS_INCLUDE_DAY,IS_INCLUDE_WEEKEND,TEACHER_NO,TEACHER_DEVICE_ID,DURATION,CLOUD_ROOM_ID,TEACHER_NAME,TEACHER_JOIN_CODE,STUDENT_JOIN_CODE,ASSISTANT_JOIN_CODE,NODE_ID
+  </sql>
+
+  <!-- 单个插入 -->
+  <insert id="insertSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into lesson_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="isDel != null">
+        IS_DEL,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="stageId != null">
+        STAGE_ID,
+      </if>
+      <if test="lessonTableNo != null">
+        LESSON_TABLE_NO,
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID,
+      </if>
+      <if test="dayDuration != null">
+        DAY_DURATION,
+      </if>
+      <if test="nightDuration != null">
+        NIGHT_DURATION,
+      </if>
+      <if test="templateId != null">
+        TEMPLATE_ID,
+      </if>
+      <if test="relateStatus != null">
+        RELATE_STATUS,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="isIncludeDay != null">
+        IS_INCLUDE_DAY,
+      </if>
+      <if test="isIncludeWeekend != null">
+        IS_INCLUDE_WEEKEND,
+      </if>
+      <if test="teacherNo != null">
+        TEACHER_NO,
+      </if>
+      <if test="teacherDeviceId != null">
+        TEACHER_DEVICE_ID,
+      </if>
+      <if test="duration != null">
+        DURATION,
+      </if>
+      <if test="cloudRoomId != null">
+        CLOUD_ROOM_ID,
+      </if>
+      <if test="teacherName != null">
+        TEACHER_NAME,
+      </if>
+      <if test="teacherJoinCode != null">
+        TEACHER_JOIN_CODE,
+      </if>
+      <if test="studentJoinCode != null">
+        STUDENT_JOIN_CODE,
+      </if>
+      <if test="assistantJoinCode != null">
+        ASSISTANT_JOIN_CODE,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stageId != null">
+        #{stageId,jdbcType=BIGINT},
+      </if>
+      <if test="lessonTableNo != null">
+        #{lessonTableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDuration != null">
+        #{dayDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="nightDuration != null">
+        #{nightDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="relateStatus != null">
+        #{relateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isIncludeDay != null">
+        #{isIncludeDay,jdbcType=INTEGER},
+      </if>
+      <if test="isIncludeWeekend != null">
+        #{isIncludeWeekend,jdbcType=INTEGER},
+      </if>
+      <if test="teacherNo != null">
+        #{teacherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherDeviceId != null">
+        #{teacherDeviceId,jdbcType=BIGINT},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="cloudRoomId != null">
+        #{cloudRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherName != null">
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherJoinCode != null">
+        #{teacherJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentJoinCode != null">
+        #{studentJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assistantJoinCode != null">
+        #{assistantJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 批量新增 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+    INSERT INTO lesson_table
+    (CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,PRODUCT_ID,STAGE_ID,LESSON_TABLE_NO,SUBJECT_ID,DAY_DURATION,NIGHT_DURATION,TEMPLATE_ID,RELATE_STATUS,START_TIME,END_TIME,IS_INCLUDE_DAY,IS_INCLUDE_WEEKEND,TEACHER_NO,TEACHER_DEVICE_ID,DURATION,CLOUD_ROOM_ID,TEACHER_NAME,TEACHER_JOIN_CODE,STUDENT_JOIN_CODE,ASSISTANT_JOIN_CODE,NODE_ID)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.creatorId,jdbcType=BIGINT},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP},#{item.updatorId,jdbcType=BIGINT},#{item.isDel,jdbcType=INTEGER},#{item.productId,jdbcType=BIGINT},#{item.stageId,jdbcType=BIGINT},#{item.lessonTableNo,jdbcType=VARCHAR},#{item.subjectId,jdbcType=BIGINT},#{item.dayDuration,jdbcType=DECIMAL},#{item.nightDuration,jdbcType=DECIMAL},#{item.templateId,jdbcType=BIGINT},#{item.relateStatus,jdbcType=INTEGER},#{item.startTime,jdbcType=TIMESTAMP},#{item.endTime,jdbcType=TIMESTAMP},#{item.isIncludeDay,jdbcType=INTEGER},#{item.isIncludeWeekend,jdbcType=INTEGER},#{item.teacherNo,jdbcType=VARCHAR},#{item.teacherDeviceId,jdbcType=BIGINT},#{item.duration,jdbcType=INTEGER},#{item.cloudRoomId,jdbcType=VARCHAR},#{item.teacherName,jdbcType=VARCHAR},#{item.teacherJoinCode,jdbcType=VARCHAR},#{item.studentJoinCode,jdbcType=VARCHAR},#{item.assistantJoinCode,jdbcType=VARCHAR},#{item.nodeId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <!-- 单个更新 -->
+  <update id="updateSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity">
+    update lesson_table
+    <set>
+      <if test="creatorId != null">
+        CREATOR_ID=#{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID=#{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        IS_DEL=#{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID=#{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stageId != null">
+        STAGE_ID=#{stageId,jdbcType=BIGINT},
+      </if>
+      <if test="lessonTableNo != null">
+        LESSON_TABLE_NO=#{lessonTableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID=#{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDuration != null">
+        DAY_DURATION=#{dayDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="nightDuration != null">
+        NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="templateId != null">
+        TEMPLATE_ID=#{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="relateStatus != null">
+        RELATE_STATUS=#{relateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        START_TIME=#{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        END_TIME=#{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isIncludeDay != null">
+        IS_INCLUDE_DAY=#{isIncludeDay,jdbcType=INTEGER},
+      </if>
+      <if test="isIncludeWeekend != null">
+        IS_INCLUDE_WEEKEND=#{isIncludeWeekend,jdbcType=INTEGER},
+      </if>
+      <if test="teacherNo != null">
+        TEACHER_NO=#{teacherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherDeviceId != null">
+        TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT},
+      </if>
+      <if test="duration != null">
+        DURATION=#{duration,jdbcType=INTEGER},
+      </if>
+      <if test="cloudRoomId != null">
+        CLOUD_ROOM_ID=#{cloudRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherName != null">
+        TEACHER_NAME=#{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherJoinCode != null">
+        TEACHER_JOIN_CODE=#{teacherJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="studentJoinCode != null">
+        STUDENT_JOIN_CODE=#{studentJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assistantJoinCode != null">
+        ASSISTANT_JOIN_CODE=#{assistantJoinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        NODE_ID=#{nodeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!-- 批量更新 -->
+  <update id="updateBatch" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        UPDATE lesson_table
+        <set>
+        <if test="item.creatorId != null">
+          CREATOR_ID=#{item.creatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.createTime != null">
+          CREATE_TIME=#{item.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateTime != null">
+          UPDATE_TIME=#{item.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updatorId != null">
+          UPDATOR_ID=#{item.updatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.isDel != null">
+          IS_DEL=#{item.isDel,jdbcType=INTEGER},
+        </if>
+        <if test="item.productId != null">
+          PRODUCT_ID=#{item.productId,jdbcType=BIGINT},
+        </if>
+        <if test="item.stageId != null">
+          STAGE_ID=#{item.stageId,jdbcType=BIGINT},
+        </if>
+        <if test="item.lessonTableNo != null">
+          LESSON_TABLE_NO=#{item.lessonTableNo,jdbcType=VARCHAR},
+        </if>
+        <if test="item.subjectId != null">
+          SUBJECT_ID=#{item.subjectId,jdbcType=BIGINT},
+        </if>
+        <if test="item.dayDuration != null">
+          DAY_DURATION=#{item.dayDuration,jdbcType=DECIMAL},
+        </if>
+        <if test="item.nightDuration != null">
+          NIGHT_DURATION=#{item.nightDuration,jdbcType=DECIMAL},
+        </if>
+        <if test="item.templateId != null">
+          TEMPLATE_ID=#{item.templateId,jdbcType=BIGINT},
+        </if>
+        <if test="item.relateStatus != null">
+          RELATE_STATUS=#{item.relateStatus,jdbcType=INTEGER},
+        </if>
+        <if test="item.startTime != null">
+          START_TIME=#{item.startTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.endTime != null">
+          END_TIME=#{item.endTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.isIncludeDay != null">
+          IS_INCLUDE_DAY=#{item.isIncludeDay,jdbcType=INTEGER},
+        </if>
+        <if test="item.isIncludeWeekend != null">
+          IS_INCLUDE_WEEKEND=#{item.isIncludeWeekend,jdbcType=INTEGER},
+        </if>
+        <if test="item.teacherNo != null">
+          TEACHER_NO=#{item.teacherNo,jdbcType=VARCHAR},
+        </if>
+        <if test="item.teacherDeviceId != null">
+          TEACHER_DEVICE_ID=#{item.teacherDeviceId,jdbcType=BIGINT},
+        </if>
+        <if test="item.duration != null">
+          DURATION=#{item.duration,jdbcType=INTEGER},
+        </if>
+        <if test="item.cloudRoomId != null">
+          CLOUD_ROOM_ID=#{item.cloudRoomId,jdbcType=VARCHAR},
+        </if>
+        <if test="item.teacherName != null">
+          TEACHER_NAME=#{item.teacherName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.teacherJoinCode != null">
+          TEACHER_JOIN_CODE=#{item.teacherJoinCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.studentJoinCode != null">
+          STUDENT_JOIN_CODE=#{item.studentJoinCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.assistantJoinCode != null">
+          ASSISTANT_JOIN_CODE=#{item.assistantJoinCode,jdbcType=VARCHAR},
+        </if>
+        <if test="item.nodeId != null">
+          NODE_ID=#{item.nodeId,jdbcType=BIGINT},
+        </if>
+        </set>
+        WHERE ID = #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+  <!--  逻辑删除 -->
+  <update id="removeSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity" >
+    update lesson_table set UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!-- 逻辑批量删除 -->
+  <update id="removeBatch" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update lesson_table
+        set UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{item.updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+        where ID = #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+    <!--  物理删除 -->
+    <delete id="deleteSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity" >
+        DELETE FROM lesson_table
+        where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 物理批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            DELETE FROM lesson_table
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
+  <!-- 查询所有 -->
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableParam">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM lesson_table
+    <where>
+      IS_DEL=0
+    <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="productId != null">
+      AND PRODUCT_ID=#{productId,jdbcType=BIGINT}
+    </if>
+    <if test="stageId != null">
+      AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+    </if>
+    <if test="lessonTableNo != null">
+      AND LESSON_TABLE_NO=#{lessonTableNo,jdbcType=VARCHAR}
+    </if>
+    <if test="subjectId != null">
+      AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+    </if>
+    <if test="dayDuration != null">
+      AND DAY_DURATION=#{dayDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="nightDuration != null">
+      AND NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="templateId != null">
+      AND TEMPLATE_ID=#{templateId,jdbcType=BIGINT}
+    </if>
+    <if test="relateStatus != null">
+      AND RELATE_STATUS=#{relateStatus,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null">
+      AND START_TIME=#{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND END_TIME=#{endTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="isIncludeDay != null">
+      AND IS_INCLUDE_DAY=#{isIncludeDay,jdbcType=INTEGER}
+    </if>
+    <if test="isIncludeWeekend != null">
+      AND IS_INCLUDE_WEEKEND=#{isIncludeWeekend,jdbcType=INTEGER}
+    </if>
+    <if test="teacherNo != null">
+      AND TEACHER_NO=#{teacherNo,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherDeviceId != null">
+      AND TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT}
+    </if>
+    <if test="duration != null">
+      AND DURATION=#{duration,jdbcType=INTEGER}
+    </if>
+    <if test="cloudRoomId != null">
+      AND CLOUD_ROOM_ID=#{cloudRoomId,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherName != null">
+      AND TEACHER_NAME=#{teacherName,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherJoinCode != null">
+      AND TEACHER_JOIN_CODE=#{teacherJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="studentJoinCode != null">
+      AND STUDENT_JOIN_CODE=#{studentJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="assistantJoinCode != null">
+      AND ASSISTANT_JOIN_CODE=#{assistantJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="nodeId != null">
+      AND NODE_ID=#{nodeId,jdbcType=BIGINT}
+    </if>
+      <if test="queryStartTime != null and queryEndTime != null">
+        AND START_TIME BETWEEN #{queryStartTime} AND #{queryEndTime}
+      </if>
+      <if test="lessonTableQuery != null">
+        AND (LESSON_TABLE_NO like CONCAT('%', #{lessonTableQuery, jdbcType=VARCHAR}, '%'))
+      </if>
+    <if test="splitProductIds != null and splitProductIds.size() > 0">
+      <foreach collection="splitProductIds" item="itemList" open=" AND (" separator=" OR " close=")" index="i">
+        <foreach collection="itemList" index="j" separator="," open="PRODUCT_ID IN (" close=")" item="item">
+          #{item}
+        </foreach>
+      </foreach>
+    </if>
+    <if test="teacherQuery != null">
+      AND EXISTs (
+        SELECT 1 FROM LESSON_TABLE_DETAIL  WHERE LESSON_TABLE_DETAIL.TIME_TABLE_ID = LESSON_TABLE.ID
+        AND ( (TEACHER_NO like CONCAT('%', #{teacherQuery, jdbcType=VARCHAR}, '%'))
+                OR (TEACHER_NAME like CONCAT('%', #{teacherQuery, jdbcType=VARCHAR}, '%')) )
+      )
+    </if>
+      <if test="ids != null and ids.size() > 0">
+        AND ID IN
+        <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="nodeIds != null and nodeIds.size() > 0">
+        AND NODE_ID IN
+        <foreach collection="nodeIds" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="templateIds != null and templateIds.size() > 0">
+        AND TEMPLATE_ID IN
+        <foreach collection="templateIds" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+      <if test="isOrderByStatusAndStartTime != null">
+        ORDER BY RELATE_STATUS DESC , START_TIME
+      </if>
+      <if test="pageDto != null">
+          limit
+      ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+      </if>
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="countQuery" resultType="int" parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableParam">
+    SELECT
+    count(1)
+    FROM lesson_table
+      <where>
+        IS_DEL=0
+    <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="productId != null">
+      AND PRODUCT_ID=#{productId,jdbcType=BIGINT}
+    </if>
+    <if test="stageId != null">
+      AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+    </if>
+    <if test="lessonTableNo != null">
+      AND LESSON_TABLE_NO=#{lessonTableNo,jdbcType=VARCHAR}
+    </if>
+    <if test="subjectId != null">
+      AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+    </if>
+    <if test="dayDuration != null">
+      AND DAY_DURATION=#{dayDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="nightDuration != null">
+      AND NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="templateId != null">
+      AND TEMPLATE_ID=#{templateId,jdbcType=BIGINT}
+    </if>
+    <if test="relateStatus != null">
+      AND RELATE_STATUS=#{relateStatus,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null">
+      AND START_TIME=#{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND END_TIME=#{endTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="isIncludeDay != null">
+      AND IS_INCLUDE_DAY=#{isIncludeDay,jdbcType=INTEGER}
+    </if>
+    <if test="isIncludeWeekend != null">
+      AND IS_INCLUDE_WEEKEND=#{isIncludeWeekend,jdbcType=INTEGER}
+    </if>
+    <if test="teacherNo != null">
+      AND TEACHER_NO=#{teacherNo,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherDeviceId != null">
+      AND TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT}
+    </if>
+    <if test="duration != null">
+      AND DURATION=#{duration,jdbcType=INTEGER}
+    </if>
+    <if test="cloudRoomId != null">
+      AND CLOUD_ROOM_ID=#{cloudRoomId,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherName != null">
+      AND TEACHER_NAME=#{teacherName,jdbcType=VARCHAR}
+    </if>
+    <if test="teacherJoinCode != null">
+      AND TEACHER_JOIN_CODE=#{teacherJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="studentJoinCode != null">
+      AND STUDENT_JOIN_CODE=#{studentJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="assistantJoinCode != null">
+      AND ASSISTANT_JOIN_CODE=#{assistantJoinCode,jdbcType=VARCHAR}
+    </if>
+    <if test="nodeId != null">
+      AND NODE_ID=#{nodeId,jdbcType=BIGINT}
+    </if>
+    <if test="queryStartTime != null and queryEndTime != null">
+      AND START_TIME BETWEEN #{queryStartTime} AND #{queryEndTime}
+    </if>
+    <if test="lessonTableQuery != null">
+      AND (LESSON_TABLE_NO like CONCAT('%', #{lessonTableQuery, jdbcType=VARCHAR}, '%'))
+    </if>
+    <if test="splitProductIds != null and splitProductIds.size() > 0">
+      <foreach collection="splitProductIds" item="itemList" open=" AND (" separator=" OR " close=")" index="i">
+        <foreach collection="itemList" index="j" separator="," open="PRODUCT_ID IN (" close=")" item="item">
+          #{item}
+        </foreach>
+      </foreach>
+    </if>
+    <if test="teacherQuery != null">
+      AND EXISTs (
+      SELECT 1 FROM LESSON_TABLE_DETAIL  WHERE LESSON_TABLE_DETAIL.TIME_TABLE_ID = LESSON_TABLE.ID
+      AND ( (TEACHER_NO like CONCAT('%', #{teacherQuery, jdbcType=VARCHAR}, '%'))
+      OR (TEACHER_NAME like CONCAT('%', #{teacherQuery, jdbcType=VARCHAR}, '%')) )
+      )
+    </if>
+    <if test="ids != null and ids.size() > 0">
+      AND ID IN
+      <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="nodeIds != null and nodeIds.size() > 0">
+      AND NODE_ID IN
+      <foreach collection="nodeIds" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="templateIds != null and templateIds.size() > 0">
+      AND TEMPLATE_ID IN
+      <foreach collection="templateIds" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+      </where>
+  </select>
+
+  <!-- 单个查询 -->
+  <select id="get" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableEntity" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM lesson_table
+    <where>
+      IS_DEL=0
+    <if test="id != null">
+      AND id = #{id, jdbcType=BIGINT}
+    </if>
+    </where>
+  </select>
+
+
+  <select id="queryLessonTablesByDeviceId" resultMap="BaseResultMap">
+    SELECT DISTINCT
+    lt.LESSON_TABLE_NO AS LESSON_TABLE_NO, lt.SUBJECT_ID AS SUBJECT_ID,
+    lt.TEACHER_NAME AS TEACHER_NAME, lt.TEACHER_NO AS TEACHER_NO,
+    lt.START_TIME AS START_TIME, lt.END_TIME AS END_TIME,
+    lt.STAGE_ID AS STAGE_ID
+    FROM
+    lesson_table lt
+    LEFT JOIN lesson_table_detail ltd ON lt.id = ltd.TIME_TABLE_ID
+    WHERE
+    lt.IS_DEL = 0 AND ltd.IS_DEL = 0 AND
+    ltd.TEACHER_DEVICE_ID = #{teacherDeviceId, jdbcType=BIGINT}
+    <if test="lessonTime != null">
+      AND EXISTS (
+      SELECT 1 FROM LESSON_TABLE_TIME_DETAIL LTTD WHERE
+      LTTD.IS_DEL = 0 AND
+      LTTD.LESSON_DETAIL_ID = LTD.ID AND #{lessonTime, jdbcType=TIMESTAMP} BETWEEN LTTD.START_TIME AND LTTD.END_TIME
+      )
+    </if>
+    ORDER BY START_TIME DESC
+    <if test="pageDto != null">
+        LIMIT ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+    </if>
+  </select>
+
+  <select id="queryLessonTablesByStuDev" resultMap="BaseResultMap">
+    SELECT DISTINCT
+    lt.LESSON_TABLE_NO AS LESSON_TABLE_NO, lt.SUBJECT_ID AS SUBJECT_ID,
+    lt.TEACHER_NAME AS TEACHER_NAME, lt.TEACHER_NO AS TEACHER_NO,
+    lt.START_TIME AS START_TIME, lt.END_TIME AS END_TIME,
+    lt.STAGE_ID AS STAGE_ID
+    FROM
+    lesson_table lt
+    LEFT JOIN lesson_table_detail ltd ON lt.id = ltd.TIME_TABLE_ID
+    LEFT JOIN class_lesson cl on ltd.id = cl.LESSON_TABLE_DETAIL_ID
+    <where>
+        cl.is_discard = 0 AND  lt.IS_DEL = 0 AND ltd.IS_DEL = 0 AND
+        cl.room_id = #{studentDeviceId}
+        <if test="lessonTime != null">
+            AND EXISTS
+           (
+              SELECT 1 FROM lesson_time_detail ltd WHERE cl.ID = ltd.LESSON_ID and ltd.START_TIME &lt;= #{lessonTime} and ltd.END_TIME &gt;= #{lessonTime}
+           )
+        </if>
+        ORDER BY START_TIME DESC
+        <if test="pageDto != null">
+            LIMIT ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </where>
+  </select>
+
+  <select id="queryDaysInLessonTableTeacher" resultType="map">
+  	select
+  		concat(TIME_TABLE_ID,'_',TEACHER_NO),count(lesson_date)
+  	from
+  		lesson_table_detail
+  	where
+  		(TIME_TABLE_ID,TEACHER_NO)
+  		<foreach collection="collection" close=")" item="item" open="(" separator=",">
+  			(#{item.lessonTableId},#{item.staffNo})
+  		</foreach>
+  </select>
+
+  <select id="queryLessonTableNo" resultType="map">
+    select id,lesson_table_no from lesson_table
+    where id in
+    <foreach close=")" collection="lessonTableIds" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  
+  <select id="queryLessonTableNoByDetailIds" resultType="map">
+    select b.id,a.lesson_table_no from lesson_table a join lesson_table_detail b on a.id = b.time_table_id
+    where b.id in
+    <foreach close=")" collection="lessonTableDetailIds" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

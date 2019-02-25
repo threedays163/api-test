@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://172.30.9.228:3306/cost_paike_bak?zeroDateTimeBehavior=convertToNull&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: shanyu123@
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+      minimum-idle: 16
+      maximum-pool-size: 32
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      idle-timeout: 180000

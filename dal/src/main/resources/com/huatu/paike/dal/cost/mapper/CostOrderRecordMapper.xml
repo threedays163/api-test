@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.cost.mapper.CostOrderRecordMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.cost.entity.CostOrderRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="stage_id" jdbcType="BIGINT" property="stageId" />
+    <result column="subject_id" jdbcType="BIGINT" property="subjectId" />
+    <result column="batch_num" jdbcType="INTEGER" property="batchNum" />
+    <result column="lesson_id" jdbcType="BIGINT" property="lessonId" />
+    <result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="cost" jdbcType="BIGINT" property="cost" />
+    <result column="cost_type" jdbcType="TINYINT" property="costType" />
+    <result column="PROTOCOL_TYPE" jdbcType="VARCHAR" property="protocolType" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+    <result column="STATUS" jdbcType="BIT" property="status" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, order_no, class_id, stage_id, subject_id, batch_num, lesson_id, LESSON_DATE, 
+    duration, cost, cost_type, PROTOCOL_TYPE, CREATE_TIME, UPDATE_TIME, NODE_ID, `STATUS`
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.cost.entity.CostOrderRecordCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from cost_order_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into cost_order_record(order_no, class_id, stage_id, batch_num, subject_id, lesson_id, duration, cost, cost_type,`status`,lesson_date,protocol_type) values
+    <foreach collection="list" item="record" separator=",">
+      (
+      	#{record.orderNo},#{record.classId},#{record.stageId},#{record.batchNum},
+      	#{record.subjectId},#{record.lessonId},#{record.duration},#{record.cost},
+      	#{record.costType},#{record.status},#{record.lessonDate},#{record.protocolType}
+      )
+    </foreach>
+  </insert>
+</mapper>

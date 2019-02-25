@@ -135,12 +135,13 @@
             <resource>
                 <directory>src/main/resources/</directory>
                 <includes>
-                    <include>**/*</include>
+                    <include>**</include>
                 </includes>
             </resource>
         </resources>
     </build>
     <modules>
     	<module>controller</module>
+        <module>dal</module>
     </modules>
 </project>

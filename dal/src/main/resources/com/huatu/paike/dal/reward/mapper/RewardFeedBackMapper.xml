@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.reward.mapper.RewardFeedBackMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.reward.entity.RewardFeedBack">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="FEED_BACK_ID" jdbcType="BIGINT" property="feedBackId" />
+    <result column="REWARD_STATUS" jdbcType="TINYINT" property="rewardStatus" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, FEED_BACK_ID, REWARD_STATUS, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.reward.entity.RewardFeedBackCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from reward_feed_back
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <select id="queryUndealFeedBackIds" resultType="java.lang.Long">
+  	select feed_back_id from reward_feed_back where reward_status=0 and create_time 
+  	<if test="startDate !=null">
+  	and create_time > #{startDate}
+  	</if>
+  	<if test="endDate !=null">
+  	and #{endDate} > create_time
+  	</if>  	
+  	<if test="pageDto!=null">
+  		limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+  	</if>
+  </select>
+
+  <update id="updateStatus" parameterType="java.util.List">
+  	update reward_feed_back set reward_status=1 where feed_back_id in
+  	<foreach collection="list" close=")" item="item" open="(" separator=",">
+  		#{item}
+  	</foreach>
+  </update>
+</mapper>

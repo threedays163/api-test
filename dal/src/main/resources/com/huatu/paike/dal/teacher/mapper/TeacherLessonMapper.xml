@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.huatu.paike.dal.teacher.mapper.TeacherLessonMapper">
+
+	<resultMap id="TeacherLessonMap"
+		type="com.huatu.paike.dal.teacher.entity.TeacherLesson">
+		<result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+		<result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="ROOM_ID" jdbcType="BIGINT" property="roomId" />
+		<result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+		<result column="TEACHER_TYPE" jdbcType="TINYINT" property="teacherType" />
+	</resultMap>
+	
+	<resultMap id="TeacherLessonTimeMap"
+		type="com.huatu.paike.dal.teacher.entity.TeacherLessonTime">
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="LESSON_ID" jdbcType="BIGINT" property="lessonId" />
+		<result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="DURATION" jdbcType="INTEGER" property="duration" />
+		<result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+		<result column="TEACHER_TYPE" jdbcType="TINYINT" property="teacherType" />
+	</resultMap>
+	
+	<!-- 根据工号和日期范围，批量查询教师排课记录 -->
+	<select id="queryTeacherLessonList" resultMap="TeacherLessonMap" 
+		parameterType="com.huatu.paike.dal.teacher.dto.TeacherLessonQueryParam">
+		SELECT
+			a.class_id AS class_id,
+			a.id AS lesson_id,
+			a.lesson_date AS lesson_date,
+			a.subject_id AS subject_id,
+			a.room_id AS room_id,
+			b.teacher_staff_no AS teacher_staff_no,
+			b.teacher_type AS teacher_type
+		FROM
+			class_lesson AS a
+			JOIN lesson_teacher AS b
+			ON a.id = b.lesson_id
+		WHERE
+			1=1
+		<if test="staffNos != null and staffNos.size > 0">
+			and b.teacher_staff_no in 
+			<foreach collection="staffNos" item="staffNo" open="(" separator="," close=")">
+				#{staffNo}
+			</foreach>
+		</if>
+		<if test="beginDate != null">
+			and a.lesson_date &gt;= #{beginDate}
+		</if>
+		<if test="endDate != null">
+			and a.lesson_date &lt;= #{endDate}
+		</if>
+		ORDER BY
+			b.teacher_staff_no asc,
+			a.lesson_date desc
+	</select>
+
+	<!-- 根据工号和日期范围，批量查询教师授课的具体时间 -->
+	<select id="queryTeacherTimeList" resultMap="TeacherLessonTimeMap">
+		SELECT
+			a.class_id AS class_id,
+			a.lesson_id AS lesson_id,
+			a.lesson_date AS lesson_date,
+			b.subject_id AS subject_id,
+			a.start_time AS start_time,
+			a.end_time AS end_time,
+			a.duration AS duration,
+			b.teacher_staff_no AS teacher_staff_no,
+			b.teacher_type AS teacher_type
+		FROM
+			lesson_time_detail AS a
+			JOIN lesson_teacher AS b
+			ON a.lesson_id = b.lesson_id
+		WHERE
+			1=1
+		<if test="staffNo != null">
+			and b.teacher_staff_no = #{staffNo} 
+		</if>
+		<if test="date != null">
+			and a.lesson_date = #{date}
+		</if>
+		ORDER BY
+			a.start_time asc
+	</select>
+		<resultMap type="com.huatu.paike.dal.teacher.dto.TeacherLessonDetail" id="teacherLessonDetail">
+		<result column="time_detail_id" jdbcType="BIGINT" property="timeDetailId"/>
+		<result column="lesson_id" jdbcType="BIGINT" property="lessonId"/>
+		<result column="teach_way" jdbcType="BIGINT" property="teachWay"/>
+		<result column="class_id" jdbcType="BIGINT" property="classId"/>
+		<result column="stage_id" jdbcType="BIGINT" property="stageId"/>
+		<result column="subject_id" jdbcType="BIGINT" property="subjectId"/>
+		<result column="room_id" jdbcType="BIGINT" property="roomId"/>
+		<result column="staff_no" jdbcType="VARCHAR" property="staffNo"/>
+		<result column="lesson_date" jdbcType="TIMESTAMP" property="lessonDate"/>
+		<result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+		<result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+		<result column="teacher_type" jdbcType="TINYINT" property="teacherType"/>
+	</resultMap>
+	
+	<sql id="queryTeacherLessonDetail_DoubleTeacher_Master">
+		SELECT
+			lttd.LESSON_DETAIL_ID AS lesson_id,
+			4 AS teach_way,
+			0 AS class_id,
+			1 AS teacher_type,
+			lt.STAGE_ID AS stage_id,
+			ltd.TEACHER_DEVICE_ID AS room_id,
+			lt.SUBJECT_ID AS subject_id,
+			lttd.ID AS time_detail_id,
+			ltd.TEACHER_NO AS staff_no,
+			lttd.LESSON_DATE AS lesson_date,
+			lttd.START_TIME AS start_time,
+			lttd.END_TIME AS end_time 
+		FROM
+			lesson_table lt,
+			lesson_table_detail ltd,
+			lesson_table_time_detail lttd 
+		WHERE
+			lt.ID = ltd.TIME_TABLE_ID 
+			AND ltd.ID = lttd.LESSON_DETAIL_ID
+			AND lt.IS_DEL = 0
+			AND ltd.IS_DEL = 0
+			AND lttd.is_DEL = 0
+		AND lttd.LESSON_DATE BETWEEN #{startTime} AND #{endTime}
+			<if test="staffNos!=null and staffNos.size>0">
+				AND ltd.TEACHER_NO in 
+				<foreach collection="staffNos" close=")" item="item" open="(" separator=",">
+					#{item}
+				</foreach>
+			</if>
+	</sql>
+	
+	<sql id="queryTeacherLessonDetail_DoubleTeacher_Assistant">
+		SELECT 
+			lt.LESSON_ID AS lesson_id,
+			cl.TEACH_WAY AS teach_way,
+			lt.CLASS_ID AS class_id,
+			2 AS teacher_type,
+			lt.STAGE_ID AS stage_id,
+			cl.ROOM_ID AS room_id,
+			lt.SUBJECT_ID AS subject_id,
+			ltd.ID AS time_detail_id,
+			lt.TEACHER_STAFF_NO AS staff_no,
+			ltd.LESSON_DATE AS lesson_date,
+			ltd.START_TIME AS start_time,
+			ltd.END_TIME AS end_time
+		FROM
+			lesson_teacher lt,
+			lesson_time_detail ltd,
+			class_lesson cl
+		WHERE
+			cl.ID = lt.LESSON_ID
+			AND lt.LESSON_ID = ltd.LESSON_ID 
+			AND cl.TEACH_WAY=4 AND lt.TEACHER_TYPE=2
+			AND ltd.LESSON_DATE BETWEEN #{startTime} AND #{endTime} 
+			<if test="staffNos!=null and staffNos.size>0">
+				AND lt.TEACHER_STAFF_NO in 
+				<foreach collection="staffNos" close=")" item="item" open="(" separator=",">
+					#{item}
+				</foreach>
+			</if>
+	</sql>
+	
+	<sql id="queryTeacherLessonDetail_F2F">
+		SELECT 
+			lt.LESSON_ID AS lesson_id,
+			cl.TEACH_WAY AS teach_way,
+			lt.CLASS_ID AS class_id,
+			lt.TEACHER_TYPE AS teacher_type,
+			lt.STAGE_ID AS stage_id,
+			cl.ROOM_ID AS room_id,
+			lt.SUBJECT_ID AS subject_id,
+			ltd.ID AS time_detail_id,
+			lt.TEACHER_STAFF_NO AS staff_no,
+			ltd.LESSON_DATE AS lesson_date,
+			ltd.START_TIME AS start_time,
+			ltd.END_TIME AS end_time
+		FROM
+			lesson_teacher lt,
+			lesson_time_detail ltd,
+			class_lesson cl
+		WHERE
+			cl.ID = lt.LESSON_ID
+			AND lt.LESSON_ID = ltd.LESSON_ID 
+			AND cl.TEACH_WAY=0
+			AND ltd.LESSON_DATE BETWEEN #{startTime} AND #{endTime} 
+			<if test="staffNos!=null and staffNos.size>0">
+				AND lt.TEACHER_STAFF_NO in 
+				<foreach collection="staffNos" close=")" item="item" open="(" separator=",">
+					#{item}
+				</foreach>
+			</if>
+	</sql>
+	
+	<!-- 根据工号和日期范围,查询教师上课记录 -->
+	<select id="queryTeacherLessonDetail" resultMap="teacherLessonDetail">
+		SELECT
+			tem.*
+		FROM
+			(
+			<include refid="queryTeacherLessonDetail_F2F"/>
+			union all
+			<include refid="queryTeacherLessonDetail_DoubleTeacher_Assistant"/>
+			union all
+			<include refid="queryTeacherLessonDetail_DoubleTeacher_Master"/>
+			) AS tem
+		ORDER BY
+			tem.staff_no ASC,
+			tem.lesson_date ASC,
+			tem.start_time ASC
+	</select>
+
+	<select id="queryStudentRoomByClassIds"
+			resultType="com.huatu.paike.dal.teacher.dto.AssistantAndStudentRoom">
+		select a.ROOM_ID studentRoomId,b.CLASS_ID classId
+		from class_lesson a
+		join class_stage_subject_teacher b on a.CSST_ID=b.ID
+		where b.LESSON_TABLE_ID=#{lessonTableId}
+		<if test="classIds!=null and classIds.size()&gt;0">
+			and b.CLASS_ID in
+			<foreach close=")" collection="classIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="queryAssistantByClassIds"
+			resultType="com.huatu.paike.dal.teacher.dto.AssistantAndStudentRoom">
+		select a.TEACHER_STAFF_NO assistantNo,b.CLASS_ID classId
+		from lesson_teacher a
+		join class_stage_subject_teacher b on a.CSST_ID=b.ID
+		where b.LESSON_TABLE_ID=#{lessonTableId}
+		<if test="teacherType != null">
+		   AND a.TEACHER_TYPE = #{teacherType}
+		</if>
+		<if test="classIds!=null and classIds.size()&gt;0">
+			and b.CLASS_ID in
+			<foreach close=")" collection="classIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+</mapper>

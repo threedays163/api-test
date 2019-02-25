@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.feedback.mapper.TeacherTripMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.feedback.entity.TeacherTrip">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+      <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId"/>
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="DAYS" jdbcType="INTEGER" property="days" />
+    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, STAGE_ID, SUBJECT_ID,BATCH_NUM, TEACHER_STAFF_NO, START_TIME, END_TIME, `DAYS`,
+    `desc`, CREATE_TIME, UPDATE_TIME, CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.feedback.entity.TeacherTripCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from teacher_trip
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <delete id="deleteByClassStageBatchNum" parameterType="com.huatu.paike.StageBatchDto">
+  	delete from teacher_trip where class_id=#{classId} and (stage_id,subject_id,batch_num) in
+  		<foreach collection="stageBatchDtos" close=")" item="item" open="(" separator=",">
+  			(#{item.stageId},#{item.subjectId},#{item.batchNum})
+  		</foreach>
+  </delete>
+  
+  <!-- 查询给定班级阶段的老师行程 -->
+  <select id="queryByClassStage" resultMap="BaseResultMap">
+  	select * from teacher_trip where class_id=#{classID} and stage_id=#{stageID}
+  </select>
+  
+  <!-- 批量查询给定阶段的老师行程 -->
+  <select id="queryByClassStages" resultMap="BaseResultMap">
+  	select DISTINCT * from teacher_trip where class_id=#{classID}
+  	<if test="stageBatchs!=null and stageBatchs.size>0">
+  		and
+        (
+            (
+                subject_id=-1 AND
+                (stage_id,batch_num) in
+                <foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+                    (#{item.stageId},#{item.batchNum})
+                </foreach>
+            )
+            OR
+            (
+                subject_id>0 AND
+                (stage_id,subject_id,batch_num) in
+                <foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+                    (#{item.stageId},#{item.subjectId},#{item.batchNum})
+                </foreach>
+            )
+        )
+  	</if>
+  </select>
+  
+  <!-- 插入或更新数据 -->
+  <insert id="insertOrUpdate" parameterType="com.huatu.paike.dal.feedback.entity.TeacherTrip">
+  	INSERT INTO teacher_trip(ID,CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, TEACHER_STAFF_NO, START_TIME, END_TIME, `DAYS`, `desc`, CREATOR_ID) VALUES (#{id},#{classId},#{stageId},#{subjectId},#{batchNum},#{teacherStaffNo},#{startTime},#{endTime},#{days},#{desc},#{creatorId}) ON DUPLICATE KEY UPDATE
+    start_time=VALUES(start_time),end_time=VALUES(end_time),days=VALUES(days),`desc`=VALUES(`desc`);
+  	<selectKey keyProperty="id" order="AFTER" resultType="Long">
+    	SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+  </insert>
+  
+  <!-- 批量插入数据 -->
+  <insert id="batchInsert" parameterType="list">
+  	INSERT INTO teacher_trip(CLASS_ID, STAGE_ID, SUBJECT_ID,BATCH_NUM, TEACHER_STAFF_NO, START_TIME, END_TIME, `DAYS`, `desc`, CREATOR_ID) VALUES
+  	<foreach collection="list" item="trip" separator=",">
+  		(#{trip.classId},#{trip.stageId},#{trip.subjectId},#{trip.batchNum},#{trip.teacherStaffNo},#{trip.startTime},#{trip.endTime},#{trip.days},#{trip.desc},#{trip.creatorId})
+  	</foreach>
+  </insert>
+</mapper>

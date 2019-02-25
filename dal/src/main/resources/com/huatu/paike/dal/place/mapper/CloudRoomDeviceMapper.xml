@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.place.mapper.CloudRoomDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.huatu.paike.dal.place.entity.CloudRoomDevice">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="CLOUD_ROOM_ID" jdbcType="VARCHAR" property="cloudRoomId"/>
+        <result column="PLACE_ID" jdbcType="BIGINT" property="placeId"/>
+        <result column="PLACE_TYPE" jdbcType="TINYINT" property="placeType"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        ID, CLOUD_ROOM_ID, PLACE_ID, PLACE_TYPE, CREATE_TIME, UPDATE_TIME
+    </sql>
+    <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.place.entity.CloudRoomDeviceCriteria">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        delete from cloud_room_device
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+
+    <insert id="batchInsert">
+        insert into cloud_room_device(CLOUD_ROOM_ID,PLACE_ID,PLACE_TYPE) values
+        <if test="devices != null and devices.size()>0">
+            <foreach collection="devices" separator="," item="device">
+                (#{device.cloudRoomId},#{device.placeId},#{device.placeType})
+            </foreach>
+        </if>
+    </insert>
+
+    <delete id="delByParams">
+        delete from cloud_room_device
+        <where>
+            <if test="placeIds !=null and placeIds.size()>0">
+                and place_id in
+                <foreach collection="placeIds" item="placeId" open="(" separator="," close=")">
+                    #{placeId}
+                </foreach>
+            </if>
+            <if test="roomId != null and !roomId.trim().equals('')">
+                and cloud_room_id = #{roomId}
+            </if>
+        </where>
+    </delete>
+
+    <select id="queryListByParams" resultMap="BaseResultMap">
+        select * from cloud_room_device
+        <where>
+            <if test="cloudRoomId != null and !cloudRoomId.trim().equals('')">
+                and cloud_room_id = #{cloudRoomId}
+            </if>
+            <if test="placeType != null">
+                and place_type = #{placeType}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByRoomId" resultType="java.util.Map">
+        select cloud_room_id, count(1) from cloud_room_device
+        <where>
+            place_type = #{placeType}
+            <if test="cloudRoomIds != null and cloudRoomIds.size()>0">
+                and cloud_room_id in
+                <foreach collection="cloudRoomIds" open="(" separator="," close=")" item="cloudRoomId">
+                    #{cloudRoomId}
+                </foreach>
+            </if>
+        </where>
+        group by cloud_room_id
+    </select>
+
+    <delete id="delByIds">
+        delete from cloud_room_device
+        <where>
+            <if test="ids != null and ids.size()>0">
+                and id in
+                <foreach collection="ids" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <select id="countStuDevByTeacherDev" resultType="java.util.Map">
+        select a.cloud_room_id, count(b.place_id) from cloud_room_device a LEFT JOIN cloud_room_device b on
+        a.cloud_room_id = b.cloud_room_id
+        <where>
+            a.place_type = 5 and b.place_type = 4
+            <if test="cloudRoomIds != null and cloudRoomIds.size() > 0">
+                and a.cloud_room_id in
+                <foreach collection="cloudRoomIds" item="cloudRoomId" open="(" separator="," close=")">
+                    #{cloudRoomId}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY a.cloud_room_id
+    </select>
+    <select id="getTeacherRoomDevice" resultMap="BaseResultMap">
+        select * from cloud_room_device where cloud_room_id = #{cloudRoomId} and place_type = 5 limit 1
+    </select>
+
+</mapper>

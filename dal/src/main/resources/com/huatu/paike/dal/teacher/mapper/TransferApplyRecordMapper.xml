@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.teacher.mapper.TransferApplyRecordMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.teacher.entity.TransferApplyRecordEntity">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="BIGINT" property="updatorId" />
+    <result column="IS_DEL" jdbcType="INTEGER" property="isDel" />
+    <result column="APPLY_ID" jdbcType="VARCHAR" property="applyId" />
+    <result column="OLD_APPLY_ID" jdbcType="VARCHAR" property="oldApplyId" />
+    <result column="OPERATOR_TYPE" jdbcType="INTEGER" property="operatorType" />
+  </resultMap>
+  
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    ID,CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,APPLY_ID,OLD_APPLY_ID,OPERATOR_TYPE
+  </sql>
+  
+  <!-- 单个插入 -->
+  <insert id="insertSingle" parameterType="com.huatu.paike.dal.teacher.entity.TransferApplyRecordEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into transfer_apply_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="isDel != null">
+        IS_DEL,
+      </if>
+      <if test="applyId != null">
+        APPLY_ID,
+      </if>
+      <if test="oldApplyId != null">
+        OLD_APPLY_ID,
+      </if>
+      <if test="operatorType != null">
+        OPERATOR_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="applyId != null">
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="oldApplyId != null">
+        #{oldApplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorType != null">
+        #{operatorType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  
+  <!-- 单个更新 -->
+  <update id="updateSingle" parameterType="com.huatu.paike.dal.teacher.entity.TransferApplyRecordEntity">
+    update transfer_apply_record
+    <set>
+      <if test="creatorId != null">
+        CREATOR_ID=#{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID=#{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        IS_DEL=#{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="applyId != null">
+        APPLY_ID=#{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="oldApplyId != null">
+        OLD_APPLY_ID=#{oldApplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorType != null">
+        OPERATOR_TYPE=#{operatorType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="removeByid" parameterType="long">
+    UPDATE transfer_apply_record set is_del = 1 where id = #{id, jdbcType=BIGINT}
+  </update>
+  
+
+
+  
+  <!-- 查询所有 -->
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.teacher.entity.TransferApplyRecordEntity">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM transfer_apply_record
+    WHERE IS_DEL = 0
+    <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="applyId != null">
+      AND APPLY_ID=#{applyId,jdbcType=VARCHAR}
+    </if>
+    <if test="oldApplyId != null">
+      AND OLD_APPLY_ID=#{oldApplyId,jdbcType=VARCHAR}
+    </if>
+    <if test="operatorType != null">
+      AND OPERATOR_TYPE=#{operatorType,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 单个查询 -->
+  <select id="get" parameterType="com.huatu.paike.dal.teacher.entity.TransferApplyRecordEntity" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM transfer_apply_record 
+    WHERE IS_DEL = 0
+    <if test="id != null">
+      AND id = #{id, jdbcType=BIGINT}
+    </if>
+  </select>
+</mapper>

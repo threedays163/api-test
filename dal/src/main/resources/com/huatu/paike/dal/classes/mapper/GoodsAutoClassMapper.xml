@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.classes.mapper.GoodsAutoClassMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.classes.entity.GoodsAutoClass">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="NUM" jdbcType="INTEGER" property="num" />
+    <result column="IS_FULL" jdbcType="BIT" property="isFull" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, GOODS_NO, CLASS_ID, NUM, IS_FULL, CREATE_TIME, UPDATE_TIME, CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.classes.entity.GoodsAutoClassCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from GOODS_AUTO_CLASS
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <select id="ifHaveNotFullClass" resultType="int" parameterType="string">
+  	SELECT count(DISTINCT gas.CLASS_ID) as 'count' FROM GOODS_AUTO_CLASS gas ,GOODS_AUTO_CONF gaf WHERE gas.GOODS_NO=gaf.GOODS_NO AND gas.IS_FULL=0 AND gaf.ACTIVE=1 AND gaf.GOODS_NO=#{goodsNo}
+  </select>
+</mapper>

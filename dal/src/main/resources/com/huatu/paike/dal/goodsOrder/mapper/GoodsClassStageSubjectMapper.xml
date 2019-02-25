@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.goodsOrder.mapper.GoodsClassStageSubjectMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.goodsOrder.entity.GoodsClassStageSubject">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, CLASS_NO, GOODS_NO, STAGE_ID, SUBJECT_ID, CREATE_TIME, UPDATE_TIME, 
+    CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.goodsOrder.entity.GoodsClassStageSubjectCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from goods_class_stage_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <sql id="pageTool">
+  	<if test="pageDto!=null">
+			limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+	</if>
+  </sql>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+
+  INSERT INTO goods_class_stage_subject (CLASS_ID, CLASS_NO, GOODS_NO, STAGE_ID, SUBJECT_ID,CREATOR_ID) values 
+		<foreach collection="list" item="gcss" separator=",">
+			(#{gcss.classId}, #{gcss.classNo}, #{gcss.goodsNo},
+			#{gcss.stageId},#{gcss.subjectId},#{gcss.creatorId})
+		</foreach>
+  </insert>
+  
+  <select id="countGoodsStartedSubject" resultType="map">
+		select a.goods_no,count( distinct b.subject_id) from
+		goods_class_stage_subject a join class_stage_subject b
+		on a.class_id = b.class_id and a.stage_id = b.stage_id and a.subject_id = b.subject_id
+		where a.class_id = #{classId} and (#{now}>=b.START_DATE or b.FINISH_DURATION >0)
+		<if test="goodsNos !=null and goodsNos.size >0">
+			and a.goods_no in
+			<foreach collection="goodsNos" item="goodsNo" open="(" separator="," close=")">
+			#{goodsNo}
+			</foreach>
+		</if>
+		group by a.goods_no
+	</select>
+	
+	<resultMap type="GoodsClassStageSubjectOrderCountDto" id="gcssOrderCountDto">
+		<result property="classId" column="CLASS_ID" />
+		<result property="stageId" column="STAGE_ID"/>
+		<result property="subjectId" column="SUBJECT_ID"/>
+		<result property="batchNum" column="BATCH_NUM"/>
+		<result property="goodsNo" column="GOODS_NO"/>
+		<result property="orderCount" column="count"/>
+	</resultMap>
+	
+	<select id="queryOrderCount" resultMap="gcssOrderCountDto">
+		SELECT 
+			ocss.CLASS_ID,ocss.STAGE_ID,ocss.SUBJECT_ID,ocss.GOODS_NO,ocss.BATCH_NUM,COUNT(ocss.ORDER_NO) as 'count'
+		FROM
+			goods_class_stage_subject gcss,
+			order_class_stage_subject ocss 
+		WHERE
+			gcss.CLASS_ID = ocss.CLASS_ID 
+			AND gcss.STAGE_ID = ocss.STAGE_ID 
+			AND gcss.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND gcss.GOODS_NO=ocss.GOODS_NO
+			AND gcss.GOODS_NO = #{goodsNo}
+		GROUP BY
+			ocss.CLASS_ID,ocss.BATCH_NUM,ocss.STAGE_ID,ocss.SUBJECT_ID
+		ORDER BY 
+			ocss.CLASS_ID,ocss.BATCH_NUM,ocss.STAGE_ID,ocss.SUBJECT_ID
+		<include refid="pageTool"/>
+	</select>
+	
+	<select id="queryOrderCountAll" resultType="integer">
+		SELECT 
+			count(1)
+		FROM
+			goods_class_stage_subject gcss,
+			order_class_stage_subject ocss 
+		WHERE
+			gcss.CLASS_ID = ocss.CLASS_ID 
+			AND gcss.STAGE_ID = ocss.STAGE_ID 
+			AND gcss.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND gcss.GOODS_NO=ocss.GOODS_NO
+			AND gcss.GOODS_NO = #{goodsNo}
+		GROUP BY
+			ocss.CLASS_ID,ocss.BATCH_NUM,ocss.STAGE_ID,ocss.SUBJECT_ID
+	</select>
+	
+	<select id="queryOrderList" resultMap="com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper.BaseResultMap">
+		SELECT 
+			DISTINCT oi.*
+		FROM
+			goods_class_stage_subject gcss,
+			order_class_stage_subject ocss,
+			order_info oi
+		WHERE
+			gcss.CLASS_ID = ocss.CLASS_ID 
+			AND gcss.GOODS_NO=ocss.GOODS_NO
+			AND gcss.STAGE_ID = ocss.STAGE_ID 
+			AND gcss.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND ocss.ORDER_NO=oi.ORDER_NO
+			AND gcss.GOODS_NO = #{goodsNo} AND gcss.CLASS_ID=#{classId} AND gcss.STAGE_ID=#{stageId} AND gcss.SUBJECT_ID=#{subjectId} AND ocss.BATCH_NUM=#{batchNum}
+			order by oi.ID
+		<include refid="pageTool"/>
+	</select>
+	
+	<select id="countOrderBySubject" resultType="integer">
+		SELECT 
+			count(distinct oi.order_no)
+		FROM
+			goods_class_stage_subject gcss,
+			order_class_stage_subject ocss,
+			order_info oi
+		WHERE
+			gcss.CLASS_ID = ocss.CLASS_ID 
+			AND gcss.GOODS_NO=ocss.GOODS_NO
+			AND gcss.STAGE_ID = ocss.STAGE_ID 
+			AND gcss.SUBJECT_ID = ocss.SUBJECT_ID 
+			AND ocss.ORDER_NO=oi.ORDER_NO
+			AND gcss.GOODS_NO = #{goodsNo} AND gcss.CLASS_ID=#{classId} AND gcss.STAGE_ID=#{stageId} AND gcss.SUBJECT_ID=#{subjectId} AND ocss.BATCH_NUM=#{batchNum}
+			order by oi.ID
+	</select>
+
+	<select id="queryGoodsStageSubjectByClassId" resultMap="BaseResultMap" resultType="long">
+		select distinct goods_no, stage_id, subject_id from goods_class_stage_subject
+		where class_id = #{classId}
+	</select>
+</mapper>

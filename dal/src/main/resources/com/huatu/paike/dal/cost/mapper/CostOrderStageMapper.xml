@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.cost.mapper.CostOrderStageMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.cost.entity.CostOrderStage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="ORDER_GOODS_ID" jdbcType="BIGINT" property="orderGoodsId" />
+    <result column="DURATION" jdbcType="INTEGER" property="duration" />
+    <result column="COST" jdbcType="BIGINT" property="cost" />
+    <result column="COST_TYPE" jdbcType="TINYINT" property="costType" />
+    <result column="PROTOCOL_TYPE" jdbcType="VARCHAR" property="protocolType" />
+    <result column="FINISHED_DATE" jdbcType="TIMESTAMP" property="finishedDate" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="SEQ_NUM" jdbcType="BIGINT" property="seqNum" />
+    <result column="HAS_COST" jdbcType="TINYINT" property="hasCost" />
+    <result column="PUSH_TYPE" jdbcType="BIT" property="pushType" />
+    <result column="SOURCE" jdbcType="TINYINT" property="source" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, ORDER_NO, GOODS_NO, CLASS_ID, STAGE_ID, SUBJECT_ID, BATCH_NUM, ORDER_GOODS_ID, 
+    DURATION, COST, COST_TYPE, PROTOCOL_TYPE, FINISHED_DATE, CREATE_TIME, UPDATE_TIME, 
+    SEQ_NUM, HAS_COST, PUSH_TYPE, `SOURCE`
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.cost.entity.CostOrderStageCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from cost_order_stage
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <!-- 查询所有 -->
+  <select id="findList" parameterType="com.huatu.paike.dal.cost.entity.CostOrderStage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cost_order_stage
+    <where>
+      <if test="orderNo != null">
+        AND ORDER_NO=#{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="goodsNo != null">
+        AND GOODS_NO=#{goodsNo,jdbcType=VARCHAR}
+      </if>
+      <if test="classId != null">
+        AND CLASS_ID=#{classId,jdbcType=BIGINT}
+      </if>
+      <if test="stageId != null">
+        AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+      </if>
+      <if test="subjectId != null">
+        AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+      </if>
+      <if test="batchNum != null">
+        AND BATCH_NUM=#{batchNum,jdbcType=INTEGER}
+      </if>
+      <if test="orderGoodsId != null">
+        AND ORDER_GOODS_ID=#{orderGoodsId,jdbcType=BIGINT}
+      </if>
+      <if test="duration != null">
+        AND DURATION=#{duration,jdbcType=INTEGER}
+      </if>
+      <if test="cost != null">
+        AND COST=#{cost,jdbcType=BIGINT}
+      </if>
+      <if test="costType != null">
+        AND COST_TYPE=#{costType,jdbcType=null}
+      </if>
+      <if test="protocolType != null">
+        AND PROTOCOL_TYPE=#{protocolType,jdbcType=VARCHAR}
+      </if>
+      <if test="finishedDate != null">
+        AND FINISHED_DATE=#{finishedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null">
+        AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  
+	<select id="queryMaxCostOrderStage" resultType="Long">
+		select
+			max(seq_num)
+		from 
+			cost_order_stage 
+		where 
+			stage_id=#{stageId} and subject_id=#{subjectId} and batch_num=#{batchNum} 
+			and order_no=#{orderNo} AND ORDER_GOODS_ID=#{orderGoodsId} and cost_type=#{costType}
+	</select>
+  
+	<select id="queryByOrderAndCss" resultMap="BaseResultMap">
+		SELECT
+			cos.* 
+		FROM
+			cost_order_stage cos,
+			(
+			SELECT
+				tem.ORDER_NO,
+				tem.CLASS_ID,
+				tem.STAGE_ID,
+				tem.SUBJECT_ID,
+				tem.BATCH_NUM,
+				MAX( tem.SEQ_NUM ) AS SEQ_NUM 
+			FROM
+				cost_order_stage tem 
+			GROUP BY
+				tem.ORDER_NO,
+				tem.CLASS_ID,
+				tem.STAGE_ID,
+				tem.SUBJECT_ID,
+				tem.BATCH_NUM 
+			) AS tem1 
+		<where>
+			tem1.ORDER_NO = cos.ORDER_NO 
+			AND tem1.CLASS_ID = cos.CLASS_ID 
+			AND tem1.STAGE_ID = cos.STAGE_ID 
+			AND tem1.SUBJECT_ID = cos.SUBJECT_ID 
+			AND tem1.BATCH_NUM = cos.BATCH_NUM 
+			AND tem1.SEQ_NUM = cos.SEQ_NUM 
+			AND cos.ORDER_NO =#{orderNo}
+			AND (cos.CLASS_ID,cos.STAGE_ID,cos.SUBJECT_ID,cos.BATCH_NUM) IN 
+			<foreach close=")" collection="css" index="item" open="(" separator=",">
+				(#{item.classId},#{item.stageId},#{item.subjectId},#{item.batchNum})
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="queryByNotHaveCost" resultMap="BaseResultMap">
+		select cos.* 
+		from 
+			cost_order_stage cos
+		<where>
+			cos.has_cost=#{hasCost}
+            AND cos.ID IN
+            <foreach collection="ids" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+			<!-- and (cos.protocol_type='A' or (cos.protocol_type!='A' and cos.cost_type=1)) -->
+		</where>
+	</select>
+	
+	<select id="countByNotHaveCost" resultType="int">
+		select
+			count(1) 
+		from 
+			cost_order_stage
+		<where>
+			has_cost=#{hasCost}
+			<!-- and (protocol_type='A' or (protocol_type!='A' and cost_type=1)) -->
+		</where>
+	</select>
+
+    <select id="queryIDsByNotHaveCost" resultType="long">
+        select
+            ID
+        from
+          cost_order_stage
+        <where>
+            has_cost=#{hasCost}
+        </where>
+    </select>
+    
+    <select id="queryIDsByNotHaveCostAndTime" resultType="long">
+        select
+          ID
+        from
+          cost_order_stage
+        <where>
+            has_cost=#{hasCost} AND CREATE_TIME BETWEEN #{startTime} AND #{endTime}
+        </where>
+    </select>
+
+    <select id="queryIDsByShouldPushIn0212" resultType="long">
+        SELECT ID from	cost_order_stage WHERE has_cost=0 AND SOURCE=8 AND COST_TYPE=1 AND CREATE_TIME BETWEEN #{startTime} AND #{endTime}
+    </select>
+	
+	<select id="queryHavePush" resultType="int">
+		select
+			count(1)
+		from
+			cost_order_stage
+		<where>
+			<if test="classId!=null">
+				and class_id=#{classId}
+			</if>
+			<if test="stageId!=null">
+				and stage_id=#{stageId}
+			</if>
+			<if test="subjectId!=null">
+				and subject_id=#{subjectId}
+			</if>
+			<if test="batchNum!=null">
+				and batch_num=#{batchNum}
+			</if>
+			<if test="orderNo!=null and orderNo.length&gt;0">
+				and order_no=#{orderNo}
+			</if>
+			<if test="orderGoodsId!=null">
+				and order_goods_id=#{orderGoodsId}
+			</if>
+<!--			<if test="cost!=null">
+				and cost=#{cost}
+			</if>-->
+			<if test="costType!=null">
+				and cost_type=#{costType}
+			</if>
+			<if test="protocolType!=null">
+				and protocol_type=#{protocolType}
+			</if>
+			and HAS_COST=1
+			<!-- 这个pushType不应该作为查询条件 -->
+<!-- 			&lt;if test="pushType!=null"&gt; -->
+<!-- 				and push_type=#{pushType} -->
+<!-- 			</if> -->
+<!-- 			&lt;/if&gt; -->
+		</where>
+			
+	</select>
+  
+</mapper>

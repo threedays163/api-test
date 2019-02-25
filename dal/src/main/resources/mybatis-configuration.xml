@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+		<!--<setting name="lazyLoadingEnabled" value="false" />-->
+		<setting name="logImpl" value="LOG4J2" />
+    </settings>
+	<typeAliases>
+		<package name="com.huatu.paike.dal"/>
+	</typeAliases>
+	<plugins>
+		<plugin interceptor="com.huatu.paike.dal.interceptor.MapF2Interceptor">
+		</plugin>
+	</plugins>
+	
+	<!-- 由于使用spring和mybatis的整合包进行dataSource的设置整合，这里不需要配置了,可用于junit单元测试 -->
+	 
+		<environments default="development">
+			<environment id="development">
+				<transactionManager type="MANAGED"></transactionManager>
+				<dataSource type="POOLED">
+					<property name="driver" value="com.mysql.jdbc.Driver"/>
+					<property name="url" value="jdbc:mysql://172.30.9.228:3306/paike?zeroDateTimeBehavior=convertToNull&amp;characterEncoding=utf8&amp;useSSL=false"/>
+					<property name="username" value="root"/>
+					<property name="password" value="shanyu123@"/>
+				</dataSource>
+			</environment>
+		</environments>
+		 <mappers>
+
+		 	<package name="com.huatu.paike.dal"/>
+		 	<!-- 
+		 	<mapper resource="com/huatu/paike/dal/permission/mapper/RoleMapper.xml" />
+			<mapper resource="com/huatu/paike/dal/goodsOrder/mapper/OrderInfoMapper.xml" />
+		 	<mapper resource="com/huatu/paike/dal/paike/mapper/ClassStageSubjectTeacherMapper.xml" />
+		 	<mapper resource="com/huatu/paike/dal/paike/mapper/ClassLessonMapper.xml" />
+			 <mapper resource="com/huatu/paike/dal/classes/mapper/ClassGoodMapper.xml"/>
+			 <mapper resource="com/huatu/paike/dal/classes/mapper/ClassStudentRecordMapper.xml"/>
+			 <mapper resource="com/huatu/paike/dal/classes/mapper/ClassInfoMapper.xml"/>
+			 <mapper resource="com/huatu/paike/dal/feedback/mapper/FeedBackStageMapper.xml"/>
+			 <mapper resource="com/huatu/paike/dal/paike/mapper/ClassStageSubjectTeacherMapper.xml"/>
+		 	<mapper resource="com/huatu/paike/dal/place/mapper/ClassRoomMapper.xml" />
+		 	<mapper resource="com/huatu/paike/dal/place/mapper/PlaceMapper.xml" />
+			<mapper resource="com/huatu/paike/dal/classes/mapper/ClassStageSubjectDurationMapper.xml"/>
+		 	 -->
+			 
+		 </mappers>
+</configuration>

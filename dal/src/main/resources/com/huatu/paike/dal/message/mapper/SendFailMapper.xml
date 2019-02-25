@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.message.mapper.SendFailMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.message.entity.SendFail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="TYPE" jdbcType="TINYINT" property="type" />
+    <result column="MODUAL_CLASS" jdbcType="VARCHAR" property="modualClass" />
+    <result column="TOPIC" jdbcType="VARCHAR" property="topic" />
+    <result column="KEY" jdbcType="VARCHAR" property="key" />
+    <result column="MODULE" jdbcType="TINYINT" property="module" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="STATUS" jdbcType="BIT" property="status" />
+    <result column="SUCCESS_TIME" jdbcType="TIMESTAMP" property="successTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.huatu.paike.dal.message.entity.SendFail">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="MESSAGE" jdbcType="LONGVARCHAR" property="message" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, `TYPE`, MODUAL_CLASS, TOPIC, `KEY`, `MODULE`, CREATE_TIME, `STATUS`, SUCCESS_TIME
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    MESSAGE
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.message.entity.SendFailCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from send_fail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  
+  <update id="updateSendFailMessage">
+  	update send_fail set STATUS=#{status},SUCCESS_TIME=#{successTime} where id=#{id}
+  </update>
+  
+  <select id="querySendFailMessage" resultMap="BaseResultMap">
+  	select * from send_fail where STATUS=#{status} and TYPE=#{type} limit 0,#{size}
+  </select>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.reward.mapper.RewardClearRecordMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.reward.entity.RewardClearRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="teacher_staff_no" jdbcType="VARCHAR" property="teacherStaffNo" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="CSST_ID" jdbcType="BIGINT" property="csstId" />
+    <result column="lesson_id" jdbcType="BIGINT" property="lessonId" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="necessary_clear" jdbcType="INTEGER" property="necessaryClear" />
+    <result column="duration_else" jdbcType="INTEGER" property="durationElse" />
+    <result column="reward" jdbcType="BIGINT" property="reward" />
+    <result column="NECESSARY_TYPE" jdbcType="TINYINT" property="necessaryType" />
+    <result column="EXAM_WAY" jdbcType="VARCHAR" property="examWay" />
+    <result column="IS_LECTURE" jdbcType="BIT" property="isLecture" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, teacher_staff_no, `year`, `month`, CLASS_ID, CLASS_NO, STAGE_ID, SUBJECT_ID, 
+    BATCH_NUM, CSST_ID, lesson_id, duration, necessary_clear, duration_else, reward, 
+    NECESSARY_TYPE, EXAM_WAY, IS_LECTURE, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.reward.entity.RewardClearRecordCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from reward_clear_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into reward_clear_record(
+		teacher_staff_no, `year`, `month`, CLASS_ID, STAGE_ID, BATCH_NUM , SUBJECT_ID,
+		CSST_ID, lesson_id,
+		duration, necessary_clear, duration_else,
+		reward,necessary_type,exam_way,is_lecture
+		)
+		<foreach collection="list" item="record" open="values" separator=",">
+			(#{record.teacherStaffNo},#{record.year},#{record.month},#{record.classId},#{record.stageId},#{record.batchNum},
+			#{record.subjectId},#{record.csstId},#{record.lessonId},#{record.duration},#{record.necessaryClear},
+			#{record.durationElse},#{record.reward},#{record.necessaryType},#{record.examWay},#{record.isLecture})
+		</foreach>
+	</insert>
+</mapper>

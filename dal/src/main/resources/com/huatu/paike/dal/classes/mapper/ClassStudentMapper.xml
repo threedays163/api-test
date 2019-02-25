@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.classes.mapper.ClassStudentMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.classes.entity.ClassStudent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="STUDENT_ID" jdbcType="BIGINT" property="studentId" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, GOODS_NO, STUDENT_ID, ORDER_NO, CREATE_TIME, UPDATE_TIME, CREATOR_ID
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.classes.entity.ClassStudentCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from class_student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <!-- 查询班级在班人数 -->
+  <select id="queryStuCountByClassNo" resultType="integer">
+  	select count(1) from CLASS_STUDENT cs,CLASS_INFO ci where cs.CLASS_ID=ci.ID and ci.CLASS_NO=#{classNo}
+  </select>
+  
+  <!-- 查询班级里的在班人数 -->
+  <select id="queryStuCountByClassIds" resultType="integer">
+  	select class_id,count(student_id) from class_student cs
+  	<if test="classIds!=null and classIds.size()&gt;0">
+  	 	where class_id in 
+	  	<foreach close=")" collection="classIds" item="item" open="(" separator=",">
+	  		#{item}
+	  	</foreach>
+  	</if>
+  	group by class_id
+  </select>
+  
+  <!-- 查询班级里是否存在某订单 -->
+  <select id="queryIfExistOrder" resultType="integer">
+  	select count(1) from CLASS_STUDENT cs,CLASS_INFO ci where cs.CLASS_ID=ci.ID 
+  	<if test="classNo!=null">
+  		and ci.CLASS_NO=#{classNo}
+  	</if>
+  	<if test="classId!=null">
+  		and ci.ID=#{classId})
+  	</if>
+  	 and cs.ORDER_NO=#{orderNo}
+  </select>
+  
+  <!-- 根据班级编号查询在班学员信息 -->
+  <select id="queryStuByClasssNo" resultMap="BaseResultMap">
+  	select cs.ORDER_NO,cs.* from CLASS_STUDENT cs,CLASS_INFO ci where cs.CLASS_ID=ci.ID and ci.CLASS_NO=#{classNo}
+  	<if test="pageDto!=null">
+  		limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+  	</if>
+  </select>
+  
+  <!-- 根据班级编号查询班级里的订单编号 -->
+  <select id="queryOrderNoByClassNo" resultType="string">
+  	select cs.ORDER_NO from CLASS_STUDENT cs,CLASS_INFO ci where cs.CLASS_ID=ci.ID and ci.CLASS_NO=#{classNo}
+  </select>
+  
+  <!-- 通过班级编号和商品编号查询有多少订单 -->
+  <select id="queryStuCountByClassNoAndGoodsNo" resultType="string">
+  	SELECT cs.ORDER_NO FROM CLASS_STUDENT cs,CLASS_INFO ci,ORDER_INFO oi WHERE cs.CLASS_ID=ci.ID AND cs.ORDER_NO=oi.ORDER_NO AND ci.CLASS_NO=#{classNo} AND oi.GOODS_NO=#{goodsNo}
+  </select>
+  
+  <select id="queryGoodsStuCountByClassNoAndGoodsNo" resultType="map">
+  	SELECT
+		tem.GOODS_NO,
+		count( tem.ORDER_NO ) 
+	FROM
+		(SELECT cg.CLASS_ID,cs.ORDER_NO,cg.GOODS_NO FROM class_good cg LEFT JOIN CLASS_STUDENT cs ON cg.GOODS_NO=cs.GOODS_NO AND cg.CLASS_ID=cs.CLASS_ID) as tem,
+		CLASS_INFO ci 
+	WHERE
+		tem.CLASS_ID = ci.ID 
+		AND ci.CLASS_NO =#{classNo}
+	GROUP BY
+		tem.GOODS_NO
+  </select>
+  
+  <select id="queryByOrderNo" resultMap="BaseResultMap">
+  	select * from CLASS_STUDENT where ORDER_NO=#{orderNo}
+  </select>
+  
+  <select id="queryStuIdByOrderList" resultMap="BaseResultMap"> 
+  	select * from class_student where class_id=#{classId}
+  	<if test="orderNos !=null and orderNos.size >0">
+  		and order_no in
+  			<foreach close=")" collection="orderNos" item="item" open="(" separator=",">
+  			#{item}
+  			</foreach>
+  	</if>
+  </select>
+  
+  <select id="queryOrderNosByClassAndGoods" resultType="string">
+  	select cs.order_no from class_student cs,class_good cg,order_info oi where oi.order_no=cs.order_no and oi.goods_no=cg.goods_no and cg.class_id=#{classId} and cg.goods_no in
+  	<foreach close=")" collection="goodsNos" item="item" open="(" separator=",">
+  		#{item}
+  	</foreach>
+  </select>
+
+    <select id="queryOrderLessionTimeByOrderNo" resultType="com.huatu.paike.dal.goodsOrder.dto.OrderLessonTime">
+        select b.ORDER_NO orderNo,min(c.START_TIME) earliestStartTime,max(c.END_TIME) latestEndTime,sum(c.LESSON_DURATION) classDuration
+        from lesson_student a join class_student b on a.CLASS_ID=b.CLASS_ID and a.ORDER_NO=b.ORDER_NO
+        join class_lesson c on a.LESSON_ID = c.ID
+        where b.ORDER_NO in
+        <foreach collection="list" item="orderNo" open="(" close=")" separator=",">
+            #{orderNo}
+        </foreach>
+        group by b.ORDER_NO
+    </select>
+    
+    <select id="queryClassCountByOrderNos" resultType="map">
+    	select order_no,count(class_id) from class_student where order_no in 
+    	(
+    		<foreach collection="collection" item="item" separator=",">
+    			#{item}
+    		</foreach>
+    	)
+    	group by order_no
+    </select>
+
+    <select id="queryOrderIncomeClassTime" resultType="map">
+        select order_no, create_time from class_student
+        <where>
+            <if test="classId != null">
+                class_Id = #{classId}
+            </if>
+            <if test="orderNoList != null and orderNoList.size()>0">
+                and order_no in
+                <foreach collection="orderNoList" item="orderNo" open="(" close=")" separator=",">
+                    #{orderNo}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.classes.entity.ClassStudent">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM class_student
+        <where>
+            <if test="classId != null">
+                AND CLASS_ID=#{classId,jdbcType=BIGINT}
+            </if>
+            <if test="goodsNo != null">
+                AND GOODS_NO=#{goodsNo,jdbcType=VARCHAR}
+            </if>
+            <if test="studentId != null">
+                AND STUDENT_ID=#{studentId,jdbcType=BIGINT}
+            </if>
+            <if test="orderNo != null">
+                AND ORDER_NO=#{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="creatorId != null">
+                AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+</mapper>

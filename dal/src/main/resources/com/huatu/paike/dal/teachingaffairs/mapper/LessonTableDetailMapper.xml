@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.teachingaffairs.mapper.LessonTableDetailMapper">
+    <resultMap id="BaseResultMap" type="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="UPDATOR_ID" jdbcType="BIGINT" property="updatorId"/>
+        <result column="IS_DEL" jdbcType="INTEGER" property="isDel"/>
+        <result column="TIME_TABLE_ID" jdbcType="BIGINT" property="timeTableId"/>
+        <result column="LESSON_DATE" jdbcType="TIMESTAMP" property="lessonDate"/>
+        <result column="TEACHER_DEVICE_ID" jdbcType="BIGINT" property="teacherDeviceId"/>
+        <result column="TEACHER_NO" jdbcType="VARCHAR" property="teacherNo"/>
+        <result column="TEACHER_NAME" jdbcType="VARCHAR" property="teacherName"/>
+        <result column="DURATION" jdbcType="INTEGER" property="duration"/>
+        <result column="IS_LOCAL" jdbcType="INTEGER" property="isLocal"/>
+    </resultMap>
+
+    <!-- 基本列 -->
+    <sql id="Base_Column_List">
+    ID,CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,TIME_TABLE_ID,LESSON_DATE,TEACHER_DEVICE_ID,TEACHER_NO,TEACHER_NAME,DURATION,IS_LOCAL
+  </sql>
+
+    <!-- 单个插入 -->
+    <insert id="insertSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into lesson_table_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="creatorId != null">
+                CREATOR_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME,
+            </if>
+            <if test="updatorId != null">
+                UPDATOR_ID,
+            </if>
+            <if test="isDel != null">
+                IS_DEL,
+            </if>
+            <if test="timeTableId != null">
+                TIME_TABLE_ID,
+            </if>
+            <if test="lessonDate != null">
+                LESSON_DATE,
+            </if>
+            <if test="teacherDeviceId != null">
+                TEACHER_DEVICE_ID,
+            </if>
+            <if test="teacherNo != null">
+                TEACHER_NO,
+            </if>
+            <if test="teacherName != null">
+                TEACHER_NAME,
+            </if>
+            <if test="duration != null">
+                DURATION,
+            </if>
+            <if test="isLocal != null">
+                IS_LOCAL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatorId != null">
+                #{updatorId,jdbcType=BIGINT},
+            </if>
+            <if test="isDel != null">
+                #{isDel,jdbcType=INTEGER},
+            </if>
+            <if test="timeTableId != null">
+                #{timeTableId,jdbcType=BIGINT},
+            </if>
+            <if test="lessonDate != null">
+                #{lessonDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherDeviceId != null">
+                #{teacherDeviceId,jdbcType=BIGINT},
+            </if>
+            <if test="teacherNo != null">
+                #{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherName != null">
+                #{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="duration != null">
+                #{duration,jdbcType=INTEGER},
+            </if>
+            <if test="isLocal != null">
+                #{isLocal,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 批量新增 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO lesson_table_detail
+        (CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,TIME_TABLE_ID,LESSON_DATE,TEACHER_DEVICE_ID,TEACHER_NO,TEACHER_NAME,DURATION,IS_LOCAL)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.creatorId,jdbcType=BIGINT},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP},#{item.updatorId,jdbcType=BIGINT},#{item.isDel,jdbcType=INTEGER},#{item.timeTableId,jdbcType=BIGINT},#{item.lessonDate,jdbcType=TIMESTAMP},#{item.teacherDeviceId,jdbcType=BIGINT},#{item.teacherNo,jdbcType=VARCHAR},#{item.teacherName,jdbcType=VARCHAR},#{item.duration,jdbcType=INTEGER},#{item.isLocal,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <!-- 单个更新 -->
+    <update id="updateSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+        update lesson_table_detail
+        <set>
+            <if test="creatorId != null">
+                CREATOR_ID=#{creatorId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatorId != null">
+                UPDATOR_ID=#{updatorId,jdbcType=BIGINT},
+            </if>
+            <if test="isDel != null">
+                IS_DEL=#{isDel,jdbcType=INTEGER},
+            </if>
+            <if test="timeTableId != null">
+                TIME_TABLE_ID=#{timeTableId,jdbcType=BIGINT},
+            </if>
+            <if test="lessonDate != null">
+                LESSON_DATE=#{lessonDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="teacherDeviceId != null">
+                TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT},
+            </if>
+            <if test="teacherNo != null">
+                TEACHER_NO=#{teacherNo,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherName != null">
+                TEACHER_NAME=#{teacherName,jdbcType=VARCHAR},
+            </if>
+            <if test="duration != null">
+                DURATION=#{duration,jdbcType=INTEGER},
+            </if>
+            <if test="isLocal != null">
+                IS_LOCAL=#{isLocal,jdbcType=INTEGER},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE lesson_table_detail
+            <set>
+                <if test="item.creatorId != null">
+                    CREATOR_ID=#{item.creatorId,jdbcType=BIGINT},
+                </if>
+                <if test="item.createTime != null">
+                    CREATE_TIME=#{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateTime != null">
+                    UPDATE_TIME=#{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatorId != null">
+                    UPDATOR_ID=#{item.updatorId,jdbcType=BIGINT},
+                </if>
+                <if test="item.isDel != null">
+                    IS_DEL=#{item.isDel,jdbcType=INTEGER},
+                </if>
+                <if test="item.timeTableId != null">
+                    TIME_TABLE_ID=#{item.timeTableId,jdbcType=BIGINT},
+                </if>
+                <if test="item.lessonDate != null">
+                    LESSON_DATE=#{item.lessonDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.teacherDeviceId != null">
+                    TEACHER_DEVICE_ID=#{item.teacherDeviceId,jdbcType=BIGINT},
+                </if>
+                <if test="item.teacherNo != null">
+                    TEACHER_NO=#{item.teacherNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.teacherName != null">
+                    TEACHER_NAME=#{item.teacherName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.duration != null">
+                    DURATION=#{item.duration,jdbcType=INTEGER},
+                </if>
+                <if test="item.isLocal != null">
+                    IS_LOCAL=#{item.isLocal,jdbcType=INTEGER},
+                </if>
+            </set>
+            WHERE ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!--  逻辑删除 -->
+    <update id="removeSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+    update lesson_table_detail set UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--  根据课次id逻辑删除 -->
+    <update id="removeByLessonTableId"
+            parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+    update lesson_table_detail set UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+    where TIME_TABLE_ID=#{timeTableId,jdbcType=BIGINT}
+  </update>
+
+    <!-- 逻辑批量删除 -->
+    <update id="removeBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update lesson_table_detail
+            set UPDATED = #{item.updateTime,jdbcType=TIMESTAMP},UPDATEDBY = #{item.updatorId,jdbcType=VARCHAR}, IS_DEL =
+            1
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!--  物理删除 -->
+    <delete id="deleteSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+        DELETE FROM lesson_table_detail
+        where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--  物理删除 -->
+    <delete id="deleteByLessonTableId"
+            parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity">
+        DELETE FROM lesson_table_detail
+        where TIME_TABLE_ID=#{timeTableId,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 物理批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            DELETE FROM lesson_table_detail
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
+    <!-- 查询所有 -->
+    <select id="findList" resultMap="BaseResultMap"
+            parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableDetailParam">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM lesson_table_detail
+        <where>
+            IS_DEL = 0
+            <if test="creatorId != null">
+                AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatorId != null">
+                AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+            </if>
+            <if test="isDel != null">
+                AND IS_DEL=#{isDel,jdbcType=INTEGER}
+            </if>
+            <if test="timeTableId != null">
+                AND TIME_TABLE_ID=#{timeTableId,jdbcType=BIGINT}
+            </if>
+            <if test="lessonDate != null">
+                AND LESSON_DATE=#{lessonDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="teacherDeviceId != null">
+                AND TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT}
+            </if>
+            <if test="teacherNo != null">
+                AND TEACHER_NO=#{teacherNo,jdbcType=VARCHAR}
+            </if>
+            <if test="teacherName != null">
+                AND TEACHER_NAME=#{teacherName,jdbcType=VARCHAR}
+            </if>
+            <if test="duration != null">
+                AND DURATION=#{duration,jdbcType=INTEGER}
+            </if>
+            <if test="isLocal != null">
+                AND IS_LOCAL=#{isLocal,jdbcType=INTEGER}
+            </if>
+            <if test="ids != null and ids.size() > 0">
+                AND ID IN
+                <foreach collection="ids" separator="," open="(" close=")" item="item" index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="lessonTableIds != null and lessonTableIds.size() > 0">
+                AND TIME_TABLE_ID IN
+                <foreach collection="lessonTableIds" separator="," open="(" close=")" item="item" index="index">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <if test="isOrderByLessonDate != null">
+            ORDER BY LESSON_DATE
+        </if>
+        <if test="pageDto != null">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="countQuery" resultType="int"
+            parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableDetailParam">
+        SELECT
+        count(1)
+        FROM lesson_table_detail
+        <where>
+            IS_DEL=0
+            <if test="creatorId != null">
+                AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatorId != null">
+                AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+            </if>
+            <if test="isDel != null">
+                AND IS_DEL=#{isDel,jdbcType=INTEGER}
+            </if>
+            <if test="timeTableId != null">
+                AND TIME_TABLE_ID=#{timeTableId,jdbcType=BIGINT}
+            </if>
+            <if test="lessonDate != null">
+                AND LESSON_DATE=#{lessonDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="teacherDeviceId != null">
+                AND TEACHER_DEVICE_ID=#{teacherDeviceId,jdbcType=BIGINT}
+            </if>
+            <if test="teacherNo != null">
+                AND TEACHER_NO=#{teacherNo,jdbcType=VARCHAR}
+            </if>
+            <if test="teacherName != null">
+                AND TEACHER_NAME=#{teacherName,jdbcType=VARCHAR}
+            </if>
+            <if test="duration != null">
+                AND DURATION=#{duration,jdbcType=INTEGER}
+            </if>
+            <if test="isLocal != null">
+                AND IS_LOCAL=#{isLocal,jdbcType=INTEGER}
+            </if>
+            <if test="ids != null and ids.size() > 0">
+                AND ID IN
+                <foreach collection="ids" separator="," open="(" close=")" item="item" index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="lessonTableIds != null and lessonTableIds.size() > 0">
+                AND TIME_TABLE_ID IN
+                <foreach collection="lessonTableIds" separator="," open="(" close=")" item="item" index="index">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- 单个查询 -->
+    <select id="get" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableDetailEntity"
+            resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM lesson_table_detail
+        <where>
+            IS_DEL=0
+            <if test="id != null">
+                AND id = #{id, jdbcType=BIGINT}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="countLessonByTeacherPlaceId" resultType="java.lang.Integer">
+        select count(distinct a.time_table_id) from lesson_table_detail a left join lesson_table_time_detail b on a.id =
+        b.lesson_detail_id
+        <where>
+            a.is_del = 0 and b.is_del = 0
+            <if test="date != null">
+                and b.start_time &lt;= #{date} and b.end_time &gt;= #{date}
+            </if>
+            <if test="teacherDeviceId != null">
+                and a.teacher_device_id = #{teacherDeviceId}
+            </if>
+        </where>
+    </select>
+
+    <select id="countLessonByStuPlaceId" resultType="java.lang.Integer">
+        select count(distinct a.time_table_id) from lesson_table_detail a left join class_lesson b on a.id =
+        b.lesson_table_detail_id
+        <where>
+            a.is_del = 0 and b.is_discard = 0
+            <if test="date != null">
+                and exists
+                (
+                  select 1 from lesson_time_detail c where b.id = c.lesson_id and c.start_time &lt;= #{date} and c.end_time &gt;= #{date}
+                )
+            </if>
+            <if test="studentDeviceId != null">
+                and b.room_id = #{studentDeviceId}
+            </if>
+        </where>
+    </select>
+
+    <select id="countStudentRoomsByLessonTableIds" resultType="java.util.HashMap">
+        select b.TIME_TABLE_ID,count(DISTINCT a.ROOM_ID) from class_lesson a ,lesson_table_detail b
+        WHERE a.lesson_table_detail_id = b.id
+        and b.TIME_TABLE_ID in
+        <foreach collection="lessonTableIds" item="lessonTableId" open="(" separator=","
+                 close=")">
+            #{lessonTableId}
+        </foreach>
+        group by b.TIME_TABLE_ID
+    </select>
+
+    <select id="countStudentNumberByLessonTableIds" resultType="java.util.HashMap">
+        SELECT b.LESSON_TABLE_ID,count(a.ORDER_NO) from order_class_stage_subject a join class_stage_subject b
+        on a.CLASS_ID=b.CLASS_ID and a.STAGE_ID=b.STAGE_ID and a.SUBJECT_ID=b.SUBJECT_ID
+        where b.LESSON_TABLE_ID in
+        <foreach collection="lessonTableIds" item="lessonTableId" open="(" separator=","
+                 close=")">
+            #{lessonTableId}
+        </foreach>
+        GROUP BY b.LESSON_TABLE_ID
+    </select>
+
+    <select id="queryTeacherNosByLessonTableNos" resultType="java.util.Map">
+        select lt.lesson_table_no, ltd.teacher_no from lesson_table_detail ltd, lesson_table lt
+        <where>
+            ltd.time_table_id = lt.id
+            <if test="lessonTableNos != null and lessonTableNos.size() > 0">
+                and lt.lesson_table_no in
+                <foreach collection="lessonTableNos" item="lessonTableNo" open="(" separator="," close=")">
+                    #{lessonTableNo}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

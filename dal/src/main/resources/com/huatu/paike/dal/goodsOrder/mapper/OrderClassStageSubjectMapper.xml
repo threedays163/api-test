@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.goodsOrder.mapper.OrderClassStageSubjectMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubject">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+    <result column="GOODS_NO" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+  </resultMap>
+
+	<resultMap id="BaseResultMapForOrderView" type="com.huatu.paike.dal.goodsOrder.dto.OrderStageSubjectViewDto">
+		<!--
+		  WARNING - @mbg.generated
+		-->
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+		<result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+		<result column="STUDENT_ID" jdbcType="BIGINT" property="studentId" />
+		<result column="STUDENT_NAME" jdbcType="VARCHAR" property="studentName" />
+		<result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapForDuration" type="com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubjectDuration">
+		<!--
+		  WARNING - @mbg.generated
+		-->
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+		<result column="CLASS_NO" jdbcType="VARCHAR" property="classNo" />
+		<result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+		<result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+		<result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+		<result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+		<result column="PAIKE_DURATION" jdbcType="INTEGER" property="paikeDuration" />
+		<result column="FINISH_DURATION" jdbcType="INTEGER" property="finishDuration" />
+		<result column="TOTAL_DURATION" jdbcType="INTEGER" property="totalDuration" />
+		<result column="STATUS" jdbcType="INTEGER" property="status" />
+	</resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, ORDER_NO, CLASS_ID, CLASS_NO, GOODS_NO, STAGE_ID, SUBJECT_ID, CREATE_TIME, UPDATE_TIME, 
+    CREATOR_ID, BATCH_NUM
+  </sql>
+  <!-- <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubjectCriteria">
+    
+      WARNING - @mbg.generated
+   
+    delete from order_class_stage_subject
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete> -->
+	<!-- 查询班级订单的可排课阶段科目 -->
+	<select id="queryOcssListByClassId" resultType="map">
+		select order_no,stage_id,subject_id from order_class_stage_subject
+		<where>
+			and class_id=#{classId}
+			<if test="orderNos !=null and orderNos.size &gt; 0">
+				and order_no in
+				<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+					#{orderNo}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 查询订单的已入班阶段科目 -->
+	<select id="queryOcssListByOrderNos" resultType="map">
+		select order_no,stage_id,subject_id from order_class_stage_subject
+		<where>
+				and order_no in
+				<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+					#{orderNo}
+				</foreach>
+		</where>
+		group by order_no,stage_id,subject_id
+	</select>
+	
+	<insert id="batchInsert">
+		insert into order_class_stage_subject(ORDER_NO,CLASS_ID,CLASS_NO,GOODS_NO,STAGE_ID,BATCH_NUM,SUBJECT_ID,CREATOR_ID) values 
+		<foreach collection="collection" item="item" separator=",">
+			(#{item.orderNo},#{item.classId},#{item.classNo},#{item.goodsNo},#{item.stageId},#{item.batchNum},#{item.subjectId},#{item.creatorId})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteByGoodsNosAndClass">
+		delete from order_class_stage_subject where class_no=#{classGoodsDto.classNo} and goods_no in 
+		<foreach collection="classGoodsDto.goodsNos" item="item" separator="," close=")" open="(">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询班级阶段科目可排课订单 -->
+	<select id="queryOrderNos" resultType="string">
+		select 
+			order_no 
+		from 
+			order_class_stage_subject 
+		<where> 
+			<if test="classId!=null">
+				and class_id=#{classId}
+			</if>
+			<if test="stageId!=null">
+				and stage_id = #{stageId}
+			</if>
+			<if test="subjectId!=null">
+				and subject_id=#{subjectId} 
+			</if>
+			<if test="batchNum!=null">
+				and batch_num=#{batchNum}
+			</if>
+		</where>
+	</select>
+	
+	 <select id="countOrderStartedSubject" resultType="map">
+		select a.order_no,count( distinct b.subject_id) 
+		from
+			order_class_stage_subject a join class_stage_subject b
+			on a.class_id = b.class_id and a.stage_id = b.stage_id and a.subject_id = b.subject_id and a.batch_num=b.batch_num
+		where 
+			a.class_id = #{classId} and ((b.START_DATE IS NOT NULL AND #{now}&gt;=b.START_DATE) or b.STATUS>=4)
+		<if test="orderNos !=null and orderNos.size &gt;0">
+			and a.order_no in
+			<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+			#{orderNo}
+			</foreach>
+		</if>
+		group by a.order_no
+	</select>
+	
+	<select id="getOrderNotStartedSubject" resultType="map">
+		select a.order_no,b.stage_id, b.subject_id from
+		order_class_stage_subject a join class_stage_subject b
+		on a.class_id = b.class_id and a.stage_id = b.stage_id and a.subject_id = b.subject_id
+		where a.class_id = #{classId} and (b.START_DATE IS NULL OR b.START_DATE&gt;#{now})
+		<if test="orderNos !=null and orderNos.size &gt;0">
+			and a.order_no in
+			<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+			#{orderNo}
+			</foreach>
+		</if>
+		group by a.order_no
+	</select>
+	<!-- &lt;delete id="delOrderNotStartedSubject"&gt;
+		DELETE
+			b
+		FROM
+			order_class_stage_subject b 
+		WHERE
+			b.order_no IN
+			&lt;foreach collection="orderNos" item="orderNo" open="(" separator="," close=")"&gt;
+				#{orderNo}
+			&lt;/foreach&gt;
+			AND EXISTS (
+				SELECT
+					1 
+				FROM
+					class_stage_subject a 
+				WHERE
+					a.class_id = b.class_id 
+					AND a.stage_id = b.stage_id 
+					AND a.subject_id = b.subject_id 
+					AND (a.START_DATE &gt;#{now} or a.START_DATE=NULL)
+				)
+	&lt;/delete&gt; -->
+	<delete id="delOrderNotStartedSubject">
+		DELETE
+			b
+		FROM
+			order_class_stage_subject b,
+			class_stage_subject css 
+		WHERE
+		css.CLASS_ID = b.CLASS_ID
+		AND css.STAGE_ID = b.STAGE_ID
+		AND css.SUBJECT_ID = b.SUBJECT_ID
+		AND css.BATCH_NUM = b.BATCH_NUM
+		AND
+		(
+		(3=css.`STATUS` AND css.START_DATE>#{now} )
+			OR
+			(
+				3>css.`STATUS`
+				AND
+				(
+					css.START_DATE IS NULL
+					OR
+					css.START_DATE>#{now}
+				)
+			)
+		)
+			AND
+				b.order_no IN
+				<foreach close=")" collection="orderNos" item="orderNo" open="(" separator=",">
+					#{orderNo}
+				</foreach>
+	</delete>
+
+	<delete id="delByOrderSubject" parameterType="com.huatu.paike.dal.goodsOrder.entity.DelOrderSubjectParam">
+		DELETE
+		b
+		FROM
+		order_class_stage_subject b
+		WHERE
+			 b.order_no = #{orderNo}
+			AND b.class_id = #{classId}
+			AND (b.stage_id, b.subject_id, b.batch_num) in
+			<foreach collection="stageSubjectList" item="item" separator="," open="(" close=")">
+				(#{item.stageId}, #{item.subjectId}, #{item.batchNum})
+			</foreach>
+	</delete>
+	
+	<sql id="pageTool">
+		 <if test="pageDto != null">
+	    limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+	   </if>
+	</sql>
+
+	<!-- 查询所有 -->
+	<select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.goodsOrder.entity.OrderClassStageSubject">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM order_class_stage_subject
+		<where>
+			<if test="orderNo != null">
+				AND ORDER_NO=#{orderNo,jdbcType=VARCHAR}
+			</if>
+			<if test="classId != null">
+				AND CLASS_ID=#{classId,jdbcType=BIGINT}
+			</if>
+			<if test="classNo != null">
+				AND CLASS_NO=#{classNo,jdbcType=VARCHAR}
+			</if>
+			<if test="goodsNo != null">
+				AND GOODS_NO=#{goodsNo,jdbcType=VARCHAR}
+			</if>
+			<if test="stageId != null">
+				AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+			</if>
+			<if test="subjectId != null">
+				AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime != null">
+				AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+				AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creatorId != null">
+				AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+			</if>
+			<if test="batchNum != null">
+				AND BATCH_NUM=#{batchNum,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryGoodsNos" resultType="string">
+		SELECT DISTINCT GOODS_NO FROM order_class_stage_subject
+		WHERE CLASS_NO = #{classNo}
+		<if test="stageBatchNumDtoList != null and stageBatchNumDtoList.size() > 0">
+			AND (STAGE_ID,  BATCH_NUM) IN
+			<foreach collection="stageBatchNumDtoList" open="(" close=")" separator="," item="item">
+				(#{item.stageId}, #{item.batchNum})
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="queryByOss" resultMap="BaseResultMap">
+		SELECT *
+		FROM order_class_stage_subject
+		WHERE (order_no,stage_id,subject_id) IN
+		<foreach collection="list" close=")" item="item" open="(" separator=",">
+			(#{item.orderNo},#{item.stageId},#{item.subjectId})
+		</foreach>
+	</select>
+	
+	<select id="queryHaveCostStatus" resultType="map">
+		SELECT
+			ocss.ID,css.HAS_COST 
+		FROM
+			order_class_stage_subject ocss,
+			class_stage_subject css
+		<where>
+			ocss.CLASS_ID = css.CLASS_ID 
+			AND ocss.STAGE_ID = css.STAGE_ID 
+			AND ocss.SUBJECT_ID = css.SUBJECT_ID 
+			AND ocss.BATCH_NUM = css.BATCH_NUM
+			AND (ocss.ORDER_NO,ocss.CLASS_ID,ocss.STAGE_ID,ocss.SUBJECT_ID) IN
+			<foreach collection="collection" close=")" item="item" open="(" separator=",">
+				(#{item.orderNo},#{item.classId},#{item.stageId},#{item.subjectId})
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="queryNotStartedSubject" resultMap="BaseResultMap">
+		SELECT
+			ocss.*
+		FROM
+			order_class_stage_subject ocss,
+			class_stage_subject css
+		WHERE
+			ocss.CLASS_ID = css.CLASS_ID 
+			AND ocss.STAGE_ID = css.STAGE_ID 
+			AND ocss.SUBJECT_ID = css.SUBJECT_ID 
+			AND ocss.BATCH_NUM = css.BATCH_NUM 
+			AND 
+				( 
+						( css.START_DATE IS NOT NULL AND css.START_DATE > #{now} and 4 > css.`STATUS`) 
+					OR
+						css.START_DATE IS NULL
+				)
+			AND ocss.ORDER_NO IN
+			<foreach collection="orderNos" close=")" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+	</select>
+
+	<select id="queryOrderView" resultMap="BaseResultMapForOrderView" parameterType="com.huatu.paike.dal.goodsOrder.dto.QueryOrderViewParam">
+		SELECT
+			oi.order_no as order_no,
+			ocss.CLASS_NO as CLASS_NO,
+			oi.STUDENT_ID as STUDENT_ID,
+			oi.STUDENT_NAME as STUDENT_NAME,
+			ocss.STAGE_ID as STAGE_ID,
+			ocss.SUBJECT_ID as SUBJECT_ID,
+			ocss.BATCH_NUM as BATCH_NUM
+		FROM
+			order_class_stage_subject ocss
+			LEFT JOIN order_info oi ON ocss.ORDER_NO = oi.ORDER_NO
+		WHERE
+		 	1 =1
+			<if test="classId != null">
+				ocss.CLASS_ID = #{classId}
+			</if>
+			<if test="orderNos != null and orderNos.size() > 0">
+				AND ocss.ORDER_NO IN
+				<foreach collection="orderNos" item="item" open="(" close=")" separator="," index="index">
+					#{item}
+				</foreach>
+			</if>
+	</select>
+
+
+	<select id="queryOrderNoList" parameterType="com.huatu.paike.dal.goodsOrder.dto.QueryOrderViewParam" resultType="string">
+		SELECT
+			DISTINCT ocss.order_no
+		FROM
+			order_class_stage_subject ocss
+		WHERE
+        ocss.CLASS_ID = #{classId}
+            <if test="stuQueryStr != null and stuQueryStr != ''">
+                <bind name="pattern1" value="'%' + stuQueryStr + '%'" />
+                AND ocss.ORDER_NO IN (
+                  SELECT oi.ORDER_NO FROM ORDER_INFO oi WHERE oi.STUDENT_ID like pattern1 OR oi.STUDENT_NAME like pattern1
+                )
+            </if>
+		ORDER BY CREATE_TIME DESC
+		<if test="pageDto != null">
+			limit ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+		</if>
+	</select>
+
+	<select id="queryCountOrderNo" parameterType="com.huatu.paike.dal.goodsOrder.dto.QueryOrderViewParam" resultType="int">
+		SELECT
+			count(DISTINCT ocss.order_no)
+		FROM
+			order_class_stage_subject ocss
+		WHERE
+			ocss.CLASS_ID = #{classId}
+        <if test="stuQueryStr != null and stuQueryStr != ''">
+            <bind name="pattern1" value="'%' + stuQueryStr + '%'" />
+            AND ocss.ORDER_NO IN (
+            SELECT oi.ORDER_NO FROM ORDER_INFO oi WHERE oi.STUDENT_ID like pattern1 OR oi.STUDENT_NAME like pattern1
+            )
+        </if>
+	</select>
+
+	<!-- 查询班级在班阶段科目 -->
+	<select id="queryOrderInClassSubject" resultMap="BaseResultMapForDuration">
+		SELECT
+		    DISTINCT
+			ocss.ORDER_NO AS ORDER_NO,
+			ocss.CLASS_ID AS CLASS_ID,
+			ocss.CLASS_NO AS CLASS_NO,
+			ocss.STAGE_ID AS STAGE_ID,
+			ocss.SUBJECT_ID AS SUBJECT_ID,
+			ocss.BATCH_NUM AS BATCH_NUM,
+			oss.paike_duration AS paike_duration,
+			oss.finish_duration AS finish_duration,
+			oss.total_duration AS total_duration,
+			oss.status AS STATUS
+		FROM
+			order_class_stage_subject ocss
+			LEFT JOIN order_stage_subject oss ON ocss.order_no = oss.order_no
+			AND ocss.stage_id = oss.stage_id
+			AND ocss.subject_id = oss.subject_id
+		WHERE
+			ocss.order_no IN
+			<foreach collection="orderNos" open="(" close=")" separator="," item="item">
+				#{item}
+			</foreach>
+
+	</select>
+</mapper>

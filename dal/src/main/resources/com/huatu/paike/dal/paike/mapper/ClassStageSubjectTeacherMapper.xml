@@ -1,0 +1,1047 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.paike.mapper.ClassStageSubjectTeacherMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.paike.entity.ClassStageSubjectTeacher">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CLASS_ID" jdbcType="BIGINT" property="classId" />
+    <result column="ROOM_ID" jdbcType="BIGINT" property="roomId" />
+    <result column="TEACHER_STAFF_NO" jdbcType="VARCHAR" property="teacherStaffNo" />
+    <result column="TEACHER_TYPE" jdbcType="TINYINT" property="teacherType" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="BATCH_NUM" jdbcType="INTEGER" property="batchNum" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+    <result column="ACCIDENT_STATUS" jdbcType="BIT" property="accidentStatus" />
+    <result column="ACCIDENT_DESC" jdbcType="VARCHAR" property="accidentDesc" />
+    <result column="SCORE_DETAIL" jdbcType="VARCHAR" property="scoreDetail" />
+    <result column="SCORE" jdbcType="INTEGER" property="score" />
+    <result column="SURVEY_NUM" jdbcType="INTEGER" property="surveyNum" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="DURATION" jdbcType="INTEGER" property="duration" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="TEACH_WAY" jdbcType="TINYINT" property="teachWay" />
+    <result column="LESSON_TABLE_ID" jdbcType="BIGINT" property="lessonTableId" />
+    <result column="MASTER_CSST_ID" jdbcType="BIGINT" property="masterCsstId" />
+    <result column="IS_LOCAL" jdbcType="BIT" property="isLocal" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    ID, CLASS_ID, ROOM_ID, TEACHER_STAFF_NO, TEACHER_TYPE, STAGE_ID, SUBJECT_ID, BATCH_NUM, 
+    NODE_ID, ACCIDENT_STATUS, ACCIDENT_DESC, SCORE_DETAIL, SCORE, SURVEY_NUM, START_DATE, 
+    END_DATE, DURATION, CREATE_TIME, UPDATE_TIME, CREATOR_ID, `STATUS`, TEACH_WAY, LESSON_TABLE_ID, 
+    MASTER_CSST_ID, IS_LOCAL
+  </sql>
+  <delete id="deleteByFilter" parameterType="com.huatu.paike.dal.paike.entity.ClassStageSubjectTeacherCriteria">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from class_stage_subject_teacher
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+    <sql id="Base_Column_List_ALIAS">
+		a.ID, a.CLASS_ID, a.ROOM_ID, a.TEACHER_STAFF_NO,a.TEACHER_TYPE,
+		a.STAGE_ID,
+		a.SUBJECT_ID, a.BATCH_NUM,
+		a.NODE_ID, a.ACCIDENT_STATUS,
+		a.ACCIDENT_DESC,
+		a.SCORE_DETAIL, a.SCORE, a.SURVEY_NUM, a.START_DATE, a.END_DATE,
+		a.CREATE_TIME,
+		a.UPDATE_TIME, a.CREATOR_ID, a.STATUS,a.DURATION, a.TEACH_WAY,a.LESSON_TABLE_ID, a.MASTER_CSST_ID,a.IS_LOCAL
+	</sql>
+
+    <sql id="pageTool">
+        <if test="null != pageDto">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </sql>
+
+    <select id="queryListByClassId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_ALIAS" />
+        from
+        CLASS_STAGE_SUBJECT_TEACHER a
+        <where>
+            and a.CLASS_ID = #{classId}
+            <if test="null != startDate">
+                and a.START_DATE &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;a.END_DATE
+            </if>
+            and a.TEACHER_TYPE = 1
+        </where>
+        order by a.start_date desc
+        <if test="null != pageDto">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </select>
+    <select id="countByClassId" resultType="Integer">
+        select count(a.ID)
+        from CLASS_STAGE_SUBJECT_TEACHER a
+        <where>
+            and a.CLASS_ID = #{classId}
+            <if test="null != startDate">
+                and a.START_DATE &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;a.END_DATE
+            </if>
+            and a.TEACHER_TYPE = 1
+        </where>
+    </select>
+    
+    
+    <sql id="queryListByTeacherNo_F2F">
+    	select
+        	<include refid="Base_Column_List_ALIAS" />
+        from
+        	CLASS_STAGE_SUBJECT_TEACHER a
+        	join (
+        		select 
+        			distinct c.csst_id 
+        		from 
+        			lesson_teacher b join class_lesson c on b.lesson_id = c.id 
+        		where
+        			b.teacher_staff_no = #{teacherNo}
+        	) d on a.id = d.csst_id and a.TEACH_WAY=0
+        <where>
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="queryListByTeacherNo_DoubleTeacher_Assistant">
+    	select
+        	<include refid="Base_Column_List_ALIAS" />
+        from
+        	CLASS_STAGE_SUBJECT_TEACHER a
+        	join (
+        		select 
+        			distinct c.csst_id 
+        		from 
+        			lesson_teacher b join class_lesson c on b.lesson_id = c.id 
+        		where
+        			b.teacher_staff_no = #{teacherNo}
+        	) d on a.id = d.csst_id and a.TEACH_WAY=4
+        <where>
+        	a.TEACHER_TYPE=2
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="queryListByTeacherNo_DoubleTeacher_Master">
+    	SELECT
+			NULL AS ID,
+			NULL AS CLASS_ID,
+			ltd.TEACHER_DEVICE_ID AS ROOM_ID,
+			ltd.STAFF_NO AS TEACHER_STAFF_NO,
+			1 AS TEACHER_TYPE,
+			lt.STAGE_ID AS STAGE_ID,
+			lt.SUBJECT_ID AS SUBJECT_ID,
+			0 AS BATCH_NUM,
+			lt.NODE_ID AS NODE_ID,
+			0 AS ACCIDENT_STATUS,
+			'' AS ACCIDENT_DESC,
+			'' AS SCORE_DETAIL,
+			0 AS SCORE,
+			0 AS SURVEY_NUM,
+			MIN( lttd.START_TIME ) AS START_DATE,
+			MAX( lttd.END_TIME ) AS END_DATE,
+			SUN( lttd.DURATION ) AS DURATION,
+			MIN( lttd.CREATE_TIME ) AS CREATE_TIME,
+			MIN( lttd.UPDATE_TIME ) AS UPDATE_TIME,
+			MIN( lttd.CREATOR_ID ) AS CREATOR_ID,
+			NULL AS `STATUS`,
+			4 AS TEACH_WAY,
+			ltd.TIME_TABLE_ID AS LESSON_TABLE_ID,
+			NULL AS MASTER_CSST_ID,
+			ltd.IS_LOCAL AS IS_LOCAL 
+		FROM
+			lesson_table lt,
+			lesson_table_detail ltd,
+			lesson_table_time_detail lttd 
+		WHERE
+			lt.ID = ltd.TIME_TABLE_ID 
+			AND ltd.ID = lttd.LESSON_DETAIL_ID
+            AND lt.IS_DEL = 0
+            AND ltd.IS_DEL = 0
+            AND lttd.is_DEL = 0
+			<if test="null != startDate">
+                AND ltd.END_TIME>#{startDate}
+            </if>
+            <if test="null != endDate">
+                AND #{endDate} >ltd.START_TIME
+            </if>
+            <if test="teacherNo!=null and teacherNo.length>0">
+            	AND ltd.STAFF_NO=#{teacherNo}
+            </if>
+		GROUP BY
+			ltd.TIME_TABLE_ID,lt.STAGE_ID,lt.SUBJECT_ID,ltd.STAFF_NO
+    </sql>
+    
+    <select id="queryListByTeacherNo_new" resultMap="BaseResultMap">
+    	select 
+    		tem.*
+    	from
+    		(
+    			<include refid="queryListByTeacherNo_F2F"/>
+    			UNION
+    			<include refid="queryListByTeacherNo_DoubleTeacher_Master"/>
+    			UNION
+    			<include refid="queryListByTeacherNo_DoubleTeacher_Assistant"/>
+    		) tem
+    	ORDER By
+    		tem.start_date desc
+    	<include refid="pageTool"/>
+    </select>
+    
+    <sql id="countListByTeacherNo_F2F">
+    	select a.ID from CLASS_STAGE_SUBJECT_TEACHER a
+        join (select distinct c.csst_id from lesson_teacher b join class_lesson c on b.lesson_id = c.id where
+        b.teacher_staff_no = #{teacherNo}) d
+        on a.id = d.csst_id and a.TEACH_WAY=0
+        <where>
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="countListByTeacherNo_DoubleTeacher_Assistant">
+    	select a.ID from CLASS_STAGE_SUBJECT_TEACHER a
+        join (select distinct c.csst_id from lesson_teacher b join class_lesson c on b.lesson_id = c.id where
+        b.teacher_staff_no = #{teacherNo}) d
+        on a.id = d.csst_id and a.TEACH_WAY=4
+        <where>
+        	a.TEACHER_TYPE=2
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="countListByTeacherNo_DoubleTeacher_Master">
+    	SELECT
+			NULL AS ID
+		FROM
+			lesson_table lt,
+			lesson_table_detail ltd,
+			lesson_table_time_detail lttd 
+		WHERE
+			lt.ID = ltd.TIME_TABLE_ID 
+			AND ltd.ID = lttd.LESSON_DETAIL_ID
+            AND lt.IS_DEL = 0
+            AND ltd.IS_DEL = 0
+            AND lttd.is_DEL = 0
+        <if test="null != startDate">
+                AND ltd.END_TIME>#{startDate}
+            </if>
+            <if test="null != endDate">
+                AND #{endDate} >ltd.START_TIME
+            </if>
+            <if test="teacherNo!=null and teacherNo.length>0">
+            	AND ltd.STAFF_NO=#{teacherNo}
+            </if>
+		GROUP BY
+			ltd.TIME_TABLE_ID,lt.STAGE_ID,lt.SUBJECT_ID,ltd.STAFF_NO
+    </sql>
+    
+    <select id="countByTeacherNo_new" resultType="Integer">
+    	select 
+    		COUNT(1)
+    	from
+    		(
+    			<include refid="countListByTeacherNo_F2F"/>
+    			UNION
+    			<include refid="countListByTeacherNo_DoubleTeacher_Master"/>
+    			UNION
+    			<include refid="countListByTeacherNo_DoubleTeacher_Assistant"/>
+    		) tem
+    </select>
+    
+    
+    <select id="queryListByTeacherNo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_ALIAS" />
+        from
+        CLASS_STAGE_SUBJECT_TEACHER a
+        join (select distinct c.csst_id from lesson_teacher b join class_lesson c on b.lesson_id = c.id where
+        b.teacher_staff_no = #{teacherNo}) d
+        on a.id = d.csst_id
+        <where>
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+        order by a.start_date desc
+        <if test="null != pageDto">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </select>
+    <select id="countByTeacherNo" resultType="Integer">
+        select count(a.id) from CLASS_STAGE_SUBJECT_TEACHER a
+        join (select distinct c.csst_id from lesson_teacher b join class_lesson c on b.lesson_id = c.id where
+        b.teacher_staff_no = #{teacherNo}) d
+        on a.id = d.csst_id
+        <where>
+            <if test="null != startDate">
+                and DATE(a.END_DATE) &gt;=#{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt;=DATE(a.START_DATE)
+            </if>
+        </where>
+    </select>
+    <select id="queryListByStudentId" resultMap="BaseResultMap">
+        select distinct
+        <include refid="Base_Column_List_ALIAS" />
+        from CLASS_STAGE_SUBJECT_TEACHER a
+        join CLASS_LESSON b on a.ID =
+        b.CSST_ID join LESSON_STUDENT c on
+        b.ID =
+        c.LESSON_ID
+        <where>
+            c.STUDENT_ID =#{studentId}
+            <if test="null != teachWay">
+                and a.TEACH_WAY = #{teachWay}
+            </if>
+            <if test="null != startDate">
+                and b.LESSON_DATE &gt;= #{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt; b.LESSON_DATE
+            </if>
+        </where>
+        order by a.start_date desc
+        <if test="null != pageDto">
+            limit
+            ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+        </if>
+    </select>
+    <select id="countByStudentId" resultType="Integer">
+        select count(distinct a.ID)
+        from CLASS_STAGE_SUBJECT_TEACHER a
+        join
+        CLASS_LESSON
+        b on a.ID = b.CSST_ID join LESSON_STUDENT c on
+        b.ID =
+        c.LESSON_ID
+        <where>
+            c.STUDENT_ID =#{studentId}
+            <if test="null != teachWay">
+                and a.TEACH_WAY = #{teachWay}
+            </if>
+            <if test="null != startDate">
+                and b.LESSON_DATE &gt;= #{startDate}
+            </if>
+            <if test="null != endDate">
+                and #{endDate} &gt; b.LESSON_DATE
+            </if>
+        </where>
+    </select>
+
+    <select id="queryListBySubject" resultMap="BaseResultMap">
+        select * from CLASS_STAGE_SUBJECT_TEACHER
+        where class_id=#{classId} and subject_id=#{subjectId} and stage_id=#{stageId} and batch_num=#{batchNum} and
+        TEACHER_TYPE = 1
+        order by start_date desc
+        <include refid="pageTool" />
+    </select>
+
+    <select id="countBySubject" resultType="integer">
+		select COUNT(1) from CLASS_STAGE_SUBJECT_TEACHER
+		where class_id=#{classId} and subject_id=#{subjectId} and stage_id=#{stageId} and batch_num=#{batchNum} and TEACHER_TYPE = 1
+	</select>
+
+
+    <select id="countDuration" resultType="Integer">
+        select IFNULL(sum(b.LESSON_DURATION),0)
+        from
+        CLASS_STAGE_SUBJECT_TEACHER a
+        join CLASS_LESSON
+        b on a.ID = b.CSST_ID
+        <where>
+            and a.CLASS_ID =#{classId}
+            and a.STAGE_ID =#{stageId}
+            and
+            a.SUBJECT_ID =#{subjectId}
+            and b.IS_ADDITIONAL = 0
+        </where>
+    </select>
+    <select id="queryCsstList" resultMap="BaseResultMap">
+		select
+		ID,START_DATE,END_DATE,STATUS from CLASS_STAGE_SUBJECT_TEACHER where
+		#{date} &gt;= START_DATE and STATUS in (3,4)
+		limit
+		${(pageNum-1)*pageSize},#{pageSize}
+	</select>
+    <update id="updateCsstStatus">
+        update CLASS_STAGE_SUBJECT_TEACHER
+        <set>
+            <if test="status != null">
+                STATUS = #{status}
+            </if>
+        </set>
+        where ID in
+        <foreach close=")" collection="ids" item="csstId" open="(" separator=",">
+            #{csstId}
+        </foreach>
+    </update>
+    <update id="updateCsstScoreInfo">
+        update CLASS_STAGE_SUBJECT_TEACHER set score
+        =#{score}, survey_num
+        =#{surveyNum} , ACCIDENT_STATUS =#{accident}
+        <if test="scoreDetail!=null">
+            ,score_detail =#{scoreDetail}
+        </if>
+        where class_id =#{classId} and stage_id
+        =#{stageId} and subject_id
+        =#{subjectId} and TEACHER_STAFF_NO =
+        #{teacherNo} and TEACHER_TYPE=#{teacherType} and BATCH_NUM=#{batchNum}
+    </update>
+
+    <!-- 查询阶段科目的老师 -->
+    <select id="queryByClassStageSubject" resultMap="BaseResultMap">
+        select csst.* from class_stage_subject_teacher csst where
+        csst.class_id=#{classID} and
+        (csst.stage_id,csst.subject_id,csst.batch_num) in
+        <foreach close=")" collection="cssList" item="item" open="(" separator=",">
+            (#{item.stageId},#{item.subjectId},#{item.batchNum})
+        </foreach>
+        order by csst.batch_num,csst.stage_id,csst.subject_id,csst.teacher_type ASC
+    </select>
+
+    <select id="queryClassStageSubjectTeachers_PartRearrange" resultMap="BaseResultMap">
+		SELECT
+		A.TEACHER_STAFF_NO
+		,   A.TEACHER_TYPE
+		,   MIN(B.START_TIME)       START_DATE
+		,   MAX(B.END_TIME)         END_DATE
+		,   SUM(B.LESSON_DURATION)  DURATION
+		,   C.ID
+		,   A.CLASS_ID
+		,   A.STAGE_ID
+		,   A.SUBJECT_ID
+		,   A.BATCH_NUM
+		,   A.NODE_ID
+		,	C.ACCIDENT_STATUS
+		FROM
+		LESSON_TEACHER  A
+		JOIN
+		CLASS_LESSON    B
+		ON
+		A.LESSON_ID =   B.ID
+		JOIN
+		CLASS_STAGE_SUBJECT_TEACHER C
+		ON
+		C.CLASS_ID          =   A.CLASS_ID
+		AND C.STAGE_ID          =   A.STAGE_ID
+		AND C.SUBJECT_ID        =   A.SUBJECT_ID
+		AND C.BATCH_NUM         =   A.BATCH_NUM
+		AND A.TEACHER_STAFF_NO  =   C.TEACHER_STAFF_NO
+		AND A.TEACHER_TYPE      =   C.TEACHER_TYPE
+		WHERE
+		A.CLASS_ID      =   #{classId}
+		AND A.STAGE_ID      =   #{stageId}
+		AND A.BATCH_NUM     =   #{batchNum}
+		AND A.SUBJECT_ID    =   #{subjectId}
+		AND now()           >   B.START_TIME
+		GROUP BY
+		A.TEACHER_STAFF_NO
+		,   A.TEACHER_TYPE
+	</select>
+
+	<select id="queryClassStageSubjectTeachers_AllRearrange" resultMap="BaseResultMap">
+		SELECT
+		    A.TEACHER_STAFF_NO
+		,   A.TEACHER_TYPE
+		,   MIN(B.START_TIME)       START_DATE
+		,   MAX(B.END_TIME)         END_DATE
+		,   SUM(B.LESSON_DURATION)  DURATION
+		,   C.ID
+		,   A.CLASS_ID
+		,   A.STAGE_ID
+		,   A.SUBJECT_ID
+		,   A.BATCH_NUM
+		,   A.NODE_ID
+		,	C.ACCIDENT_STATUS
+		FROM
+		    LESSON_TEACHER  A
+		JOIN
+		    CLASS_LESSON    B
+		ON
+		    A.LESSON_ID =   B.ID
+		JOIN
+		    CLASS_STAGE_SUBJECT_TEACHER C
+		ON
+		    C.CLASS_ID          =   A.CLASS_ID
+		AND C.STAGE_ID          =   A.STAGE_ID
+		AND C.SUBJECT_ID        =   A.SUBJECT_ID
+		AND C.BATCH_NUM         =   A.BATCH_NUM
+		AND A.TEACHER_STAFF_NO  =   C.TEACHER_STAFF_NO
+		AND A.TEACHER_TYPE      =   C.TEACHER_TYPE
+		WHERE
+		    A.CLASS_ID      =   #{classId}
+		AND A.STAGE_ID      =   #{stageId}
+		AND A.BATCH_NUM     =   #{batchNum}
+		AND A.SUBJECT_ID    =   #{subjectId}
+		AND now()           >   B.START_TIME
+		GROUP BY
+		    A.TEACHER_STAFF_NO
+		,   A.TEACHER_TYPE
+    </select>
+    
+    <select id="queryAccidentCsst_AllRearrange" resultMap="BaseResultMap">
+        SELECT
+            A.TEACHER_STAFF_NO
+        ,   A.TEACHER_TYPE
+        ,   MIN(B.START_TIME)       START_DATE
+        ,   MAX(B.END_TIME)         END_DATE
+        ,   SUM(B.LESSON_DURATION)  DURATION
+        ,   C.ID
+        ,   A.CLASS_ID
+        ,   A.STAGE_ID
+        ,   A.SUBJECT_ID
+        ,   A.BATCH_NUM
+        ,   A.NODE_ID
+        ,	C.ACCIDENT_STATUS
+        FROM
+                ACCIDENT_LESSON_TEACHER  A
+        JOIN
+                ACCIDENT_CLASS_LESSON    B
+        ON
+                A.LESSON_ID =   B.ID
+        JOIN
+                CLASS_STAGE_SUBJECT_TEACHER C
+        ON
+                C.CLASS_ID          =   A.CLASS_ID
+        AND C.STAGE_ID          =   A.STAGE_ID
+        AND C.SUBJECT_ID        =   A.SUBJECT_ID
+        AND C.BATCH_NUM         =   A.BATCH_NUM
+        AND A.TEACHER_STAFF_NO  =   C.TEACHER_STAFF_NO
+        AND A.TEACHER_TYPE      =   C.TEACHER_TYPE
+        WHERE
+                A.CLASS_ID      =   #{classId}
+        AND A.STAGE_ID      =   #{stageId}
+        AND A.BATCH_NUM     =   #{batchNum}
+        AND A.SUBJECT_ID    =   #{subjectId}
+        AND now()           >   B.START_TIME
+        GROUP BY
+            A.TEACHER_STAFF_NO
+        ,   A.TEACHER_TYPE
+    </select>
+
+    <!-- 查询阶段科目的老师 -->
+    <select id="queryClassStageSubjectTeachers" resultMap="BaseResultMap">
+        SELECT
+        A.TEACHER_STAFF_NO
+        , A.TEACHER_TYPE
+        , MIN(B.START_TIME) START_DATE
+        , MAX(B.END_TIME) END_DATE
+        , SUM(B.LESSON_DURATION) DURATION
+        , C.ID
+        , A.CLASS_ID
+        , A.STAGE_ID
+        , A.SUBJECT_ID
+        , A.BATCH_NUM
+        , A.NODE_ID
+        , B.TEACH_WAY
+        , A.IS_LOCAL
+        , C.ACCIDENT_STATUS
+        FROM
+        LESSON_TEACHER A
+        JOIN
+        CLASS_LESSON B
+        ON
+        A.LESSON_ID = B.ID
+        LEFT JOIN
+        CLASS_STAGE_SUBJECT_TEACHER C
+        ON
+        C.CLASS_ID = A.CLASS_ID
+        AND C.STAGE_ID = A.STAGE_ID
+        AND C.SUBJECT_ID = A.SUBJECT_ID
+        AND C.BATCH_NUM = A.BATCH_NUM
+        AND A.TEACHER_STAFF_NO = C.TEACHER_STAFF_NO
+        AND A.TEACHER_TYPE = C.TEACHER_TYPE
+        <where>
+            A.CLASS_ID = #{classId}
+            AND A.STAGE_ID = #{stageId}
+            AND A.BATCH_NUM = #{batchNum}
+            AND A.SUBJECT_ID = #{subjectId}
+        </where>
+        GROUP BY
+        A.TEACHER_STAFF_NO
+        , A.TEACHER_TYPE
+    </select>
+
+    <select id="queryNoTeacherCsst_accident" resultMap="BaseResultMap">
+		SELECT (
+				SELECT id
+				FROM class_stage_subject_teacher
+				WHERE class_id = #{classId}
+					AND stage_id = #{stageId}
+					AND subject_id = #{subjectId}
+					AND batch_num = #{batchNum}
+					AND TEACHER_STAFF_NO = ''
+				LIMIT 1
+			) AS id, a.class_id, a.stage_id, a.subject_id,a.batch_num, a.node_id
+			, MIN(a.START_TIME) AS START_DATE, MAX(a.END_TIME) AS END_DATE
+			, SUM(a.LESSON_DURATION) AS DURATION
+		FROM accident_class_lesson a
+		WHERE a.class_id = #{classId}
+			AND a.stage_id = #{stageId}
+			AND a.subject_id = #{subjectId}
+			AND a.batch_num = #{batchNum}
+			AND a.TEACHER_STAFF_NO = ''
+	</select>
+
+    <select id="queryNoTeacherCsst" resultMap="BaseResultMap">
+		SELECT (
+				SELECT id
+				FROM class_stage_subject_teacher
+				WHERE class_id = #{classId}
+					AND stage_id = #{stageId}
+					AND subject_id = #{subjectId}
+					AND batch_num = #{batchNum}
+					AND TEACHER_STAFF_NO = ''
+				LIMIT 1
+			) AS id, a.class_id, a.stage_id, a.subject_id,a.batch_num, a.node_id
+			, MIN(a.START_TIME) AS START_DATE, MAX(a.END_TIME) AS END_DATE
+			, SUM(a.LESSON_DURATION) AS DURATION
+			, a.TEACH_WAY
+			, a.IS_LOCAL
+		FROM class_lesson a
+		WHERE a.class_id = #{classId}
+			AND a.stage_id = #{stageId}
+			AND a.subject_id = #{subjectId}
+			AND a.batch_num = #{batchNum}
+			AND a.TEACHER_STAFF_NO = ''
+	</select>
+    <delete id="delUnusedCssa">
+		DELETE FROM class_stage_subject_teacher
+		WHERE class_id = #{classId}
+			AND stage_id = #{stageId}
+			AND subject_id = #{subjectId}
+			AND batch_num = #{batchNum}
+			AND teacher_type = 2
+			AND NOT EXISTS (
+				SELECT 1
+				FROM lesson_teacher b
+				WHERE b.csst_id = class_stage_subject_teacher.id
+			)
+	</delete>
+    <delete id="delUnusedCsst">
+		DELETE FROM class_stage_subject_teacher
+		WHERE class_id = #{classId}
+			AND stage_id = #{stageId}
+			AND subject_id = #{subjectId}
+			AND batch_num = #{batchNum}
+			AND teacher_type = 1
+			AND ACCIDENT_STATUS= 0
+			AND NOT EXISTS (
+				SELECT 1
+				FROM class_lesson b
+				WHERE b.csst_id = class_stage_subject_teacher.id
+			)
+	</delete>
+
+    <select id="queryByStageBatch" resultMap="BaseResultMap">
+        SELECT * FROM class_stage_subject_teacher
+        WHERE class_id=#{classId} and (stage_id,subject_id,batch_num) in
+        <foreach close=")" collection="stageBatchs" item="item" open="(" separator=",">
+            (#{item.stageId},#{item.subjectId},#{item.batchNum})
+        </foreach>
+    </select>
+
+    <select id="countStuCountByCsstIds" resultType="map">
+        SELECT
+        csst.ID,
+        COUNT( DISTINCT ls.ORDER_NO )
+        FROM
+        class_stage_subject_teacher csst,
+        class_lesson cl,
+        lesson_student ls
+        WHERE
+        csst.ID = cl.CSST_ID
+        AND cl.ID = ls.LESSON_ID
+        AND cl.IS_DISCARD=0
+        AND csst.ID IN
+        <foreach close=")" collection="csstIds" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY
+        csst.ID
+    </select>
+
+    <select id="countAccidentStuCountByCsstIds" resultType="map">
+        SELECT
+        csst.ID,
+        COUNT( DISTINCT ls.ORDER_NO )
+        FROM
+        class_stage_subject_teacher csst,
+        accident_class_lesson cl,
+        accident_lesson_student ls
+        WHERE
+        csst.ID = cl.CSST_ID
+        AND cl.ID = ls.LESSON_ID
+        AND csst.ID IN
+        <foreach close=")" collection="csstIds" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY
+        csst.ID
+    </select>
+
+    <select id="queryStuByClassStageSubjectTeacher" resultMap="com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper.BaseResultMap">
+        SELECT
+        DISTINCT oi.*
+        FROM
+        class_stage_subject_teacher csst,
+        class_lesson cl,
+        lesson_student ls,
+        order_info oi
+        <where>
+            csst.ID = cl.CSST_ID
+            AND cl.ID = ls.LESSON_ID
+            AND ls.ORDER_NO = oi.ORDER_NO
+            AND csst.CLASS_ID = #{classId}
+            AND csst.STAGE_ID = #{stageId}
+            AND csst.BATCH_NUM = #{batchNum}
+            AND csst.SUBJECT_ID = #{subjectId}
+            <if test="staffNo!=null">
+                AND csst.TEACHER_STAFF_NO= #{staffNo}
+            </if>
+        </where>
+        <include refid="pageTool" />
+    </select>
+
+    <select id="countStuByClassStageSubjectTeacher" resultType="int">
+        SELECT
+        COUNT(DISTINCT oi.ORDER_NO)
+        FROM
+        class_stage_subject_teacher csst,
+        class_lesson cl,
+        lesson_student ls,
+        order_info oi
+        <where>
+            csst.ID = cl.CSST_ID
+            AND cl.ID = ls.LESSON_ID
+            AND ls.ORDER_NO = oi.ORDER_NO
+            AND csst.CLASS_ID = #{classId}
+            AND csst.STAGE_ID = #{stageId}
+            AND csst.BATCH_NUM = #{batchNum}
+            AND csst.SUBJECT_ID = #{subjectId}
+            <if test="staffNo!=null">
+                AND csst.TEACHER_STAFF_NO= #{staffNo}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryStuByAccidentClassStageSubjectTeacher" resultMap="com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper.BaseResultMap">
+        SELECT
+        DISTINCT oi.*
+        FROM
+        class_stage_subject_teacher csst,
+        accident_class_lesson cl,
+        accident_lesson_student ls,
+        order_info oi
+        <where>
+            csst.ID = cl.CSST_ID
+            AND cl.ID = ls.LESSON_ID
+            AND ls.ORDER_NO = oi.ORDER_NO
+            AND csst.CLASS_ID = #{classId}
+            AND csst.STAGE_ID = #{stageId}
+            AND csst.BATCH_NUM = #{batchNum}
+            AND csst.SUBJECT_ID = #{subjectId}
+            <if test="staffNo!=null">
+                AND csst.TEACHER_STAFF_NO= #{staffNo}
+            </if>
+        </where>
+        <include refid="pageTool" />
+    </select>
+
+    <select id="countStuByAccidentClassStageSubjectTeacher" resultType="int">
+        SELECT
+        COUNT(DISTINCT oi.ORDER_NO)
+        FROM
+        class_stage_subject_teacher csst,
+        accident_class_lesson cl,
+        accident_lesson_student ls,
+        order_info oi
+        <where>
+            csst.ID = cl.CSST_ID
+            AND cl.ID = ls.LESSON_ID
+            AND ls.ORDER_NO = oi.ORDER_NO
+            AND csst.CLASS_ID = #{classId}
+            AND csst.STAGE_ID = #{stageId}
+            AND csst.BATCH_NUM = #{batchNum}
+            AND csst.SUBJECT_ID = #{subjectId}
+            <if test="staffNo!=null">
+                AND csst.TEACHER_STAFF_NO= #{staffNo}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAccidents" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        class_stage_subject_teacher
+        WHERE
+        CLASS_ID=#{classId}
+        <include refid="pageTool" />
+    </select>
+
+    <select id="countAccidents" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+			class_stage_subject_teacher
+		WHERE
+			CLASS_ID=#{classId}
+	</select>
+
+    <select id="queryListByIds" resultMap="BaseResultMap">
+        select ID, START_DATE, END_DATE from class_stage_subject_teacher
+        <where>
+            <if test="csstIds != null and csstIds.size() > 0">
+                and id in
+                <foreach collection="csstIds" open="(" separator="," close=")" item="csstId">
+                    #{csstId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+	<select id="queryLessonIfAccident" resultType="map">
+		select 
+			cl.ID,csst.ACCIDENT_STATUS
+		from
+			class_lesson cl,class_stage_subject_teacher csst
+		where 
+			cl.csst_id=csst.id
+			AND cl.ID in
+			<foreach close=")" collection="lessonIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+	</select>
+	
+	<select id="queryAccidntType" resultType="map">
+		select 
+			csst.ID,acl.IS_DISCARD
+		from
+			class_stage_subject_teacher csst,accident_class_lesson acl
+		<where>
+			csst.ID=acl.CSST_ID
+			AND csst.ACCIDENT_STATUS=1
+			AND csst.ID in
+			<foreach close=")" collection="csstIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	
+	
+	<select id="queryAccidentType" resultType="int">
+		select 
+			DISTINCT acl.IS_DISCARD
+		from
+			class_stage_subject_teacher csst,accident_class_lesson acl
+		<where>
+			csst.ID=acl.CSST_ID
+			AND csst.ACCIDENT_STATUS=1
+			AND csst.ID=#{csstId}
+		</where>
+	</select>
+	<select id="queryTeacherDevIdByCsstIds" resultType="map">
+		SELECT
+			csst.ID,ltd.TEACHER_DEVICE_ID
+		FROM
+			class_stage_subject_teacher csst,
+			lesson_table_detail ltd 
+		<where>
+            ltd.IS_DEL = 0 AND
+			csst.LESSON_TABLE_ID=ltd.TIME_TABLE_ID AND csst.ID IN
+			<foreach close=")" collection="csstIds" item="item" open="(" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+
+	<!-- 查询课节关联的老师,包括(未排老师的也算)主讲,助教 -->
+	<select id="queryCsstByLessonId" resultMap="BaseResultMap">
+		SELECT
+			csst.* 
+		FROM
+			class_stage_subject_teacher csst,
+			lesson_teacher lt 
+		WHERE
+			csst.ID = lt.CSST_ID 
+			AND lt.TEACHER_TYPE=2
+			AND lt.LESSON_ID = #{lessonId}
+		UNION
+		SELECT
+			csst.* 
+		FROM
+			class_stage_subject_teacher csst,
+			class_lesson cl
+		WHERE 
+			csst.ID = cl.CSST_ID
+			AND cl.ID = #{lessonId}
+	</select>
+	
+	<update id="updateAccidentEnd">
+		UPDATE class_stage_subject_teacher
+		SET
+			STATUS=5
+		WHERE
+			#{now}>END_DATE AND ACCIDENT_STATUS=1 AND 4>=`STATUS`
+	</update>
+    
+    <update id="updateCSST">
+      UPDATE  class_stage_subject_teacher
+        <trim prefix="set" suffixOverrides=",">
+            <if test="csst.classId != null">
+                CLASS_ID=#{csst.classId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.roomId != null">
+                ROOM_ID=#{csst.roomId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.teacherStaffNo != null">
+                TEACHER_STAFF_NO=#{csst.teacherStaffNo,jdbcType=VARCHAR},
+            </if>
+            <if test="csst.teacherType != null">
+                TEACHER_TYPE=#{csst.teacherType,jdbcType=INTEGER},
+            </if>
+            <if test="csst.stageId != null">
+                STAGE_ID=#{csst.stageId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.subjectId != null">
+                SUBJECT_ID=#{csst.subjectId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.batchNum != null">
+                BATCH_NUM=#{csst.batchNum,jdbcType=INTEGER},
+            </if>
+            <if test="csst.nodeId != null">
+                NODE_ID=#{csst.nodeId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.accidentStatus != null">
+                ACCIDENT_STATUS=#{csst.accidentStatus,jdbcType=INTEGER},
+            </if>
+            <if test="csst.accidentDesc != null">
+                ACCIDENT_DESC=#{csst.accidentDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="csst.scoreDetail != null">
+                SCORE_DETAIL=#{csst.scoreDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="csst.score != null">
+                SCORE=#{csst.score,jdbcType=INTEGER},
+            </if>
+            <if test="csst.surveyNum != null">
+                SURVEY_NUM=#{csst.surveyNum,jdbcType=INTEGER},
+            </if>
+            <if test="csst.duration != null">
+                DURATION=#{csst.duration,jdbcType=INTEGER},
+            </if>
+            <if test="csst.createTime != null">
+                CREATE_TIME=#{csst.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="csst.creatorId != null">
+                CREATOR_ID=#{csst.creatorId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.status != null">
+                STATUS=#{csst.status,jdbcType=INTEGER},
+            </if>
+            <if test="csst.teachWay != null">
+                TEACH_WAY=#{csst.teachWay,jdbcType=INTEGER},
+            </if>
+            <if test="csst.lessonTableId != null">
+                LESSON_TABLE_ID=#{csst.lessonTableId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.masterCsstId != null">
+                MASTER_CSST_ID=#{csst.masterCsstId,jdbcType=BIGINT},
+            </if>
+            <if test="csst.isLocal != null">
+                IS_LOCAL=#{csst.isLocal,jdbcType=INTEGER},
+            </if>
+            <if test="forceUpdateStartEndTime==true">
+                START_DATE=#{csst.startDate,jdbcType=TIMESTAMP},
+                END_DATE=#{csst.endDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="forceUpdateStartEndTime==false">
+                <if test="csst.startDate!=null">
+                    START_DATE=#{csst.startDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="csst.endDate!=null">
+                    END_DATE=#{csst.endDate,jdbcType=TIMESTAMP},
+                </if>
+            </if>
+        </trim>
+          where ID = #{csst.id,jdbcType=BIGINT}
+    </update>
+</mapper>

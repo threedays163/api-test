@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huatu.paike.dal.teachingaffairs.mapper.LessonTableTemplateMapper">
+  <resultMap id="BaseResultMap" type="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATOR_ID" jdbcType="BIGINT" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="BIGINT" property="updatorId" />
+    <result column="IS_DEL" jdbcType="INTEGER" property="isDel" />
+    <result column="TEMPLATE_NO" jdbcType="VARCHAR" property="templateNo" />
+    <result column="TEMPLATE_NAME" jdbcType="VARCHAR" property="templateName" />
+    <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="STAGE_ID" jdbcType="BIGINT" property="stageId" />
+    <result column="SUBJECT_ID" jdbcType="BIGINT" property="subjectId" />
+    <result column="DAY_DURATION" jdbcType="DECIMAL" property="dayDuration" />
+    <result column="NIGHT_DURATION" jdbcType="DECIMAL" property="nightDuration" />
+    <result column="DURATION" jdbcType="INTEGER" property="duration" />
+    <result column="NODE_ID" jdbcType="BIGINT" property="nodeId" />
+  </resultMap>
+
+  <!-- 基本列 -->
+  <sql id="Base_Column_List">
+    ID,CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,TEMPLATE_NO,TEMPLATE_NAME,PRODUCT_ID,STAGE_ID,SUBJECT_ID,DAY_DURATION,NIGHT_DURATION,DURATION,NODE_ID
+  </sql>
+  
+  <!-- 单个插入 -->
+  <insert id="insertSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into lesson_table_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="isDel != null">
+        IS_DEL,
+      </if>
+      <if test="templateNo != null">
+        TEMPLATE_NO,
+      </if>
+      <if test="templateName != null">
+        TEMPLATE_NAME,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="stageId != null">
+        STAGE_ID,
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID,
+      </if>
+      <if test="dayDuration != null">
+        DAY_DURATION,
+      </if>
+      <if test="nightDuration != null">
+        NIGHT_DURATION,
+      </if>
+      <if test="duration != null">
+        DURATION,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="templateNo != null">
+        #{templateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="templateName != null">
+        #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stageId != null">
+        #{stageId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null">
+        #{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDuration != null">
+        #{dayDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="nightDuration != null">
+        #{nightDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=INTEGER},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 批量新增 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+    INSERT INTO lesson_table_template
+    (CREATOR_ID,CREATE_TIME,UPDATE_TIME,UPDATOR_ID,IS_DEL,TEMPLATE_NO,TEMPLATE_NAME,PRODUCT_ID,STAGE_ID,SUBJECT_ID,DAY_DURATION,NIGHT_DURATION,DURATION,NODE_ID)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+       (#{item.creatorId,jdbcType=BIGINT},#{item.createTime,jdbcType=TIMESTAMP},#{item.updateTime,jdbcType=TIMESTAMP},#{item.updatorId,jdbcType=BIGINT},#{item.isDel,jdbcType=INTEGER},#{item.templateNo,jdbcType=VARCHAR},#{item.templateName,jdbcType=VARCHAR},#{item.productId,jdbcType=BIGINT},#{item.stageId,jdbcType=BIGINT},#{item.subjectId,jdbcType=BIGINT},#{item.dayDuration,jdbcType=DECIMAL},#{item.nightDuration,jdbcType=DECIMAL},#{item.duration,jdbcType=INTEGER},#{item.nodeId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+  
+  <!-- 单个更新 -->
+  <update id="updateSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity">
+    update lesson_table_template
+    <set>
+      <if test="creatorId != null">
+        CREATOR_ID=#{creatorId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID=#{updatorId,jdbcType=BIGINT},
+      </if>
+      <if test="isDel != null">
+        IS_DEL=#{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="templateNo != null">
+        TEMPLATE_NO=#{templateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="templateName != null">
+        TEMPLATE_NAME=#{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID=#{productId,jdbcType=BIGINT},
+      </if>
+      <if test="stageId != null">
+        STAGE_ID=#{stageId,jdbcType=BIGINT},
+      </if>
+      <if test="subjectId != null">
+        SUBJECT_ID=#{subjectId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDuration != null">
+        DAY_DURATION=#{dayDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="nightDuration != null">
+        NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL},
+      </if>
+      <if test="duration != null">
+        DURATION=#{duration,jdbcType=INTEGER},
+      </if>
+      <if test="nodeId != null">
+        NODE_ID=#{nodeId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量更新 -->
+  <update id="updateBatch" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        UPDATE lesson_table_template
+        <set>
+        <if test="item.creatorId != null">
+          CREATOR_ID=#{item.creatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.createTime != null">
+          CREATE_TIME=#{item.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updateTime != null">
+          UPDATE_TIME=#{item.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updatorId != null">
+          UPDATOR_ID=#{item.updatorId,jdbcType=BIGINT},
+        </if>
+        <if test="item.isDel != null">
+          IS_DEL=#{item.isDel,jdbcType=INTEGER},
+        </if>
+        <if test="item.templateNo != null">
+          TEMPLATE_NO=#{item.templateNo,jdbcType=VARCHAR},
+        </if>
+        <if test="item.templateName != null">
+          TEMPLATE_NAME=#{item.templateName,jdbcType=VARCHAR},
+        </if>
+        <if test="item.productId != null">
+          PRODUCT_ID=#{item.productId,jdbcType=BIGINT},
+        </if>
+        <if test="item.stageId != null">
+          STAGE_ID=#{item.stageId,jdbcType=BIGINT},
+        </if>
+        <if test="item.subjectId != null">
+          SUBJECT_ID=#{item.subjectId,jdbcType=BIGINT},
+        </if>
+        <if test="item.dayDuration != null">
+          DAY_DURATION=#{item.dayDuration,jdbcType=DECIMAL},
+        </if>
+        <if test="item.nightDuration != null">
+          NIGHT_DURATION=#{item.nightDuration,jdbcType=DECIMAL},
+        </if>
+        <if test="item.duration != null">
+          DURATION=#{item.duration,jdbcType=INTEGER},
+        </if>
+        <if test="item.nodeId != null">
+          NODE_ID=#{item.nodeId,jdbcType=BIGINT},
+        </if>
+        </set>
+        WHERE ID = #{item.id,jdbcType=BIGINT}
+    </foreach> 
+  </update>
+  
+  <!--  逻辑删除 -->
+  <update id="removeSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity" >
+    update lesson_table_template set UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 逻辑批量删除 -->
+  <update id="removeBatch" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+        update lesson_table_template
+        set UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},UPDATOR_ID = #{item.updatorId,jdbcType=VARCHAR}, IS_DEL = 1
+        where ID = #{item.id,jdbcType=BIGINT}
+    </foreach> 
+  </update>
+
+    <!--  物理删除 -->
+    <delete id="deleteSingle" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity" >
+        DELETE FROM lesson_table_template
+        where ID = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!-- 物理批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.List" >
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            DELETE FROM lesson_table_template
+            where ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+  
+  <!-- 查询所有 -->
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableTemplateParam">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM lesson_table_template
+    <where>
+      IS_DEL=0
+      <if test="id != null">
+          AND ID = #{id, jdbcType=BIGINT}
+      </if>
+      <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="templateNo != null">
+      AND TEMPLATE_NO=#{templateNo,jdbcType=VARCHAR}
+    </if>
+    <if test="templateName != null">
+      AND TEMPLATE_NAME=#{templateName,jdbcType=VARCHAR}
+    </if>
+    <if test="productId != null">
+      AND PRODUCT_ID=#{productId,jdbcType=BIGINT}
+    </if>
+    <if test="stageId != null">
+      AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+    </if>
+    <if test="subjectId != null">
+      AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+    </if>
+    <if test="dayDuration != null">
+      AND DAY_DURATION=#{dayDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="nightDuration != null">
+      AND NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="duration != null">
+      AND DURATION=#{duration,jdbcType=INTEGER}
+    </if>
+    <if test="notInId != null">
+      AND ID != #{notInId, jdbcType=BIGINT}
+    </if>
+      <if test="nodeId != null">
+      AND NODE_ID=#{nodeId,jdbcType=BIGINT}
+    </if>
+      <if test="templateQuery != null">
+        AND ((TEMPLATE_NAME like CONCAT('%', #{templateQuery, jdbcType=VARCHAR}, '%')) OR
+        (TEMPLATE_NO like CONCAT('%', #{templateQuery, jdbcType=VARCHAR}, '%')) )
+      </if>
+      <if test="splitProductIds != null and splitProductIds.size() > 0">
+            <foreach collection="splitProductIds" item="itemList" open=" AND (" separator=" OR " close=")" index="i">
+                <foreach collection="itemList" index="j" separator="," open="PRODUCT_ID IN (" close=")" item="item">
+                  #{item}
+                </foreach>
+            </foreach>
+      </if>
+      <if test="ids != null and ids.size() > 0">
+        AND ID IN
+        <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    <if test="isOrderByCreateTimeDesc != null">
+      ORDER BY CREATE_TIME DESC
+    </if>
+      <if test="pageDto != null">
+          limit
+        ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}
+      </if>
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="countQuery" resultType="int" parameterType="com.huatu.paike.dal.teachingaffairs.dto.QueryLessonTableTemplateParam">
+    SELECT
+    count(1)
+    FROM lesson_table_template
+      <where>
+        IS_DEL=0
+        <if test="creatorId != null">
+      AND CREATOR_ID=#{creatorId,jdbcType=BIGINT}
+    </if>
+    <if test="createTime != null">
+      AND CREATE_TIME=#{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null">
+      AND UPDATE_TIME=#{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatorId != null">
+      AND UPDATOR_ID=#{updatorId,jdbcType=BIGINT}
+    </if>
+    <if test="isDel != null">
+      AND IS_DEL=#{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="templateNo != null">
+      AND TEMPLATE_NO=#{templateNo,jdbcType=VARCHAR}
+    </if>
+    <if test="templateName != null">
+      AND TEMPLATE_NAME=#{templateName,jdbcType=VARCHAR}
+    </if>
+    <if test="productId != null">
+      AND PRODUCT_ID=#{productId,jdbcType=BIGINT}
+    </if>
+    <if test="stageId != null">
+      AND STAGE_ID=#{stageId,jdbcType=BIGINT}
+    </if>
+    <if test="subjectId != null">
+      AND SUBJECT_ID=#{subjectId,jdbcType=BIGINT}
+    </if>
+    <if test="dayDuration != null">
+      AND DAY_DURATION=#{dayDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="nightDuration != null">
+      AND NIGHT_DURATION=#{nightDuration,jdbcType=DECIMAL}
+    </if>
+    <if test="duration != null">
+      AND DURATION=#{duration,jdbcType=INTEGER}
+    </if>
+    <if test="nodeId != null">
+      AND NODE_ID=#{nodeId,jdbcType=BIGINT}
+    </if>
+    <if test="notInId != null">
+      AND ID != #{notInId, jdbcType=BIGINT}
+    </if>
+    <if test="templateQuery != null">
+      AND ((TEMPLATE_NAME like CONCAT('%', #{templateQuery, jdbcType=VARCHAR}, '%')) OR
+      (TEMPLATE_NO like CONCAT('%', #{templateQuery, jdbcType=VARCHAR}, '%')) )
+    </if>
+    <if test="splitProductIds != null and splitProductIds.size() > 0">
+      <foreach collection="splitProductIds" item="itemList" open=" AND (" separator=" OR " close=")" index="i">
+        <foreach collection="itemList" index="j" separator="," open="PRODUCT_ID IN (" close=")" item="item">
+          #{item}
+        </foreach>
+      </foreach>
+    </if>
+    <if test="ids != null and ids.size() > 0">
+      AND ID IN
+      <foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+      </where>
+  </select>
+  
+  <!-- 单个查询 -->
+  <select id="get" parameterType="com.huatu.paike.dal.teachingaffairs.entity.LessonTableTemplateEntity" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM lesson_table_template 
+    <where>
+      IS_DEL=0
+      <if test="id != null">
+      AND id = #{id, jdbcType=BIGINT}
+    </if>
+    </where>
+  </select>
+</mapper>
