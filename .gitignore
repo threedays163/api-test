@@ -1,8 +1,6 @@
 
 **/target/**
 
-logs/**
-
 **/logs/**
 # Eclipse
 .classpath
@@ -23,10 +21,9 @@ logs/**
 .DS_Store
 
 # Maven
-**/log/
+**/log/**
 **/target
 **/*.log
-logs/**
 **/tmp
 **/.tmp
 **/bin/**
