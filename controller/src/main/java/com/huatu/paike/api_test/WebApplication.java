@@ -102,7 +102,7 @@ public class WebApplication implements CommandLineRunner {
         System.out.println(ossId2CssMap);
         System.exit(0);*/
 
-        costOrderService.buildCostOrder();
+        costOrderService.buildCostOrder_test();
     }
 
     /*

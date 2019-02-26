@@ -534,7 +534,7 @@
         SELECT
             oss.ID
         FROM
-            order_stage_subject oss JOIN order_info oi ON oss.order_no=oi.order_no AND oi.ORDER_STATE!=7 AND oi.BUY_TIME BETWEEN #{startTime} AND #{endTime}
+            order_stage_subject oss JOIN order_info oi ON oss.order_no=oi.order_no AND oi.ORDER_STATE!=7 AND oi.BUY_TIME BETWEEN #{buyStartTime} AND #{buyEndTime}
         WHERE
             oss.START_DATE IS NOT NULL AND oss.START_DATE BETWEEN #{startTime} AND #{endTime}
     </select>

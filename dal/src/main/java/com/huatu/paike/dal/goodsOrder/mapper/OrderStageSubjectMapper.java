@@ -201,7 +201,7 @@ public interface OrderStageSubjectMapper extends IdsMapper<OrderStageSubject>, M
      * @param endTime
      * @return
      */
-    List<Long> queryEndOss(@Param("startTime")Date startTime,@Param("endTime") Date endTime);
+    List<Long> queryEndOss(@Param("buyStartTime")Date buyStartTime,@Param("buyEndTime") Date buyEndTime,@Param("startTime") Date startTime,@Param("endTime") Date endTime);
 
     @MapF2M
     Map<Long,Map<Long,Integer>> queryClassId(@Param("ids")Collection<Long> ids);
