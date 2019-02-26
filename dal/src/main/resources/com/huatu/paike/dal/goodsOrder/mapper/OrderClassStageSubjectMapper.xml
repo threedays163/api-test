@@ -444,4 +444,46 @@
 			</foreach>
 
 	</select>
+
+	<select id="queryEnd" resultType="string">
+		select
+			distinct c.ORDER_NO
+		from
+			class_stage_subject a
+			join order_class_stage_subject b
+				on a.CLASS_ID = b.CLASS_ID
+				and a.STAGE_ID = b.stage_id
+				and a.subject_id = b.SUBJECT_ID
+				and a.batch_num = b.BATCH_NUM
+			join order_info c
+				on b.ORDER_NO = c.ORDER_NO
+				and c.BUY_TIME >'2018-12-01 00:00:00'
+		where a.FINISH_DURATION >= a.TOTAL_DURATION
+		and a.END_DATE BETWEEN #{startTime} and #{endTime}
+	</select>
+
+    <resultMap id="ocssDurationDto" type="com.huatu.paike.dal.goodsOrder.dto.OcssDurationDto">
+        <result column="ORDER_NO" property="orderNo"/>
+        <result column="CLASS_ID" property="classId"/>
+        <result column="STAGE_ID" property="stageId"/>
+        <result column="SUBJECT_ID" property="subjectId"/>
+        <result column="BATCH_NUM" property="batchNum"/>
+        <result column="TOTAL_DURATION" property="totalDuration"/>
+        <result column="FINISH_DURATION" property="finishDuration"/>
+        <result column="END_DATE" property="endDate"/>
+    </resultMap>
+
+	<select id="queryDurationByOrderNos" resultMap="ocssDurationDto">
+        select ocss.ORDER_NO,ocss.CLASS_ID,ocss.STAGE_ID,ocss.SUBJECT_ID,ocss.BATCH_NUM, css.TOTAL_DURATION,css.FINISH_DURATION,css.END_DATE
+        from order_class_stage_subject ocss
+          join class_stage_subject css ON
+            ocss.CLASS_ID=css.CLASS_ID AND
+            ocss.STAGE_ID=css.STAGE_ID AND
+            ocss.SUBJECT_ID=css.SUBJECT_ID AND
+            ocss.BATCH_NUM=css.BATCH_NUM
+          where ocss.ORDER_NO IN
+        <foreach collection="orderNos" separator="," open="(" item="item" close=")">
+            #{item}
+        </foreach>
+	</select>
 </mapper>

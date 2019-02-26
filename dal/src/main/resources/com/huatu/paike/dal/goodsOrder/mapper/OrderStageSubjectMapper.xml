@@ -534,9 +534,9 @@
         SELECT
             oss.ID
         FROM
-            order_stage_subject oss JOIN order_info oi ON oss.order_no=oi.order_no AND oi.ORDER_STATE!=7 AND oi.BUY_TIME BETWEEN #{buyStartTime} AND #{buyEndTime}
+            order_stage_subject oss JOIN order_info oi ON oss.order_no=oi.order_no AND oi.ORDER_STATE!=7 AND oi.BUY_TIME>'2018-12-01'
         WHERE
-            oss.START_DATE IS NOT NULL AND oss.START_DATE BETWEEN #{startTime} AND #{endTime}
+            oss.END_DATE IS NOT NULL AND oss.END_DATE BETWEEN #{startTime} AND #{endTime}
     </select>
 
     <select id="queryClassId" resultType="map">

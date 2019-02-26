@@ -5,15 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.huatu.paike.dal.goodsOrder.dto.OrderStageSubjectViewDto;
-import com.huatu.paike.dal.goodsOrder.dto.QueryOrderViewParam;
+import com.huatu.paike.dal.goodsOrder.dto.*;
 import com.huatu.paike.dal.goodsOrder.entity.*;
 import org.apache.ibatis.annotations.Param;
 
 import com.huatu.paike.dal.annotations.MapF2F;
 import com.huatu.paike.dal.annotations.MapF2ML;
-import com.huatu.paike.dal.goodsOrder.dto.ClassGoodDto;
-import com.huatu.paike.dal.goodsOrder.dto.StageBatchNumDto;
 
 import tk.mybatis.mapper.common.Mapper;
 
@@ -172,4 +169,8 @@ public interface OrderClassStageSubjectMapper extends Mapper<OrderClassStageSubj
      * @return
      */
     List<OrderClassStageSubjectDuration> queryOrderInClassSubject(@Param("orderNos") Collection<String> orderNos);
+
+    List<String> queryEnd(@Param("startTime") Date startTime,@Param("endTime") Date endTime);
+
+    List<OcssDurationDto> queryDurationByOrderNos(@Param("orderNos") Collection<String> orderNos);
 }

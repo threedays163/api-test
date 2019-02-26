@@ -13,10 +13,12 @@ import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
 import com.huatu.paike.dal.cost.mapper.CostOrderStageMapper;
 import com.huatu.paike.dal.cost.mapper.CostOrderStageTestMapper;
 import com.huatu.paike.dal.cost.mapper.NewCostOrderStageMapper;
+import com.huatu.paike.dal.goodsOrder.dto.OcssDurationDto;
 import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubject;
 import com.huatu.paike.dal.goodsOrder.entity.OrderStageSubjectCriteria;
+import com.huatu.paike.dal.goodsOrder.mapper.OrderClassStageSubjectMapper;
 import com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper;
 import com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper;
 import com.huatu.paike.dal.paike.entity.ClassStageSubject;
@@ -56,6 +58,9 @@ public class CostOrderServiceImpl implements CostOrderService {
     @Autowired
     CostOrderStageTestMapper costOrderStageTestMapper;
 
+    @Autowired
+    OrderClassStageSubjectMapper ocssMapper;
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void buildCostOrder() {
@@ -64,7 +69,7 @@ public class CostOrderServiceImpl implements CostOrderService {
         Date buyStartTime=DateUtil.getStrToDate("yyyy-MM-dd", "2018-12-01");
         Date buyEndTime=DateUtil.getStrToDate("yyyy-MM-dd", "2019-03-01");
         Date startTime = DateUtil.getStrToDate("yyyy-MM-dd", "2018-12-01");
-        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-03-01");
+        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-01-01");
         List<Long> ossIds = ossMapper.queryEndOss(buyStartTime,buyEndTime,startTime, endTime);
         if (CollectionUtils.isEmpty(ossIds)) {
             log.info("oss is empty");
@@ -94,7 +99,12 @@ public class CostOrderServiceImpl implements CostOrderService {
                 String orderNo = oss.getOrderNo();
                 OrderInfo orderInfo = orderInfos.get(orderNo);
                 ClassStageSubject css=ossId2CssMap.get(oss.getId());
+
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
+
+                if(css.getFinishDuration()<css.getTotalDuration()){
+                    continue;
+                }
 
                 if(css==null||oss==null||orderInfo==null){
                     log.error("异常数据：{}", oss);
@@ -157,45 +167,46 @@ public class CostOrderServiceImpl implements CostOrderService {
         log.info("扫描所有在12月份后产生的订单，生成12,1,2月结转数据");
         Date buyStartTime=DateUtil.getStrToDate("yyyy-MM-dd", "2019-01-01");
         Date buyEndTime=DateUtil.getStrToDate("yyyy-MM-dd", "2019-03-01");
-        Date startTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-02-01");
-        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-03-01");
-        List<Long> ossIds = ossMapper.queryEndOss(buyStartTime,buyEndTime,startTime, endTime);
-        if (CollectionUtils.isEmpty(ossIds)) {
-            log.info("oss is empty");
+        Date startTime = DateUtil.getStrToDate("yyyy-MM-dd", "2018-12-01");
+        Date endTime = DateUtil.getStrToDate("yyyy-MM-dd", "2019-01-01");
+
+        List<String> orderNos=ocssMapper.queryEnd(startTime,endTime);
+        if (CollectionUtils.isEmpty(orderNos)) {
+            log.info("orderNos is empty");
             return;
         }
         int batchSize = 200;
         int idx = 0;
-        while (idx < ossIds.size()) {
+        while (idx < orderNos.size()) {
             long time=System.currentTimeMillis();
-            int lastIndex = Math.min(idx + batchSize, ossIds.size());
-            List<Long> subList = ossIds.subList(idx, lastIndex);
+            int lastIndex = Math.min(idx + batchSize, orderNos.size());
+            List<String> subList = orderNos.subList(idx, lastIndex);
             if(CollectionUtils.isEmpty(subList)){
                 break;
             }
+            List<OcssDurationDto> ocssDurationDtos=ocssMapper.queryDurationByOrderNos(subList);
 
-            List<OrderStageSubject> orderStageSubjects =ossMapper.queryByIds(subList);
+            Set<String> distinceOrderNos = ocssDurationDtos.stream().map(a -> a.getOrderNo()).collect(Collectors.toSet());
 
-            Set<String> orderNos = orderStageSubjects.stream().map(a -> a.getOrderNo()).collect(Collectors.toSet());
+            Map<String, OrderInfo> orderInfos = orderInfoMapper.queryListByOrderNos(distinceOrderNos);
 
-            Map<String, OrderInfo> orderInfos = orderInfoMapper.queryListByOrderNos(orderNos);
-
-            List<OssId2CssDto> ossId2CssDtos=ossMapper.queryCss(subList);
-
-            Map<Long,ClassStageSubject> ossId2CssMap=ossId2CssDtos.stream().collect(Collectors.toMap(a->a.getOssId(), a->a.getCss()));
             long time1=System.currentTimeMillis();
             log.info("查询本地数据库信息耗时{}",time1-time);
 
             Map<Long, OrderInfoDto> moneyMap = orderInfos.values().stream().collect(Collectors.toMap(a -> a.getOrderGoodsId(), a -> getOrderPriceInfo(a.getOrderGoodsId())));
             log.info("查询金额耗时：{}",System.currentTimeMillis()-time1);
-            for (OrderStageSubject oss : orderStageSubjects) {
-                String orderNo = oss.getOrderNo();
+            for (OcssDurationDto odd : ocssDurationDtos) {
+                String orderNo = odd.getOrderNo();
                 OrderInfo orderInfo = orderInfos.get(orderNo);
-                ClassStageSubject css=ossId2CssMap.get(oss.getId());
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
 
-                if(css==null||oss==null||orderInfo==null){
-                    log.error("异常数据：{}", oss);
+                //判断是否已经结课
+                if(odd.getFinishDuration().intValue()<odd.getTotalDuration().intValue()){
+                    continue;
+                }
+
+                if(odd==null||orderInfo==null){
+                    log.error("异常数据：odd={},orderInfo={}", odd,orderInfo);
                     continue;
                 }
                 // VIP订单不结转,协议类型为K,L,M,N为无限学,不结转
@@ -205,10 +216,10 @@ public class CostOrderServiceImpl implements CostOrderService {
                     continue;
                 }
 
-                long subjectTuition = orderPriceInfo.getSubjectTuitionMap().getOrDefault(oss.getStageId(), Maps.newHashMap())
-                        .getOrDefault(oss.getSubjectId(), 0L);
-                long subjectExtra = orderPriceInfo.getSubjectExtraMap().getOrDefault(oss.getStageId(), Maps.newHashMap())
-                        .getOrDefault(oss.getSubjectId(), 0L);
+                long subjectTuition = orderPriceInfo.getSubjectTuitionMap().getOrDefault(odd.getStageId(), Maps.newHashMap())
+                        .getOrDefault(odd.getSubjectId(), 0L);
+                long subjectExtra = orderPriceInfo.getSubjectExtraMap().getOrDefault(odd.getStageId(), Maps.newHashMap())
+                        .getOrDefault(odd.getSubjectId(), 0L);
 
                 /*if (subjectTuition == 0 && subjectExtra == 0) {
                     log.info("exit,orderNo={},orderGoodsId={},学费和杂费都为0,退出", orderNo, orderInfo.getOrderGoodsId());
@@ -218,13 +229,12 @@ public class CostOrderServiceImpl implements CostOrderService {
                 List<CostOrderStageTest> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
                 CostOrderStageTest tuition =
-                        CostOrderStageBuilder.builder_test(css,oss.getTotalDuration().intValue(), orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
+                        CostOrderStageBuilder.builder_test(odd, orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
                 if(orderInfo.getScoreHavePass()){
                     costOrderStages.add(tuition);
                 }
-
                 CostOrderStageTest extra =
-                        CostOrderStageBuilder.builder_test(css,oss.getTotalDuration().intValue(),orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
+                        CostOrderStageBuilder.builder_test(odd,orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
                 costOrderStages.add(extra);
                 for (CostOrderStageTest costOrderStage : costOrderStages) {
                     costOrderStageTestMapper.insertSelective(costOrderStage);

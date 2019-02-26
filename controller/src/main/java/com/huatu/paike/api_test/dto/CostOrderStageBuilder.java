@@ -3,6 +3,7 @@ package com.huatu.paike.api_test.dto;
 
 import com.huatu.paike.dal.cost.entity.CostOrderStageTest;
 import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
+import com.huatu.paike.dal.goodsOrder.dto.OcssDurationDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 
@@ -35,14 +36,14 @@ public class CostOrderStageBuilder {
         return costOrderStage;
     }
 
-    public static CostOrderStageTest builder_test(ClassStageSubject css, Integer totalDuration, OrderInfo orderInfo, CostType costType, Long cost,
-                                             boolean isReport, CostSourceType sourceType) {
+    public static CostOrderStageTest builder_test(OcssDurationDto css, OrderInfo orderInfo, CostType costType, Long cost,
+                                                  boolean isReport, CostSourceType sourceType) {
         CostOrderStageTest costOrderStage = new CostOrderStageTest();
         costOrderStage.setBatchNum(css.getBatchNum());
         costOrderStage.setClassId(css.getClassId());
         costOrderStage.setCost(cost);
         costOrderStage.setCostType((byte) costType.getValue());
-        costOrderStage.setDuration(totalDuration);
+        costOrderStage.setDuration(css.getTotalDuration());
         costOrderStage.setFinishedDate(css.getEndDate());
         // 下游需要字段,误删
         costOrderStage.setFinishDate(css.getEndDate());
