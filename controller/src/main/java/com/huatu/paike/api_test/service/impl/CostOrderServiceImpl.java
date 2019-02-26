@@ -104,6 +104,10 @@ public class CostOrderServiceImpl implements CostOrderService {
                     log.info("exit,orderNo={},orderGoodsId={},学费和杂费都为0,退出", orderNo, orderInfo.getOrderGoodsId());
                     continue;
                 }*/
+                if(css==null||oss==null||orderInfo==null){
+                    log.error("异常数据：{}", oss);
+                    continue;
+                }
 
                 List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
