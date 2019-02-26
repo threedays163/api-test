@@ -95,6 +95,12 @@ public class CostOrderServiceImpl implements CostOrderService {
                 OrderInfo orderInfo = orderInfos.get(orderNo);
                 ClassStageSubject css=ossId2CssMap.get(oss.getId());
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
+
+                if(css==null||oss==null||orderInfo==null){
+                    log.error("异常数据：{}", oss);
+                    continue;
+                }
+
                 // VIP订单不结转,协议类型为K,L,M,N为无限学,不结转
                 if (orderPriceInfo.getProductTypeCode().equals("VI") || orderInfo.getProtocolType().matches("K|L|M|N")) {
                     log.info("exit,orderNo={},orderGoodsId={},协议类型为{},无限学,不结转退出", orderNo, orderInfo.getOrderGoodsId(),
@@ -111,10 +117,6 @@ public class CostOrderServiceImpl implements CostOrderService {
                     log.info("exit,orderNo={},orderGoodsId={},学费和杂费都为0,退出", orderNo, orderInfo.getOrderGoodsId());
                     continue;
                 }*/
-                if(css==null||oss==null||orderInfo==null){
-                    log.error("异常数据：{}", oss);
-                    continue;
-                }
 
                 List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
@@ -191,6 +193,11 @@ public class CostOrderServiceImpl implements CostOrderService {
                 OrderInfo orderInfo = orderInfos.get(orderNo);
                 ClassStageSubject css=ossId2CssMap.get(oss.getId());
                 OrderInfoDto orderPriceInfo = moneyMap.get(orderInfo.getOrderGoodsId());
+
+                if(css==null||oss==null||orderInfo==null){
+                    log.error("异常数据：{}", oss);
+                    continue;
+                }
                 // VIP订单不结转,协议类型为K,L,M,N为无限学,不结转
                 if (orderPriceInfo.getProductTypeCode().equals("VI") || orderInfo.getProtocolType().matches("K|L|M|N")) {
                     log.info("exit,orderNo={},orderGoodsId={},协议类型为{},无限学,不结转退出", orderNo, orderInfo.getOrderGoodsId(),
