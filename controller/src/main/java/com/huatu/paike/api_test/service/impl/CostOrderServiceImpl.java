@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.Subject;
+
 @Slf4j
 @Service
 public class CostOrderServiceImpl implements CostOrderService {
@@ -69,10 +71,8 @@ public class CostOrderServiceImpl implements CostOrderService {
             if(CollectionUtils.isEmpty(subList)){
                 break;
             }
-            //ossMapper.selectByIds(StringUtils.join(subList,","));
-/*            OrderStageSubjectCriteria criteria = new OrderStageSubjectCriteria();
-            criteria.createCriteria().andIdIn(new ArrayList<>(subList));*/
-            List<OrderStageSubject> orderStageSubjects = ossMapper.selectByIds(StringUtils.join(subList,","));//ossMapper.selectByExample(criteria);
+
+            List<OrderStageSubject> orderStageSubjects =ossMapper.queryByIds(subList);
 
             Set<String> orderNos = orderStageSubjects.stream().map(a -> a.getOrderNo()).collect(Collectors.toSet());
 
@@ -119,7 +119,8 @@ public class CostOrderServiceImpl implements CostOrderService {
                     newCostOrderStageMapper.insertSelective(costOrderStage);
                 }
             }
-            idx += lastIndex;
+            log.info("idx={},batchSize={}",idx,lastIndex-idx);
+            idx = lastIndex;
         }
         log.info("生成完毕");
     }

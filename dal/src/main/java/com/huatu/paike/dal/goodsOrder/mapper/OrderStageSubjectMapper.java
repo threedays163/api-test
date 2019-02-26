@@ -207,4 +207,6 @@ public interface OrderStageSubjectMapper extends IdsMapper<OrderStageSubject>, M
     Map<Long,Map<Long,Integer>> queryClassId(@Param("ids")Collection<Long> ids);
 
     List<OssId2CssDto> queryCss(@Param("ids")Collection<Long> ids);
+
+    List<OrderStageSubject> queryByIds(@Param("ids") List<Long> ids);
 }

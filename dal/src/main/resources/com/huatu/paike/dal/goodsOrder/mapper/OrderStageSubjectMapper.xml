@@ -530,7 +530,7 @@
         </where>
     </update>
 
-    <select id="queryEndOss" resultMap="BaseResultMap">
+    <select id="queryEndOss" resultType="long">
         SELECT
             oss.ID
         FROM
@@ -566,6 +566,13 @@
         AND ocss.batch_num = css.batch_num
         WHERE oss.ID IN 
         <foreach collection="ids" close=")" separator="," open="(" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryByIds" resultMap="BaseResultMap">
+        select * from order_stage_subject where id IN
+        <foreach collection="ids" close=")" item="item" open="(" separator=",">
             #{item}
         </foreach>
     </select>

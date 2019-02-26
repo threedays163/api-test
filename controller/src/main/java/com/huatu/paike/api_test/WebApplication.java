@@ -84,7 +84,7 @@ public class WebApplication implements CommandLineRunner {
     @Override
     public void run(String...args) throws Exception {
 
-        costOrderService.buildCostOrder();
+
 
         // queryTeacherHistory();
         // queryLessonDetail();
@@ -101,6 +101,8 @@ public class WebApplication implements CommandLineRunner {
         Map<Long,ClassStageSubject> ossId2CssMap=ossId2CssDtos.stream().collect(Collectors.toMap(a->a.getOssId(), a->a.getCss()));
         System.out.println(ossId2CssMap);
         System.exit(0);*/
+
+        costOrderService.buildCostOrder();
     }
 
     /*
