@@ -100,10 +100,10 @@ public class CostOrderServiceImpl implements CostOrderService {
                 long subjectExtra = orderPriceInfo.getSubjectExtraMap().getOrDefault(oss.getStageId(), Maps.newHashMap())
                         .getOrDefault(oss.getSubjectId(), 0L);
 
-                if (subjectTuition == 0 && subjectExtra == 0) {
+                /*if (subjectTuition == 0 && subjectExtra == 0) {
                     log.info("exit,orderNo={},orderGoodsId={},学费和杂费都为0,退出", orderNo, orderInfo.getOrderGoodsId());
                     continue;
-                }
+                }*/
 
                 List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
