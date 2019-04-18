@@ -5,11 +5,16 @@
 
 	<dubbo:application name="paike-consumer" />
 	<!-- 消费端全局超时设置 -->
-	<dubbo:consumer timeout="6000" />
+	<dubbo:consumer timeout="10000" />
+
 
 	<dubbo:registry protocol="zookeeper" address="172.30.70.4:2181,172.30.70.5:2181,172.30.70.6:2181"/>
 
+	<!--<dubbo:registry protocol="zookeeper" address="172.30.9.98:2181,172.30.9.99:2181,172.30.9.100:2181"/>-->
+
+
 	<dubbo:protocol name="dubbo" port="20880" />
+
 
 	<!-- 依赖ehr-api -->
 	<dubbo:reference interface="com.huatu.ehr.service.AreaService"

@@ -148,6 +148,11 @@ public class CostOrderServiceImpl implements CostOrderService {
         log.info("生成完毕");
     }
 
+    @Override
+    public OrderInfoDto queryOrderCostInfo(Long orderGoodsId){
+        return getOrderPriceInfo(orderGoodsId);
+    }
+
     private OrderInfoDto getOrderPriceInfo(Long orderGoodId) {
         OrderMoneyDto moneyInfo = orderService.getOrderMoneyInfo(orderGoodId);
         OrderInfoDto orderInfo = new OrderInfoDto();

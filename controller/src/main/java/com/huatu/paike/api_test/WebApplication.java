@@ -2,12 +2,15 @@
 package com.huatu.paike.api_test;
 
 import com.huatu.common.dto.resp.Node;
+import com.huatu.common.errorcode.CommonErrorCode;
+import com.huatu.common.exception.BusinessException;
 import com.huatu.common.service.StageService;
 import com.huatu.common.service.SubjectService;
 import com.huatu.common.utils.DateUtil;
 import com.huatu.common.utils.JsonUtil;
 import com.huatu.ehr.service.EhrNodeService;
 import com.huatu.ehr.service.dto.resp.EhrNode;
+import com.huatu.order.dto.OrderDetail;
 import com.huatu.order.dto.OrderMoneyDto;
 import com.huatu.order.service.paike.GoodsListService;
 import com.huatu.order.service.paike.OrderService;
@@ -16,9 +19,6 @@ import com.huatu.paike.api_test.dto.NewOrderCostItem;
 import com.huatu.paike.api_test.dto.OrderCostItem;
 import com.huatu.paike.api_test.dto.OrderDurationWaste;
 import com.huatu.paike.api_test.service.impl.CostOrderService;
-import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
-import com.huatu.paike.dal.goodsOrder.mapper.OrderStageSubjectMapper;
-import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 import com.huatu.sku.entity.GoodsDetail;
 import com.huatu.sku.service.CourseService;
 import com.huatu.sku.service.GoodsService;
@@ -81,6 +81,8 @@ public class WebApplication implements CommandLineRunner {
         SpringApplication.run(WebApplication.class, args);
     }
 
+
+
     @Override
     public void run(String...args) throws Exception {
 
@@ -101,8 +103,26 @@ public class WebApplication implements CommandLineRunner {
         Map<Long,ClassStageSubject> ossId2CssMap=ossId2CssDtos.stream().collect(Collectors.toMap(a->a.getOssId(), a->a.getCss()));
         System.out.println(ossId2CssMap);
         System.exit(0);*/
+        /*OrderInfoDto dto=costOrderService.queryOrderCostInfo(150853L);
 
-        costOrderService.buildCostOrder_test();
+        List<com.huatu.order.dto.OrderInfoDto> result=orderService.getOrderInfos(Lists.newArrayList(150853L));
+        System.out.println(JsonUtil.toStr(dto));
+        System.out.println(JsonUtil.toStr(result));*/
+        //costOrderService.buildCostOrder_test();
+
+        List<com.huatu.order.dto.OrderInfoDto> orderList = orderService.getOrderInfos(Lists.newArrayList(318258L));
+        System.out.println(orderList);
+        OrderDetail orderDetail =
+                orderService.getOrderDetail("XC201904050001128", "WMGQFJ4X19003WYA", 318258L);
+        if (null == orderDetail) {
+            throw new BusinessException(CommonErrorCode.BUSINESS_ERROR, "orderDetail is null");
+        }
+        GoodsDetail goodsDetail = goodsService.getGoodsDetail(orderDetail.getGoodsNo());
+        if (goodsDetail == null || StringUtils.isEmpty(goodsDetail.getProductNo())) {
+            throw new BusinessException(CommonErrorCode.BUSINESS_ERROR, "根据订单所属商品查询不到商品详情");
+        }
+        System.out.println(orderDetail);
+        System.out.println(goodsDetail);
     }
 
     /*

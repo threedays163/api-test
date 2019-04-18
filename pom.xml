@@ -27,8 +27,8 @@
     <ehr.version>1.0.0.RELEASE</ehr.version>
     <springfox.version>2.6.1</springfox.version>
     <sku.version>2.2.2.RELEASE</sku.version>
-    <order.version>2.2.0.RELEASE</order.version>
-    <common-api.version>1.0.0.RELEASE</common-api.version>
+    <order.version>2.2.3.RELEASE</order.version>
+    <common-api.version>2.2.1.RELEASE</common-api.version>
     <shizi-api.version>2.1.0.RELEASE</shizi-api.version>
     <workflow-interface.version>1.0.0.RELEASE</workflow-interface.version>
     <cas.version>1.0.2</cas.version>
