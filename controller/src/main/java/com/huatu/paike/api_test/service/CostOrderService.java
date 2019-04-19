@@ -1,4 +1,4 @@
-package com.huatu.paike.api_test.service.impl;
+package com.huatu.paike.api_test.service;
 
 import com.huatu.paike.api_test.OrderInfoDto;
 

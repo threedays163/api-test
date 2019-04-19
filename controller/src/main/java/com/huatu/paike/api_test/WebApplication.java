@@ -2,15 +2,12 @@
 package com.huatu.paike.api_test;
 
 import com.huatu.common.dto.resp.Node;
-import com.huatu.common.errorcode.CommonErrorCode;
-import com.huatu.common.exception.BusinessException;
 import com.huatu.common.service.StageService;
 import com.huatu.common.service.SubjectService;
 import com.huatu.common.utils.DateUtil;
 import com.huatu.common.utils.JsonUtil;
 import com.huatu.ehr.service.EhrNodeService;
 import com.huatu.ehr.service.dto.resp.EhrNode;
-import com.huatu.order.dto.OrderDetail;
 import com.huatu.order.dto.OrderMoneyDto;
 import com.huatu.order.service.paike.GoodsListService;
 import com.huatu.order.service.paike.OrderService;
@@ -18,7 +15,8 @@ import com.huatu.order.service.paike.StudentService;
 import com.huatu.paike.api_test.dto.NewOrderCostItem;
 import com.huatu.paike.api_test.dto.OrderCostItem;
 import com.huatu.paike.api_test.dto.OrderDurationWaste;
-import com.huatu.paike.api_test.service.impl.CostOrderService;
+import com.huatu.paike.api_test.service.CheckOrderVersionService;
+import com.huatu.paike.api_test.service.CostOrderService;
 import com.huatu.sku.entity.GoodsDetail;
 import com.huatu.sku.service.CourseService;
 import com.huatu.sku.service.GoodsService;
@@ -75,7 +73,7 @@ public class WebApplication implements CommandLineRunner {
     EhrNodeService nodeService;
 
     @Autowired
-    CostOrderService costOrderService;
+    CheckOrderVersionService costOrderVersionService;
 
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
@@ -86,7 +84,7 @@ public class WebApplication implements CommandLineRunner {
     @Override
     public void run(String...args) throws Exception {
 
-
+        costOrderVersionService.check();
 
         // queryTeacherHistory();
         // queryLessonDetail();
@@ -110,7 +108,7 @@ public class WebApplication implements CommandLineRunner {
         System.out.println(JsonUtil.toStr(result));*/
         //costOrderService.buildCostOrder_test();
 
-        List<com.huatu.order.dto.OrderInfoDto> orderList = orderService.getOrderInfos(Lists.newArrayList(318258L));
+/*        List<com.huatu.order.dto.OrderInfoDto> orderList = orderService.getOrderInfos(Lists.newArrayList(318258L));
         System.out.println(orderList);
         OrderDetail orderDetail =
                 orderService.getOrderDetail("XC201904050001128", "WMGQFJ4X19003WYA", 318258L);
@@ -122,7 +120,7 @@ public class WebApplication implements CommandLineRunner {
             throw new BusinessException(CommonErrorCode.BUSINESS_ERROR, "根据订单所属商品查询不到商品详情");
         }
         System.out.println(orderDetail);
-        System.out.println(goodsDetail);
+        System.out.println(goodsDetail);*/
     }
 
     /*
