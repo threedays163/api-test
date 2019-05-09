@@ -2,8 +2,8 @@ package com.huatu.paike.dal.paike.entity;
 
 import lombok.Data;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Table(name = "class_stage_subject_teacher")
@@ -62,7 +62,7 @@ public class ClassStageSubjectTeacher {
      * 事故状态：0，没有事故；1，有事故
      */
     @Column(name = "ACCIDENT_STATUS")
-    private Boolean accidentStatus;
+    private Byte accidentStatus;
 
     /**
      * 事故描述
@@ -153,6 +153,14 @@ public class ClassStageSubjectTeacher {
      */
     @Column(name = "IS_LOCAL")
     private Boolean isLocal;
+
+    /**
+     * 是否更新开始结束时间
+     */
+    @Transient
+    private Boolean forceUpdateStartEndTime;
+
+
 
     /**
      * 获取自增ID
@@ -313,7 +321,7 @@ public class ClassStageSubjectTeacher {
      *
      * @return ACCIDENT_STATUS - 事故状态：0，没有事故；1，有事故
      */
-    public Boolean getAccidentStatus() {
+    public Byte getAccidentStatus() {
         return accidentStatus;
     }
 
@@ -322,7 +330,7 @@ public class ClassStageSubjectTeacher {
      *
      * @param accidentStatus 事故状态：0，没有事故；1，有事故
      */
-    public void setAccidentStatus(Boolean accidentStatus) {
+    public void setAccidentStatus(Byte accidentStatus) {
         this.accidentStatus = accidentStatus;
     }
 
@@ -594,5 +602,13 @@ public class ClassStageSubjectTeacher {
      */
     public void setIsLocal(Boolean isLocal) {
         this.isLocal = isLocal;
+    }
+
+    public Boolean getForceUpdateStartEndTime() {
+        return forceUpdateStartEndTime;
+    }
+
+    public void setForceUpdateStartEndTime(Boolean forceUpdateStartEndTime) {
+        this.forceUpdateStartEndTime = forceUpdateStartEndTime;
     }
 }

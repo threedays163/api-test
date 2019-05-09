@@ -3,8 +3,11 @@ spring:
     restart:
       enabled: true
   profiles:
-    active: tomcat,jdbc
-    include: application-tomcat.yaml,application-jdbc.yaml
+    active: tomcat,jdbc,redis
+    include: application-tomcat.yaml,application-jdbc.yaml,application-redis.yaml
 
 mybatis:
   config-location: classpath:mybatis-configuration.xml
+
+##场地数据来源是否为本地数据库
+placeDataFromLocal: false

@@ -1,13 +1,8 @@
 package com.huatu.paike.dal.paike.entity;
 
-import lombok.Data;
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Date;
 
-@ToString
-@Data
 @Table(name = "class_stage_subject")
 public class ClassStageSubject {
     /**
@@ -112,16 +107,46 @@ public class ClassStageSubject {
     private Date endDate;
 
     /**
+     * 是否已结转,0:未结转;1:已结转
+     */
+    @Column(name = "HAS_COST")
+    private Boolean hasCost;
+
+    /**
      * 课次ID,LESSON_TABLE主键
      */
     @Column(name = "LESSON_TABLE_ID")
     private Long lessonTableId;
 
     /**
-     * 是否已结转,0:未结转;1:已结转
+     * 授课方式:0-面授，1-直播，2-录播大屏，3-录播-小屏，4-双师
      */
-    @Column(name = "HAS_COST")
-    private Boolean hasCost;
+    @Column(name = "teach_way")
+    private Byte teachWay;
+
+    /**
+     * 上课类型:1,讲座;2,非讲座
+     */
+    @Column(name = "course_type")
+    private Integer courseType;
+
+    /**
+     * 笔面试类型：B(笔试),M（面试）,Z（综合）
+     */
+    @Column(name = "exam_way")
+    private String examWay;
+
+    /**
+     * 事业部id
+     */
+    @Column(name = "BU_ID")
+    private Long buId;
+
+    /**
+     * 是否提前结课:0-不是，1-是
+     */
+    @Column(name = "end_early")
+    private Boolean endEarly;
 
     /**
      * 获取自增ID
@@ -426,6 +451,24 @@ public class ClassStageSubject {
     }
 
     /**
+     * 获取是否已结转,0:未结转;1:已结转
+     *
+     * @return HAS_COST - 是否已结转,0:未结转;1:已结转
+     */
+    public Boolean getHasCost() {
+        return hasCost;
+    }
+
+    /**
+     * 设置是否已结转,0:未结转;1:已结转
+     *
+     * @param hasCost 是否已结转,0:未结转;1:已结转
+     */
+    public void setHasCost(Boolean hasCost) {
+        this.hasCost = hasCost;
+    }
+
+    /**
      * 获取课次ID,LESSON_TABLE主键
      *
      * @return LESSON_TABLE_ID - 课次ID,LESSON_TABLE主键
@@ -444,20 +487,94 @@ public class ClassStageSubject {
     }
 
     /**
-     * 获取是否已结转,0:未结转;1:已结转
+     * 获取授课方式:0-面授，1-直播，2-录播大屏，3-录播-小屏，4-双师
      *
-     * @return HAS_COST - 是否已结转,0:未结转;1:已结转
+     * @return teach_way - 授课方式:0-面授，1-直播，2-录播大屏，3-录播-小屏，4-双师
      */
-    public Boolean getHasCost() {
-        return hasCost;
+    public Byte getTeachWay() {
+        return teachWay;
     }
 
     /**
-     * 设置是否已结转,0:未结转;1:已结转
+     * 设置授课方式:0-面授，1-直播，2-录播大屏，3-录播-小屏，4-双师
      *
-     * @param hasCost 是否已结转,0:未结转;1:已结转
+     * @param teachWay 授课方式:0-面授，1-直播，2-录播大屏，3-录播-小屏，4-双师
      */
-    public void setHasCost(Boolean hasCost) {
-        this.hasCost = hasCost;
+    public void setTeachWay(Byte teachWay) {
+        this.teachWay = teachWay;
     }
+
+    /**
+     * 获取上课类型:1,讲座;2,非讲座
+     *
+     * @return course_type - 上课类型:1,讲座;2,非讲座
+     */
+    public Integer getCourseType() {
+        return courseType;
+    }
+
+    /**
+     * 设置上课类型:1,讲座;2,非讲座
+     *
+     * @param courseType 上课类型:1,讲座;2,非讲座
+     */
+    public void setCourseType(Integer courseType) {
+        this.courseType = courseType;
+    }
+
+    /**
+     * 获取笔面试类型：B(笔试),M（面试）,Z（综合）
+     *
+     * @return exam_way - 笔面试类型：B(笔试),M（面试）,Z（综合）
+     */
+    public String getExamWay() {
+        return examWay;
+    }
+
+    /**
+     * 设置笔面试类型：B(笔试),M（面试）,Z（综合）
+     *
+     * @param examWay 笔面试类型：B(笔试),M（面试）,Z（综合）
+     */
+    public void setExamWay(String examWay) {
+        this.examWay = examWay;
+    }
+
+    /**
+     * 获取事业部id
+     *
+     * @return BU_ID - 事业部id
+     */
+    public Long getBuId() {
+        return buId;
+    }
+
+    /**
+     * 设置事业部id
+     *
+     * @param buId 事业部id
+     */
+    public void setBuId(Long buId) {
+        this.buId = buId;
+    }
+
+    /**
+     * 获取是否提前结课:0-不是，1-是
+     *
+     * @return end_early - 是否提前结课:0-不是，1-是
+     */
+    public Boolean getEndEarly() {
+        return endEarly;
+    }
+
+    /**
+     * 设置是否提前结课:0-不是，1-是
+     *
+     * @param endEarly 是否提前结课:0-不是，1-是
+     */
+    public void setEndEarly(Boolean endEarly) {
+        this.endEarly = endEarly;
+    }
+
+
 }

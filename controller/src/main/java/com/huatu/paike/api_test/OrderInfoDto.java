@@ -7,11 +7,14 @@ package com.huatu.paike.api_test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.huatu.paike.api_test.utils.RatioUtils;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @title OrderInfoDto
@@ -80,20 +83,40 @@ public class OrderInfoDto implements Serializable {
     }
 
     public static void main(String[] args) {
-        OrderInfoDto dto = new OrderInfoDto();
-        dto.setRealpay(80000000l);
-        dto.setTuition(80000000l);
-        dto.setExtra(20000000l);
+        /*
+         * OrderInfoDto dto = new OrderInfoDto(); dto.setRealpay(80000000l); dto.setTuition(80000000l);
+         * dto.setExtra(20000000l);
+         * 
+         * dto.setStagePriceMap(Maps.newHashMap()); dto.getStagePriceMap().put(1l, 30000000l);
+         * dto.getStagePriceMap().put(2l, 70000000l);
+         * 
+         * dto.caculate(); System.out.println(dto.getRealStageTuitionMap());
+         * System.out.println(dto.getRealStageExtraMap());
+         * 
+         * System.out.println(dto.getSubjectTuitionMap());
+         */
 
-        dto.setStagePriceMap(Maps.newHashMap());
-        dto.getStagePriceMap().put(1l, 30000000l);
-        dto.getStagePriceMap().put(2l, 70000000l);
+        List<OrderInfoDto> list = Lists.newArrayList();
+        OrderInfoDto dto1=new OrderInfoDto();
+        dto1.setProductTypeCode("test2");
+        dto1.setExtra(100);
+        list.add(dto1);
+        OrderInfoDto dto2=new OrderInfoDto();
+        dto2.setProductTypeCode("test2");
+        dto2.setExtra(10);
+        list.add(dto2);
 
-        dto.caculate();
-        System.out.println(dto.getRealStageTuitionMap());
-        System.out.println(dto.getRealStageExtraMap());
-
-        System.out.println(dto.getSubjectTuitionMap());
+        list=list.stream().sorted(new Comparator<OrderInfoDto>() {
+            @Override
+            public int compare(OrderInfoDto o1, OrderInfoDto o2) {
+                int num= o1.getProductTypeCode().compareTo(o2.getProductTypeCode());
+                if(num==0){
+                    return Long.compare(o1.getExtra(), o2.getExtra());
+                }
+                return num;
+            }
+        }).collect(Collectors.toList());
+        System.out.println(list);
     }
 
 }

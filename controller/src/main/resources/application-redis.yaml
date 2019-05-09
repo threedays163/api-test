@@ -1,0 +1,23 @@
+spring:
+  redis:
+      host: 172.30.70.68
+      port: 6379
+      database: 6
+      password: RKJp9qeX
+      timeout: 2000
+      pool:
+        max-idle: 10
+        max-active: 30
+      key: 
+        prefix: "ht:paike:cache:ht:paike:" 
+        allNodes: all_node_key
+        classNoLock: classNoLock
+        classPaikeDurationLock: classPaikeDurationLock
+        lessonTemplateNoLock: lessonTemplateNoLock
+        lessonTableNoLock: lessonTemplateNoLock
+        classMaxStudentLock: classMaxStudentLock
+        mqMessageList: mqMessageList
+        mqCommandList: mqCommandList
+        orderCostPrefix: order
+        mqTaskStatus: mqTaskStatus
+        commandTaskStatus: commandTaskStatus

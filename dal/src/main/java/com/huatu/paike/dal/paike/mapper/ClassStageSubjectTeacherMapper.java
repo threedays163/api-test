@@ -34,7 +34,9 @@ public interface ClassStageSubjectTeacherMapper extends Mapper<ClassStageSubject
      * @return
      */
     List<ClassStageSubjectTeacher> queryListByClassId(@Param("classId") Long classId,
-        @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("pageDto") PageDto pageDto);
+                                                      @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("stageId") Long stageId,
+                                                      @Param("subjectId") Long subjectId, @Param("batchNum") Integer batchNum, @Param("teacherNos") List<String> teacherNos,
+                                                      @Param("status") Integer status, @Param("pageDto") PageDto pageDto);
 
     /**
      * 班级维度统计课表
