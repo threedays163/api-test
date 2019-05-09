@@ -2,15 +2,13 @@
 package com.huatu.paike.api_test.dto;
 
 import com.huatu.paike.dal.cost.entity.CostOrderStageTest;
-import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
 import com.huatu.paike.dal.goodsOrder.dto.OcssDurationDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
-import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 
 import java.util.Date;
 
 public class CostOrderStageBuilder {
-
+/*
     public static NewCostOrderStage builder(ClassStageSubject css,Integer totalDuration, OrderInfo orderInfo, CostType costType, Long cost,
                                          boolean isReport, CostSourceType sourceType) {
         NewCostOrderStage costOrderStage = new NewCostOrderStage();
@@ -34,7 +32,7 @@ public class CostOrderStageBuilder {
         costOrderStage.setCreateTime(new Date());
         costOrderStage.setSource((byte) sourceType.getValue());
         return costOrderStage;
-    }
+    }*/
 
     public static CostOrderStageTest builder_test(OcssDurationDto css, OrderInfo orderInfo, CostType costType, Long cost,
                                                   boolean isReport, CostSourceType sourceType) {

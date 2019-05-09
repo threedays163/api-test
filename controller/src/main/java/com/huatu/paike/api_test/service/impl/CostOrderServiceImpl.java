@@ -9,9 +9,7 @@ import com.huatu.paike.api_test.dto.CostSourceType;
 import com.huatu.paike.api_test.dto.CostType;
 import com.huatu.paike.api_test.service.CostOrderService;
 import com.huatu.paike.dal.cost.entity.CostOrderStageTest;
-import com.huatu.paike.dal.cost.entity.NewCostOrderStage;
 import com.huatu.paike.dal.cost.mapper.CostOrderStageTestMapper;
-import com.huatu.paike.dal.cost.mapper.NewCostOrderStageMapper;
 import com.huatu.paike.dal.goodsOrder.dto.OcssDurationDto;
 import com.huatu.paike.dal.goodsOrder.dto.OssId2CssDto;
 import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
@@ -48,8 +46,8 @@ public class CostOrderServiceImpl implements CostOrderService {
     @Autowired
     OrderInfoMapper orderInfoMapper;
 
-    @Autowired
-    NewCostOrderStageMapper newCostOrderStageMapper;
+/*    @Autowired
+    NewCostOrderStageMapper newCostOrderStageMapper;*/
 
     @Autowired
     CostOrderStageTestMapper costOrderStageTestMapper;
@@ -124,7 +122,7 @@ public class CostOrderServiceImpl implements CostOrderService {
                     continue;
                 }*/
 
-                List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
+                /*List<NewCostOrderStage> costOrderStages = Lists.newArrayList();
                 // 提报类型的不管是不是0都推送
                 NewCostOrderStage tuition =
                         CostOrderStageBuilder.builder(css,oss.getTotalDuration().intValue(), orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
@@ -136,7 +134,7 @@ public class CostOrderServiceImpl implements CostOrderService {
                 costOrderStages.add(extra);
                 for (NewCostOrderStage costOrderStage : costOrderStages) {
                     newCostOrderStageMapper.insertSelective(costOrderStage);
-                }
+                }*/
             }
             log.info("idx={},batchSize={}",idx,lastIndex-idx);
             idx = lastIndex;
