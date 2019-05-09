@@ -2,6 +2,7 @@ package com.huatu.paike.api_test.controller;
 
 import com.google.common.collect.Lists;
 import com.huatu.common.dto.resp.IdAndNameDto;
+import com.huatu.common.dto.resp.Node;
 import com.huatu.common.enums.ExamWayEnum;
 import com.huatu.common.errorcode.CommonErrorCode;
 import com.huatu.common.exception.BusinessException;
@@ -11,6 +12,7 @@ import com.huatu.paike.api_test.dto.LessonPrintDto;
 import com.huatu.paike.api_test.dto.NoAndNameScoreDto;
 import com.huatu.paike.api_test.dto.TimeTableDto;
 import com.huatu.paike.api_test.service.CommonService;
+import com.huatu.paike.api_test.service.NodeService;
 import com.huatu.paike.api_test.service.TimeTableService;
 import com.huatu.paike.api_test.utils.PojoExport2Excel;
 import com.huatu.paike.api_test.utils.TeachWayUtils;
@@ -45,6 +47,9 @@ public class TestController {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    NodeService nodeService;
 
     @GetMapping("/export")
     public void exportLesson(HttpServletRequest request, HttpServletResponse response){
@@ -107,6 +112,12 @@ public class TestController {
                 item.setStageName(dto.getStage().getName()+dto.getBatchNum());
             }else{
                 item.setStageName(dto.getStage().getName());
+            }
+            if(dto.getSubSchool()!=null&&dto.getSubSchool()>=0){
+                Node node=nodeService.getNode(dto.getSubSchool());
+                if(node!=null&&StringUtils.isNotEmpty(node.getName())){
+                    item.setSubSchool(node.getName());
+                }
             }
 
             item.setSubjectName(dto.getSubject().getName());

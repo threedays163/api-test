@@ -30,6 +30,17 @@ import java.util.Set;
 @Data
 public class PreparedInfo {
 
+    /**
+     * 班级类型2分校
+     */
+    Map<Long,Long> subSchoolMap;
+
+    public Long getSubSchool(Long classId){
+        if(subSchoolMap==null||subSchoolMap.isEmpty()){
+            return -1L;
+        }
+        return subSchoolMap.get(classId);
+    }
 
     /**
      * 班级ID2考试类型

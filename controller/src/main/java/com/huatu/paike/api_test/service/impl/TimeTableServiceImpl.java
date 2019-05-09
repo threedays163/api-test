@@ -185,6 +185,8 @@ public class TimeTableServiceImpl implements TimeTableService {
         dto.setClassId(csst.getClassId());
         dto.setClassName(info.getClassName(csst.getClassId()));
         dto.setClassNo(info.getClassNo(csst.getClassId()));
+        dto.setSubSchool(info.getSubSchool(csst.getClassId()));
+
         dto.setBuId(info.getBuId(cssKey));
         dto.setTeachWay(info.getTeachWay(cssKey));
         dto.setExamType(info.getExamType(csst.getClassId()));

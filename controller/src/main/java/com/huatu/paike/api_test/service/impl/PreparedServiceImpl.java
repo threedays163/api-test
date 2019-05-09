@@ -353,20 +353,24 @@ public class PreparedServiceImpl implements PreparedService {
             Map<Long,String> id2NameMap=Maps.newHashMap();
             Map<Long,String> id2NoMap=Maps.newHashMap();
             Map<Long,String> id2ExamTypeMap=Maps.newHashMap();
+            Map<Long,Long> id2SubSchoolMap=Maps.newHashMap();
 
             list.stream().forEach(a->{
                 id2NameMap.put(a.getId(),a.getClassName() );
                 id2NoMap.put(a.getId(),a.getClassNo() );
                 id2ExamTypeMap.put(a.getId(),a.getExamType() );
+                id2SubSchoolMap.put(a.getId(), a.getBranchId());
             });
 
             info.setClassNameMap(id2NameMap);
             info.setClassNoMap(id2NoMap);
             info.setExamTypeMap(id2ExamTypeMap);
+            info.setSubSchoolMap(id2SubSchoolMap);
         } else {
             info.setClassNameMap(Maps.newHashMap());
             info.setClassNoMap(Maps.newHashMap());
             info.setExamTypeMap(Maps.newHashMap());
+            info.setSubSchoolMap(Maps.newHashMap());
         }
     }
 

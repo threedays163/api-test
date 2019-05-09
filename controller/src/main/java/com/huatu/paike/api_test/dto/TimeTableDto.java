@@ -25,6 +25,8 @@ public class TimeTableDto implements Serializable {
 
     private Long id;
 
+    private Long subSchool;
+
     private StageDto stage;// 阶段
 
     Integer batchNum;// 批次数
