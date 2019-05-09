@@ -40,13 +40,19 @@ public class CostOrderStageBuilder {
                                                   boolean isReport, CostSourceType sourceType) {
         CostOrderStageTest costOrderStage = new CostOrderStageTest();
         costOrderStage.setBatchNum(css.getBatchNum());
-        costOrderStage.setClassId(css.getClassId());
+        if(costType.equals(CostType.tuition)) {
+            costOrderStage.setClassId(1L);
+            costOrderStage.setFinishedDate(orderInfo.getUpdateTime());
+            costOrderStage.setFinishDate(orderInfo.getUpdateTime());
+        }else{
+            costOrderStage.setClassId(css.getClassId());
+            costOrderStage.setFinishedDate(css.getEndDate());
+            costOrderStage.setFinishDate(css.getEndDate());
+        }
         costOrderStage.setCost(cost);
         costOrderStage.setCostType((byte) costType.getValue());
         costOrderStage.setDuration(css.getTotalDuration());
-        costOrderStage.setFinishedDate(css.getEndDate());
-        // 下游需要字段,误删
-        costOrderStage.setFinishDate(css.getEndDate());
+
         costOrderStage.setGoodsNo(orderInfo.getGoodsNo());
         costOrderStage.setHasCost((byte) 0);
         costOrderStage.setOrderGoodsId(orderInfo.getOrderGoodsId());

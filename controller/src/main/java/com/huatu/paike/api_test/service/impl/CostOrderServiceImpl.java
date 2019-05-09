@@ -26,6 +26,7 @@ import com.huatu.paike.dal.paike.entity.ClassStageSubject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +178,8 @@ public class CostOrderServiceImpl implements CostOrderService {
         }
         int batchSize = 200;
         int idx = 0;
+
+        Map<String, Boolean> orderTuitionPush=orderNos.stream().collect(Collectors.toConcurrentMap(a->a, a->false));
         while (idx < orderNos.size()) {
             long time=System.currentTimeMillis();
             int lastIndex = Math.min(idx + batchSize, orderNos.size());
@@ -216,8 +219,26 @@ public class CostOrderServiceImpl implements CostOrderService {
                     continue;
                 }
 
-                long subjectTuition = orderPriceInfo.getSubjectTuitionMap().getOrDefault(odd.getStageId(), Maps.newHashMap())
-                        .getOrDefault(odd.getSubjectId(), 0L);
+                List<CostOrderStageTest> costOrderStages = Lists.newArrayList();
+                if(orderInfo.getScoreHavePass()&&orderTuitionPush.get(orderNo)==false){
+                    orderTuitionPush.put(orderNo, true);
+                    Iterator<Long> it=orderPriceInfo.getSubjectTuitionMap().keySet().iterator();
+                    while(it.hasNext()){
+                        Long stageId=it.next();
+                        Map<Long,Long> subjectMap=orderPriceInfo.getSubjectTuitionMap().get(stageId);
+                        Iterator<Long> it2=subjectMap.keySet().iterator();
+                        while(it2.hasNext()){
+                            Long subjectId=it2.next();
+                            Long cost=subjectMap.get(subjectId);
+                            CostOrderStageTest tuition =
+                                    CostOrderStageBuilder.builder_test(odd, orderInfo, CostType.tuition, cost, false, CostSourceType.unknown);
+                            costOrderStages.add(tuition);
+                        }
+                    }
+
+                }
+
+
                 long subjectExtra = orderPriceInfo.getSubjectExtraMap().getOrDefault(odd.getStageId(), Maps.newHashMap())
                         .getOrDefault(odd.getSubjectId(), 0L);
 
@@ -226,13 +247,6 @@ public class CostOrderServiceImpl implements CostOrderService {
                     continue;
                 }*/
 
-                List<CostOrderStageTest> costOrderStages = Lists.newArrayList();
-                // 提报类型的不管是不是0都推送
-                CostOrderStageTest tuition =
-                        CostOrderStageBuilder.builder_test(odd, orderInfo, CostType.tuition, subjectTuition, false, CostSourceType.unknown);
-                if(orderInfo.getScoreHavePass()){
-                    costOrderStages.add(tuition);
-                }
                 CostOrderStageTest extra =
                         CostOrderStageBuilder.builder_test(odd,orderInfo, CostType.extra, subjectExtra, false, CostSourceType.unknown);
                 costOrderStages.add(extra);
