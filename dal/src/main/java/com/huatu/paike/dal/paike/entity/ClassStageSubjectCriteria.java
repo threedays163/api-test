@@ -1244,6 +1244,316 @@ public class ClassStageSubjectCriteria {
             addCriterion("LESSON_TABLE_ID not between", value1, value2, "lessonTableId");
             return (Criteria) this;
         }
+
+        public Criteria andTeachWayIsNull() {
+            addCriterion("teach_way is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayIsNotNull() {
+            addCriterion("teach_way is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayEqualTo(Byte value) {
+            addCriterion("teach_way =", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayNotEqualTo(Byte value) {
+            addCriterion("teach_way <>", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayGreaterThan(Byte value) {
+            addCriterion("teach_way >", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayGreaterThanOrEqualTo(Byte value) {
+            addCriterion("teach_way >=", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayLessThan(Byte value) {
+            addCriterion("teach_way <", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayLessThanOrEqualTo(Byte value) {
+            addCriterion("teach_way <=", value, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayIn(List<Byte> values) {
+            addCriterion("teach_way in", values, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayNotIn(List<Byte> values) {
+            addCriterion("teach_way not in", values, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayBetween(Byte value1, Byte value2) {
+            addCriterion("teach_way between", value1, value2, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andTeachWayNotBetween(Byte value1, Byte value2) {
+            addCriterion("teach_way not between", value1, value2, "teachWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeIsNull() {
+            addCriterion("course_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeIsNotNull() {
+            addCriterion("course_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeEqualTo(Integer value) {
+            addCriterion("course_type =", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeNotEqualTo(Integer value) {
+            addCriterion("course_type <>", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeGreaterThan(Integer value) {
+            addCriterion("course_type >", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("course_type >=", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeLessThan(Integer value) {
+            addCriterion("course_type <", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("course_type <=", value, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeIn(List<Integer> values) {
+            addCriterion("course_type in", values, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeNotIn(List<Integer> values) {
+            addCriterion("course_type not in", values, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeBetween(Integer value1, Integer value2) {
+            addCriterion("course_type between", value1, value2, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("course_type not between", value1, value2, "courseType");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayIsNull() {
+            addCriterion("exam_way is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayIsNotNull() {
+            addCriterion("exam_way is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayEqualTo(String value) {
+            addCriterion("exam_way =", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayNotEqualTo(String value) {
+            addCriterion("exam_way <>", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayGreaterThan(String value) {
+            addCriterion("exam_way >", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayGreaterThanOrEqualTo(String value) {
+            addCriterion("exam_way >=", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayLessThan(String value) {
+            addCriterion("exam_way <", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayLessThanOrEqualTo(String value) {
+            addCriterion("exam_way <=", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayLike(String value) {
+            addCriterion("exam_way like", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayNotLike(String value) {
+            addCriterion("exam_way not like", value, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayIn(List<String> values) {
+            addCriterion("exam_way in", values, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayNotIn(List<String> values) {
+            addCriterion("exam_way not in", values, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayBetween(String value1, String value2) {
+            addCriterion("exam_way between", value1, value2, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andExamWayNotBetween(String value1, String value2) {
+            addCriterion("exam_way not between", value1, value2, "examWay");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdIsNull() {
+            addCriterion("BU_ID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdIsNotNull() {
+            addCriterion("BU_ID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdEqualTo(Long value) {
+            addCriterion("BU_ID =", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotEqualTo(Long value) {
+            addCriterion("BU_ID <>", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdGreaterThan(Long value) {
+            addCriterion("BU_ID >", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("BU_ID >=", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdLessThan(Long value) {
+            addCriterion("BU_ID <", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdLessThanOrEqualTo(Long value) {
+            addCriterion("BU_ID <=", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdIn(List<Long> values) {
+            addCriterion("BU_ID in", values, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotIn(List<Long> values) {
+            addCriterion("BU_ID not in", values, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdBetween(Long value1, Long value2) {
+            addCriterion("BU_ID between", value1, value2, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotBetween(Long value1, Long value2) {
+            addCriterion("BU_ID not between", value1, value2, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyIsNull() {
+            addCriterion("end_early is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyIsNotNull() {
+            addCriterion("end_early is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyEqualTo(Boolean value) {
+            addCriterion("end_early =", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyNotEqualTo(Boolean value) {
+            addCriterion("end_early <>", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyGreaterThan(Boolean value) {
+            addCriterion("end_early >", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("end_early >=", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyLessThan(Boolean value) {
+            addCriterion("end_early <", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyLessThanOrEqualTo(Boolean value) {
+            addCriterion("end_early <=", value, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyIn(List<Boolean> values) {
+            addCriterion("end_early in", values, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyNotIn(List<Boolean> values) {
+            addCriterion("end_early not in", values, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyBetween(Boolean value1, Boolean value2) {
+            addCriterion("end_early between", value1, value2, "endEarly");
+            return (Criteria) this;
+        }
+
+        public Criteria andEndEarlyNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("end_early not between", value1, value2, "endEarly");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

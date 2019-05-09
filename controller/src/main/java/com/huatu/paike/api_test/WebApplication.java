@@ -72,9 +72,6 @@ public class WebApplication implements CommandLineRunner {
     @Autowired
     EhrNodeService nodeService;
 
-    @Autowired
-    CheckOrderVersionService costOrderVersionService;
-
     public static void main(String[] args) {
         SpringApplication.run(WebApplication.class, args);
     }
@@ -84,7 +81,7 @@ public class WebApplication implements CommandLineRunner {
     @Override
     public void run(String...args) throws Exception {
 
-        costOrderVersionService.check();
+        //costOrderVersionService.check();
 
         // queryTeacherHistory();
         // queryLessonDetail();

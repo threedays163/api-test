@@ -3,7 +3,7 @@
  * Huatu.com Inc. Copyright (c) 2014-2018 All Rights Reserved.
  */
 
-package com.huatu.paike.api_test;
+package com.huatu.paike.api_test.utils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

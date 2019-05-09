@@ -9,7 +9,7 @@ package com.huatu.paike.api_test.dto;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.huatu.paike.api_test.RatioUtils;
+import com.huatu.paike.api_test.utils.RatioUtils;
 import lombok.Data;
 
 import java.io.Serializable;

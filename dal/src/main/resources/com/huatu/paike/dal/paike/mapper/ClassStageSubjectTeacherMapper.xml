@@ -104,18 +104,45 @@
         select
         <include refid="Base_Column_List_ALIAS" />
         from
-        CLASS_STAGE_SUBJECT_TEACHER a
+        CLASS_STAGE_SUBJECT_TEACHER a JOIN class_stage_subject css ON a.CLASS_ID = css.CLASS_ID
+        AND a.STAGE_ID = css.STAGE_ID
+        AND a.SUBJECT_ID = css.SUBJECT_ID
+        AND a.BATCH_NUM = css.BATCH_NUM JOIN class_info ci ON css.class_id=ci.ID
         <where>
-            and a.CLASS_ID = #{classId}
-            <if test="null != startDate">
-                and a.START_DATE &gt;=#{startDate}
-            </if>
-            <if test="null != endDate">
-                and #{endDate} &gt;a.END_DATE
+            css.BU_ID=1 AND ci.EXAM_TYPE='SK' AND ci.EXAM_WAY='B'
+            <if test="null != classId">
+                and a.CLASS_ID = #{classId}
             </if>
             and a.TEACHER_TYPE = 1
+            <if test="null != startDate and null != endDate">
+                and css.START_DATE &gt;=#{startDate} and #{endDate} &gt;css.END_DATE
+            </if>
+            <if test="null != stageId">
+                and #{stageId} = a.STAGE_ID
+            </if>
+            <if test="null != subjectId">
+                and #{subjectId} = a.SUBJECT_ID
+            </if>
+            <if test="null != batchNum">
+                and #{batchNum} = a.BATCH_NUM
+            </if>
+            <if test="null != teacherNos and teacherNos.size() > 0">
+                and a.ID in
+                (select distinct cl.CSST_ID from CLASS_LESSON cl, LESSON_TEACHER lt
+                <where>
+                    cl.ID = lt.LESSON_ID
+                    and lt.TEACHER_STAFF_NO in
+                    <foreach collection="teacherNos" separator="," close=")" open="(" item="teacherNo">
+                        #{teacherNo}
+                    </foreach>
+                </where>
+                )
+            </if>
+            <if test="null != status">
+                and #{status} = a.STATUS
+            </if>
         </where>
-        order by a.start_date desc
+        order by css.start_date asc
         <if test="null != pageDto">
             limit
             ${(pageDto.pageNum-1)*pageDto.pageSize},#{pageDto.pageSize}

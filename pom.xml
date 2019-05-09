@@ -24,11 +24,11 @@
     <common.dbcp.version>1.4</common.dbcp.version>
     <dubbo.version>2.6.2</dubbo.version>
     <common.version>0.0.4-SNAPSHOT</common.version>
-    <ehr.version>1.0.0.RELEASE</ehr.version>
+    <ehr.version>1.4.1.RELEASE</ehr.version>
     <springfox.version>2.6.1</springfox.version>
     <sku.version>2.2.2.RELEASE</sku.version>
     <order.version>2.2.3.RELEASE</order.version>
-    <common-api.version>2.2.1.RELEASE</common-api.version>
+    <common-api.version>2.2.3.RELEASE</common-api.version>
     <shizi-api.version>2.1.0.RELEASE</shizi-api.version>
     <workflow-interface.version>1.0.0.RELEASE</workflow-interface.version>
     <cas.version>1.0.2</cas.version>
@@ -129,6 +129,18 @@
 			<artifactId>paike-interface</artifactId>
         	<version>${paike-api.version}</version>
         </dependency>
+
+        <dependency>
+          <groupId>com.huatu.ehr-api</groupId>
+          <artifactId>ehr-api-interface</artifactId>
+          <version>${ehr.version}</version>
+        </dependency>
+
+      <dependency>
+          <groupId>com.huatu.common-api</groupId>
+          <artifactId>common-interface</artifactId>
+          <version>${common-api.version}</version>
+      </dependency>
   	</dependencies>
   <build>
         <resources>
