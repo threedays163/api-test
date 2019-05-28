@@ -1,6 +1,7 @@
 package com.huatu.paike.api_test.service;
 
 import com.huatu.paike.api_test.dto.OrderInfoDto;
+import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,12 @@ public interface OrderVersionService {
      * @return
      */
     Map<Long,OrderInfoDto> getOrderInfoByOrderGoodsId(List<Long> orderGoodsIds);
+
+    /**
+     * 查询版本信息不一致的orderVersion
+     * @return
+     */
+    List<OrderInfo> checkDiffOrderVersion();
 
 
 }

@@ -577,4 +577,8 @@
 		<if test="newName !=null">student_name = #{newName},</if>
 		mobile=#{newMobile} where mobile=#{oldMobile}
 	</update>
+
+	<select id="queryAllIds" resultType="long">
+		SELECT ID FROM order_info;
+	</select>
 </mapper>

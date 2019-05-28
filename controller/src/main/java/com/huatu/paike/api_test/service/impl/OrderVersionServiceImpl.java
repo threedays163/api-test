@@ -5,7 +5,10 @@ import com.huatu.common.exception.BusinessException;
 import com.huatu.order.service.paike.OrderService;
 import com.huatu.paike.api_test.dto.OrderInfoDto;
 import com.huatu.paike.api_test.service.OrderVersionService;
+import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
+import com.huatu.paike.dal.goodsOrder.entity.OrderInfoCriteria;
 import com.huatu.paike.dal.goodsOrder.entity.OrderVersion;
+import com.huatu.paike.dal.goodsOrder.mapper.OrderInfoMapper;
 import com.huatu.paike.dal.goodsOrder.mapper.OrderVersionMapper;
 
 import com.alibaba.fastjson.JSONObject;
@@ -38,6 +41,9 @@ public class OrderVersionServiceImpl implements OrderVersionService {
 
     @Autowired
     OrderVersionMapper orderVersionMapper;
+
+    @Autowired
+    OrderInfoMapper orderInfoMapper;
 
     @Override
     public Map<Long, OrderInfoDto> getMoneyInfoParallel(List<Long> orderGoodsIds) {
@@ -117,5 +123,57 @@ public class OrderVersionServiceImpl implements OrderVersionService {
     private OrderInfoDto orderVersion2OrderInfoDto(OrderVersion ov){
         OrderInfoDto dto = JSONObject.parseObject(ov.getJson(), OrderInfoDto.class);
         return dto;
+    }
+
+    @Override
+    public List<OrderInfo> checkDiffOrderVersion() {
+
+        List<Long> ids= orderInfoMapper.queryAllIds();
+
+        log.info("订单总数:{}", ids.size());
+
+        if(ids.size()==0){
+            return Lists.newArrayList();
+        }
+
+        List<String> resultOrderNos=Lists.newArrayList();
+
+        int batchSize=500;
+        int i=0,total=ids.size();
+        while(i<total){
+            List<Long> subIds=ids.subList(i,Math.min(i+batchSize,total ));
+            if(CollectionUtils.isEmpty(subIds)){
+                continue;
+            }
+            List<String> temList=Lists.newArrayList();
+            List<OrderVersion> dbOrderVersions=orderVersionMapper.queryNewOrderVersionByOrderId(subIds);
+
+            if(CollectionUtils.isEmpty(dbOrderVersions)){
+                log.warn("排课未查询到任何orderVersion:{}", subIds);
+                //temList.addAll(subIds);
+            }else{
+                List<Long> orderGoodsIds=dbOrderVersions.stream().map(a->a.getOrderGoodsId()).collect(Collectors.toList());
+
+                Map<Long, OrderInfoDto> map=getMoneyInfoParallel(orderGoodsIds);
+                for (OrderVersion  ov:dbOrderVersions){
+                    OrderInfoDto orderSideOv=map.get(ov.getOrderGoodsId());
+                    if(orderSideOv==null){
+                        log.warn("paike 这边有数据,order无数据,orderGoodsId={}",ov.getOrderGoodsId());
+                    }else{
+                        OrderInfoDto orderInfoDto=JSONObject.parseObject(ov.getJson(), OrderInfoDto.class);
+                        if(!orderInfoDto.equals(orderSideOv)){
+                            temList.add(ov.getOrderNo());
+                        }
+                    }
+                }
+            }
+
+            resultOrderNos.addAll(temList);
+            i+=batchSize;
+        }
+
+        OrderInfoCriteria criteria=new OrderInfoCriteria();
+        criteria.createCriteria().andOrderNoIn(resultOrderNos);
+        return orderInfoMapper.selectByExample(criteria);
     }
 }

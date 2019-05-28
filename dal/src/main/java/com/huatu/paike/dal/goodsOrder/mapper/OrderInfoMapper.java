@@ -260,4 +260,6 @@ public interface OrderInfoMapper extends Mapper<OrderInfo> {
     void updateStudentInfo(@Param("oldMobile") String oldMobile, @Param("newMobile") String newMobile,
         @Param("newName") String newName);
 
+    List<Long> queryAllIds();
+
 }

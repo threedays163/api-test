@@ -37,4 +37,11 @@ public interface OrderVersionMapper extends Mapper<OrderVersion> {
      */
     List<OrderVersion> getNewestVersionByOrderNos(@Param("orderNos") Collection<String> orderNos);
 
+    /**
+     * 根据订单ID查询订单最新的订单版本
+     * @param ids
+     * @return
+     */
+    List<OrderVersion> queryNewOrderVersionByOrderId(Collection<Long> ids);
+
 }

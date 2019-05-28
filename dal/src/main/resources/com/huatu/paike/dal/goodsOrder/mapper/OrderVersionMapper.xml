@@ -109,4 +109,21 @@
       )t
       GROUP BY t.ORDER_NO
     </select>
+
+    <select id="queryNewOrderVersionByOrderId" resultMap="BaseResultMap">
+        SELECT *
+        FROM(
+            select ov.*
+            from order_info oi JOIN order_version ov ON oi.order_no=ov.order_no
+            <where>
+                oi.ID IN
+                <foreach
+                        collection="collection" item="item" close=")" open="(" separator=",">
+                      #{item}
+                </foreach>
+                order by ov.seq_num DESC limit 1000000000000000
+            </where>
+        ) t
+        GROUP BY t.ORDER_NO
+    </select>
 </mapper>

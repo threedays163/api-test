@@ -13,9 +13,11 @@ import com.huatu.paike.api_test.dto.NoAndNameScoreDto;
 import com.huatu.paike.api_test.dto.TimeTableDto;
 import com.huatu.paike.api_test.service.CommonService;
 import com.huatu.paike.api_test.service.NodeService;
+import com.huatu.paike.api_test.service.OrderVersionService;
 import com.huatu.paike.api_test.service.TimeTableService;
 import com.huatu.paike.api_test.utils.PojoExport2Excel;
 import com.huatu.paike.api_test.utils.TeachWayUtils;
+import com.huatu.paike.dal.goodsOrder.entity.OrderInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,12 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName TestController
@@ -50,6 +55,23 @@ public class TestController {
 
     @Autowired
     NodeService nodeService;
+
+    @Autowired
+    OrderVersionService orderVersionService;
+
+    @GetMapping("/diffOrderVersion")
+    @ResponseBody
+    public List<String> showDiffOrderVersion(){
+        List<OrderInfo> list=orderVersionService.checkDiffOrderVersion();
+        list.stream().forEach(a-> System.out.println(a.getOrderNo()));
+        return list.stream().map(a->a.getOldOrderNo()).collect(Collectors.toList());
+    }
+
+    @GetMapping("/orderVersion.json")
+    @ResponseBody
+    public Object getMoneyInfoByOrderGoodsId(@RequestParam Long orderGoodsId){
+        return orderVersionService.getOrderInfoByOrderGoodsId(Lists.newArrayList(orderGoodsId));
+    }
 
     @GetMapping("/export")
     public void exportLesson(HttpServletRequest request, HttpServletResponse response){
