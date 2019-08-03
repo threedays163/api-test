@@ -109,6 +109,12 @@
 			<artifactId>dal</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.huatu.paike-api</groupId>
+			<artifactId>paike-interface</artifactId>
+			<version>${paike-api.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

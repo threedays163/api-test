@@ -8,9 +8,8 @@
 	<dubbo:consumer timeout="90000" />
 
 
-	<dubbo:registry protocol="zookeeper" address="172.30.70.4:2181,172.30.70.5:2181,172.30.70.6:2181"/>
-
-	<!--<dubbo:registry protocol="zookeeper" address="172.30.9.98:2181,172.30.9.99:2181,172.30.9.100:2181"/>-->
+	<!--<dubbo:registry protocol="zookeeper" address="172.30.70.4:2181,172.30.70.5:2181,172.30.70.6:2181"/>-->
+	<dubbo:registry protocol="zookeeper" address="172.30.9.98:2181,172.30.9.99:2181,172.30.9.100:2181"/>
 
 
 	<dubbo:protocol name="dubbo" port="20880" />
@@ -86,4 +85,7 @@
 					 id="examWayStageService"/>
 	<!-- 依赖sms-api -->
 
+	<!--paike-api-->
+	<dubbo:reference interface="com.huatu.paike.service.LessonDetailService" id="lessonDetailService" url="dubbo://192.168.196.16:20884"/>
+	<dubbo:reference interface="com.huatu.paike.service.ConflictService" id="conflictService" url="dubbo://192.168.196.16:20884"/>
 </beans>
